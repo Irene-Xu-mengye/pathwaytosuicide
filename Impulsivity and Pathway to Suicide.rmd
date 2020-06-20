@@ -1,0 +1,2080 @@
+---
+title: "Impulsivity and Pathway to Suicide"
+output:   
+  html_document:
+    code_folding: hide
+---
+
+```{r ImportData, include = FALSE}
+library(tidyverse)
+data <-  read.csv(file = "~/Desktop/Impulsivity and Pathway to Suicide/HaveEvent_Impulsivity_Thoughts_Time_LifetimeSI.csv")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+data <- data %>%
+  select(-x.axis_Value_Orig, -Unit, -Interview_Date, -IST_sub, -IST_MeanAccuracy, -IST_Mean_num_boxes_opened, -IST_MeanTrialAmount, -IST_TotalAmount, -IST_MeanDecisionTimeperPress, -IST_MeanDecisionTime, -IST_Mean_PCorrChanges, -IST_Mean_AverageAmountWons, -IST_Mean_AvgAmountRatios, -IST_Mean_AvgAmountMajChanges, -IST_Mean_AvgAmountMinChanges, -IST_FreeBlockMeanAccuracy, -IST_FreeBlockMean_num_boxes_opened, -IST_FreeBlockMeanTrialAmount, -IST_FreeBlockTotalAmount, -IST_FreeBlockMeanDecisionTimeperPress, -IST_FreeBlockMeanDecisionTime, -IST_FreeBlockMean_PCorrChanges, -IST_Mean_pCorrs, -IST_FreeBlockMean_AverageAmountWons, -IST_FreeBlockMean_AvgAmountRatios, -IST_FreeBlockMean_AvgAmountMajChanges, -IST_FreeBlockMean_AvgAmountMinChanges, -IST_CostBlockMeanAccuracy, -IST_CostBlockMean_num_boxes_opened, -IST_CostBlockMeanTrialAmount, -IST_CostBlockTotalAmount, -IST_CostBlockMeanDecisionTimeperPress, -IST_CostBlockMeanDecisionTime, -IST_CostBlockMean_PCorrChanges, -IST_CostBlockMean_AverageAmountWons, -IST_CostBlockMean_AvgAmountRatios, -IST_CostBlockMean_AvgAmountMajChanges, -IST_CostBlockMean_AvgAmountMinChanges, -CPTGNG_sub, -CPTGNG_hit_meanRT, -CPTGNG_RT_Pre_CommissionError, -CPTGNG_RT_Pre_OmmissionError, -CPTGNG_RT_Pre_CorrectTrials, -CPTGNG_RT_Post_CommissionError, -CPTGNG_RT_Post_Correct, -CPTGNG_c_bias_All, -CPTGNG_c_bias_norm_All, -CPTGNG_hits, -CPTGNG_corr_rej, -CPTGNG_OverallAccuracy, -CPTGNG_hitRate, -CPTGNG_miss_omissionErrorRate, -CPTGNG_correct_rej_Rate, -CPTGNG_falsealarm_commissionErrorRate, -CPTGNG_hit_meanSTD, -CPTGNG_FA_commissionRT, -CPTGNG_FA_commissionSTD, -CPTGNG_TotalRT, -CPTGNG_TotalRT_STD, -MDQ_sub, -MDQ_k, -MDQ_k_log10, -MDQ_MeanRT, -MDQ_FitK_k, -MDQ_Lau_k, -MDQ_FitK_m, -MDQ_FitK_LL, -SSRT_subj, -SSRT_nsort, -SSRT_nsocorrect, -SSRT_nsoincorrect, -SSRT_nsomissed, -SSRT_sopresp, -SSRT_sossd, -SSRT_sossrtMean, -SSRT_sossrtIntbyBlock, -Q_sub, -X1.1_Ever_thought_about, -X1.3_Ever_Made_An_Attempt, -X2.1_Thought_Disappear, -X2.2_Thoughts_Never_Born, -X2.3_Thoughts_Not_Worth_Living, -X2.4_Thoughts_Wish_Dead, -X2.5_Thoughts_Maybe.Should_KillSelf, -X2.6_Thoughts_Should.KillSelf, -X2.7_First_Thought, -X2.8_Age_first_had_2.7, -X2.10_Should_Kill_Age_Accuracy, -X2.2_Ever_NSSI, -X2.2_NSSI_Age_Recent, -X2.2_NSSI_MethodsCoded, -X2.3_Gesture_No_Intend_Die, -X2.3_Gesture_Age_First, -X2.3_Gesture_Age_RecentorSingle, -X2.3_Gesture_specific, -X2.4_Had_Aborted_Attempt, -X2.4_Aborted_Attempt_Notes, -X2.4_Aborted_NumTimes, -X2.4_Aborted_NumTimes_Notes, -X2.4_DateofAborted_FirstTime, -X2.4_Aborted_Recent_age, -X2.4_DateofAborted_Recent, -X2.4_Aborted_ConfirmAborted, -X2.5_Interrupted, -X2.5_Interrupted_Notes, -X2.5_Interrupted_Notes, -X2.5_DateofInterrupted_FirstTime, -X2.5_DaysBetweenINT_First_and_Interview, -X2.5_Interrupted_Age_RecentorSingle, -X2.5_DateofInterrupted_RecentorSingle, -X2.5_Confirm_Interrupted, -X2.6_Attempt, -X2.6_Attempt_Age_First, -X2.6_Dateof_FirstAT, -X2.6_Days_From_FirstAT, -X2.6_RecentorSingle_AT, -X2.6_RecentorSingle_AT_date, -X2.6_Confirm_Attempt, -X2.6_Accuracy_first_time_age, -X4.1_WhatHappened, -X5_Method, -method_type1, -method_type2, -Num_Methods, -Num_Attempts_Prior_to_Admission, -Method_Other, -X5.4_How_Think_of_Method_ever, -Why_this_method, -Why_this_method_1_Peaceful.Neatness_2_Accessibility.Convenience_3_privacy_4_lethality, -X5.6_Thought_of_Pain, -X5.7_Thoughtof_OtherMethods, -Thought_of_other_Methods, -X5.8_Obtain_Method, -X5.10_Obtain_Method_Not.Sure_maybe_forsuicide, -X5.11_Obtain_Method_HowLong, -ObtainMethod_HowLong, -ObtainMethod_HowLong_Unit, -Obtain_Method_Date, -X5.12_Obtain_Method_When, -when_obtained_method) %>%
+       select(-X8.8_First_Action, -X8.9_First_Thing_Start, -Dec2Act_TimeUnit, -If.9.2.not.Sure..is.there.a.time.of.Sure..Yes...9.4..No...Seconds.before.attempt., -X9.2_When_decide_how_sure_would_attempt, -X9.4.Time.between.decision.and.attempt, -X10.1_prep, -X10.2_Prep_for_this_attempt, -X10.3.Prep..if.10.1.is.no., -X10.4_Num_Prep_Thoughts, -X10.5_Prep_Thoughts, -X10.6.Prep_Thoughts..if.10.4.is.no., -X11.1_Drugs_Before, -X11.2_HowLong, -X11.4_HowMuch_Before_Decision, -Quantity, -How_long_before_Time, -How_long_before_Time_Unit, -Drink_then_Decide, -Drink_Time, -Drink_Time_Unit, -X11.5_Decide_then_Drink, -X11.5_Decide_then_Drink_Quantity, -Decide_then_Drink_Time, -Decide_then_Drink_Time_Unit, -X12.1_Thoughts_About_Future, -Thoughts_Future_specific, -X12.2_1_positive_2_negative, -X12.3_Family_or_Friends, -Family_Friends_Specific, -FF_makesYou, -X12.4_Meaning_of_Death, -MeaningOfDeath_Specific, -MeaningOfDeath_MakeYou, -X12.5_AfterDeath_WhatWillHappen, -X12.6_What_Happens_After_Death, -WhatHappensAfter_MakeYou, -X12.7_PainBloodViolence, -PainBloodViolence_Specific, -PBV_MakeYou, -HowMuch_If_1_or_2, -X12.8_Reactions, -Reactions_Specific, -X12.10_Responsibilities, -Responsibilities_MakeYou, -Responsibilities_Specific, -X12.9_Dyingby_Suicide, -DieBySuicide_MakeYou, -X12.11.Why, -Circumstance.A, -Circumstance.B, -Circumstance.C, -Notes, -Notes.1, -X12.12.How.Long.A, -A.Time, -units, -How.Long.B, -B.Time, -units.1, -How.Long.C, -C.Time, -units.2, -Depr.for.Two.Weeks, -X12.18_Injuries, -X12.18_Injuries_LethalityScale, -Injuries_Rating, -Injuries_SpecificDrug,-when_obtained_method_Unit, -Where_to_attempt, -X6.1_Where, -Ever_mulled, -NumMulling, -First_mulling_age, -Accuracy.of.first.mulling.age, -First_Thought_of.Method_1, -FirstThoughtof_Method_2, -First_Thoughtof_Method_2, -First_Thought_of.Method_1_Unit, -First_Thoughtof_Method_2_Unit, -First_Thought_of_Method_2_for_This_Attempt, -First_Thought_of_Method_2_for_This_Attempt_Unit, -X8.5_Mull_NoAct, -X8.6_Mull_NumTimes, -ABINT_Decision_StoppingTimeDiffuse)
+##```
+
+##```{r neitherThoughtsData}
+neither_data <- data %>%
+  mutate(neither_ff = ifelse(family_friends_makes_you == 4, thoughts_family_friends, 0),
+         neither_meaning = ifelse(meaning_death_makes_you == 4, meaning_death, 0),
+         neither_pain = ifelse(thoughts_pain_makes_you == 4, thoughts_pain, 0),
+         neither_reactions = ifelse(reactions_makes_you == 4, thoughts_reactions, 0),
+         neither_responsibilities = ifelse(responsibilities_makes_you == 4, thoughts_responsibilities, 0)) %>%
+  mutate(neither_score = neither_ff + neither_meaning + neither_pain + neither_reactions + neither_responsibilities)
+##```
+
+##```{r THOUGHTscoreDATA}
+thought_score_data <- neither_data %>%
+  group_by(Subject) %>%
+  mutate(ff_score = ifelse(family_friends_makes_you == 1, thoughts_family_friends, thoughts_family_friends * -1),
+         meaning_score = ifelse(meaning_death_makes_you == 1, meaning_death, meaning_death * -1),
+         pain_score = ifelse(thoughts_pain_makes_you == 1, thoughts_pain, thoughts_pain *-1),
+         reactions_score = ifelse(reactions_makes_you == 1, thoughts_reactions, thoughts_reactions *-1),
+         responsibilities_score = ifelse(responsibilities_makes_you == 1, thoughts_responsibilities, thoughts_responsibilities * -1)) %>%
+  mutate(ff_score = ifelse(is.na(ff_score), 0, ff_score), 
+         meaning_score = ifelse(is.na(meaning_score), 0, meaning_score),
+         pain_score = ifelse(is.na(pain_score), 0, pain_score),
+         reactions_score = ifelse(is.na(reactions_score), 0, reactions_score),
+         responsibilities_score = ifelse(is.na(responsibilities_score), 0, responsibilities_score),
+         thoughts_score = ff_score + meaning_score + pain_score + reactions_score + responsibilities_score) %>%
+  mutate(thoughts_score_2 = ifelse(thoughts_about_future == 1, 
+                                   1 + thoughts_family_friends 
+                                     + meaning_death 
+                                     + thoughts_pain 
+                                     + thoughts_reactions 
+                                     + thoughts_responsibilities, 
+                                   0 + thoughts_family_friends 
+                                     + meaning_death 
+                                     + thoughts_pain 
+                                     + thoughts_reactions 
+                                     + thoughts_responsibilities),
+         ff_score_want = ifelse(!is.na(family_friends_makes_you), 
+                                ifelse(family_friends_makes_you %in% c(1,3), thoughts_family_friends, 0), 0),
+         meaning_score_want = ifelse(!is.na(meaning_death_makes_you), 
+                                     ifelse(meaning_death_makes_you %in% c(1,3), meaning_death, 0), 0),
+         pain_score_want = ifelse(!is.na(thoughts_pain_makes_you), 
+                                  ifelse(thoughts_pain_makes_you %in% c(1,3), thoughts_pain, 0), 0),
+         reactions_score_want = ifelse(!is.na(reactions_makes_you), 
+                                       ifelse(reactions_makes_you %in% c(1,3), thoughts_reactions, 0), 0),
+         responsibilities_score_want = ifelse(!is.na(responsibilities_makes_you),
+                                              ifelse(responsibilities_makes_you %in% c(1,3), thoughts_responsibilities, 0), 0),
+         thoughts_want = ff_score_want + meaning_score_want + pain_score_want + reactions_score_want + responsibilities_score_want, 
+          
+         ff_score_not_want = ifelse(!is.na(family_friends_makes_you), 
+                                ifelse(family_friends_makes_you %in% c(2,3), thoughts_family_friends, 0), 0),
+         meaning_score_not_want = ifelse(!is.na(meaning_death_makes_you), 
+                                     ifelse(meaning_death_makes_you %in% c(2,3), meaning_death, 0), 0),
+         pain_score_not_want = ifelse(!is.na(thoughts_pain_makes_you), 
+                                  ifelse(thoughts_pain_makes_you %in% c(2,3), thoughts_pain, 0), 0),
+         reactions_score_not_want = ifelse(!is.na(reactions_makes_you), 
+                                       ifelse(reactions_makes_you %in% c(2,3), thoughts_reactions, 0), 0),
+         responsibilities_score_not_want = ifelse(!is.na(responsibilities_makes_you),
+                                              ifelse(responsibilities_makes_you %in% c(2,3), thoughts_responsibilities, 0), 0),
+         thoughts_not_want = ff_score_not_want + meaning_score_not_want + pain_score_not_want + reactions_score_not_want + responsibilities_score_not_want) %>%
+  select(-ff_score_want, -meaning_score_want, -pain_score_want, -reactions_score_want, -responsibilities_score_want, 
+         -ff_score_not_want, -meaning_score_not_want, -pain_score_not_want, -reactions_score_not_want, -responsibilities_score_not_want,
+         -ff_score, -meaning_score, -pain_score, -reactions_score, -responsibilities_score) %>%
+  mutate(thoughts_score = ifelse(x_axis_Num != 1, NA, thoughts_score),
+         thoughts_score_2 = ifelse(x_axis_Num !=1, NA, thoughts_score_2),
+         thoughts_want = ifelse(x_axis_Num != 1, NA, thoughts_want),
+         thoughts_not_want = ifelse(x_axis_Num != 1, NA, thoughts_not_want))
+calculate <- function(x, y, dataframe) {
+  m1 <- lm(y~x, dataframe)
+  summary(m1)
+}
+calculateExpon <- function(x, y, dataframe) {
+  m1 <- lm(log(y)~x, dataframe)
+  summary(m1)
+}
+clean_data <- thought_score_data %>%
+  select(-thoughts_about_future, -thoughts_family_friends, -thoughts_pain, -thoughts_pain_makes_you, -thoughts_reactions, -thoughts_responsibilities, -thoughts_die_by_suicide, -meaning_death, -meaning_death_makes_you, -family_friends_makes_you, -reactions_makes_you, -responsibilities_makes_you, -y_axis)
+##```
+
+##```{r LifetimeSIdata}
+data_lifetime <- clean_data %>%
+  group_by(Subject) %>%
+  mutate(onset_age = min(Time_in_age),
+         duration_ideation = max(Time_prior_to_attempt),
+         range_ideation = max(Ideation_freq) - min(Ideation_freq),
+         mean_ideation = mean(Ideation_freq),
+         sd_ideation = sd(Ideation_freq)) %>%
+  filter(!is.na(Age)) %>%
+  select(-x_axis_Num)
+##```
+
+##```{r TransformTimeUnits}
+data_transformedTime <- data_lifetime %>%   
+  mutate(ThoughtsStart_Seconds = ifelse(Start_thinking.about_this_attempt_Time_Unit == "weeks", Start_thinking.about_this_attempt_Time * 604800,
+                                        ifelse(Start_thinking.about_this_attempt_Time_Unit == "days", Start_thinking.about_this_attempt_Time * 86400, 
+                                              ifelse(Start_thinking.about_this_attempt_Time_Unit == "hours", Start_thinking.about_this_attempt_Time * 3600,
+                                                     ifelse(Start_thinking.about_this_attempt_Time_Unit == "minutes", Start_thinking.about_this_attempt_Time * 60,
+                                                            ifelse(Start_thinking.about_this_attempt_Time_Unit == "years", Start_thinking.about_this_attempt_Time * 31536000,
+                                                                   ifelse(Start_thinking.about_this_attempt_Time_Unit == "months", Start_thinking.about_this_attempt_Time*2592000, 
+                                                                          Start_thinking.about_this_attempt_Time))))))) %>%
+    mutate(MullingStarts_Seconds = ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "weeks", 
+                                          Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 604800,
+                                         ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "days", 
+                                                Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 86400, 
+                                               ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "hours", 
+                                                      Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 3600,
+                                                     ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "minutes", 
+                                                            Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 60,
+                                                           ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "years",
+                                                                  Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 31536000,
+                                                                 ifelse(Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit == "months",
+                                                                        Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling * 2592000, 
+                                                                        Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling))))))) %>%
+    mutate(Decision_Seconds = ifelse(Decision_time_Unit == "weeks", Decision_time * 604800,
+                                     ifelse(Decision_time_Unit == "days", Decision_time * 86400, 
+                                            ifelse(Decision_time_Unit == "hours", Decision_time * 3600,
+                                                  ifelse(Decision_time_Unit == "minutes", Decision_time * 60,
+                                                         ifelse(Decision_time_Unit == "years", Decision_time * 31536000,
+                                                                ifelse(Decision_time_Unit == "months", Decision_time * 2592000, Decision_time))))))) %>%
+    mutate(FirstMethod_Seconds = ifelse(First_think_of_method_1_for_this_attempt_Unit == "weeks", First_think_of_method_1_for_this_attempt * 604800,
+                                               ifelse(First_think_of_method_1_for_this_attempt_Unit == "days", First_think_of_method_1_for_this_attempt * 86400, 
+                                                      ifelse(First_think_of_method_1_for_this_attempt_Unit == "hours", First_think_of_method_1_for_this_attempt * 3600,
+                                                              ifelse(First_think_of_method_1_for_this_attempt_Unit == "minutes", First_think_of_method_1_for_this_attempt * 60,
+                                                                    ifelse(First_think_of_method_1_for_this_attempt_Unit == "years", 
+                                                                           First_think_of_method_1_for_this_attempt * 31536000,
+                                                                          ifelse(First_think_of_method_1_for_this_attempt_Unit == "months", 
+                                                                                 First_think_of_method_1_for_this_attempt * 2592000, 
+                                                                                 First_think_of_method_1_for_this_attempt))))))) %>%
+    mutate(SureMethod_Seconds = ifelse(Sure_of_Method_Unit == "weeks", Sure_of_Method * 604800,
+                                       ifelse(Sure_of_Method_Unit == "days", Sure_of_Method * 86400, 
+                                              ifelse(Sure_of_Method_Unit == "hours", Sure_of_Method * 3600,
+                                                     ifelse(Sure_of_Method_Unit == "minutes", Sure_of_Method * 60,
+                                                            ifelse(Sure_of_Method_Unit == "years", Sure_of_Method * 31536000,
+                                                                   ifelse(Sure_of_Method_Unit == "months", Sure_of_Method * 2592000, Sure_of_Method))))))) %>%
+    mutate(FirstPlace_Seconds = ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "years", X6.3_First_thinkof_place_for_this_attempt * 31536000,
+                                     ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "months", X6.3_First_thinkof_place_for_this_attempt * 2592000, 
+                                            ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "weeks", X6.3_First_thinkof_place_for_this_attempt * 604800,
+                                                  ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "days", X6.3_First_thinkof_place_for_this_attempt * 86400,
+                                                         ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "hours", X6.3_First_thinkof_place_for_this_attempt * 3600, 
+                                                                ifelse(X6.3_First_thinkof_place_for_this_attempt_Unit == "minutes", 
+                                                                       X6.3_First_thinkof_place_for_this_attempt * 60, X6.3_First_thinkof_place_for_this_attempt))))))) %>%
+    mutate(SurePlace_Seconds = ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "years", FirstTime_sureof_place_for_This_Attempt * 31536000,
+                                     ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "months", FirstTime_sureof_place_for_This_Attempt * 2592000, 
+                                            ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "weeks", FirstTime_sureof_place_for_This_Attempt * 604800,
+                                                  ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "days", FirstTime_sureof_place_for_This_Attempt * 86400,
+                                                         ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "hours", FirstTime_sureof_place_for_This_Attempt * 3600, 
+                                                                ifelse(FirstTime_sureof_place_for_This_Attempt_Unit == "minutes", 
+                                                                       FirstTime_sureof_place_for_This_Attempt * 60, FirstTime_sureof_place_for_This_Attempt)))))))
+
+##```
+
+## ```{r BinsTotalPthwy}
+five_year <- 5*365*24*60*60
+one_year <- 365*24*60*60
+six_month <- one_year/2
+one_month <- 30*24*60*60
+two_week <- 14*24*60*60
+one_week <- 7*24*60*60
+three_day <- 3*24*60*60
+one_day <- 24*60*60
+an_hour <- 60*60
+a_minute <- 60
+
+data_totalPthwy <- data_transformedTime %>%
+  mutate(MullingStarts_Seconds_index = 
+           ifelse(MullingStarts_Seconds <= a_minute, 17, 
+                  ifelse(MullingStarts_Seconds <= a_minute*5, 16,
+                         ifelse(MullingStarts_Seconds <= a_minute*15, 15,
+                                ifelse(MullingStarts_Seconds <= a_minute*30, 14,
+                                       ifelse(MullingStarts_Seconds <= an_hour, 13, 
+                                              ifelse(MullingStarts_Seconds <= an_hour*2, 12,
+                                                     ifelse(MullingStarts_Seconds <= an_hour*3, 11,
+                                                            ifelse(MullingStarts_Seconds <= an_hour*6, 10,
+                                                                   ifelse(MullingStarts_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(MullingStarts_Seconds <= one_day, 8,
+                                                                                 ifelse(MullingStarts_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(MullingStarts_Seconds <= one_week, 6,
+                                                                                               ifelse(MullingStarts_Seconds <= two_week, 5,
+                                                                                                      ifelse(MullingStarts_Seconds <= one_month, 4,
+                                                                                                             ifelse(MullingStarts_Seconds <= six_month, 3,
+                                                                                                                    ifelse(MullingStarts_Seconds <= one_year, 2, 
+                                                                                                                          ifelse(MullingStarts_Seconds <= five_year, 1, 0
+                                                                                                                                 )))))))))))))))))) %>%
+  mutate(Decision_Seconds_index = 
+           ifelse(Decision_Seconds <= a_minute, 17, 
+                  ifelse(Decision_Seconds <= a_minute*5, 16,
+                         ifelse(Decision_Seconds <= a_minute*15, 15,
+                                ifelse(Decision_Seconds <= a_minute*30, 14,
+                                       ifelse(Decision_Seconds <= an_hour, 13, 
+                                              ifelse(Decision_Seconds <= an_hour*2, 12,
+                                                     ifelse(Decision_Seconds <= an_hour*3, 11,
+                                                            ifelse(Decision_Seconds <= an_hour*6, 10,
+                                                                   ifelse(Decision_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(Decision_Seconds <= one_day, 8,
+                                                                                 ifelse(Decision_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(Decision_Seconds <= one_week, 6,
+                                                                                               ifelse(Decision_Seconds <= two_week, 5,
+                                                                                                      ifelse(Decision_Seconds <= one_month, 4,
+                                                                                                             ifelse(Decision_Seconds <= six_month, 3,
+                                                                                                                    ifelse(Decision_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(Decision_Seconds <= five_year, 1, 0
+                                                                                                                                  )))))))))))))))))) %>%
+  mutate(SurePlace_Seconds_index = 
+           ifelse(SurePlace_Seconds <= a_minute, 17, 
+                  ifelse(SurePlace_Seconds <= a_minute*5, 16,
+                         ifelse(SurePlace_Seconds <= a_minute*15, 15,
+                                ifelse(SurePlace_Seconds <= a_minute*30, 14,
+                                       ifelse(SurePlace_Seconds <= an_hour, 13, 
+                                              ifelse(SurePlace_Seconds <= an_hour*2, 12,
+                                                     ifelse(SurePlace_Seconds <= an_hour*3, 11,
+                                                            ifelse(SurePlace_Seconds <= an_hour*6, 10,
+                                                                   ifelse(SurePlace_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(SurePlace_Seconds <= one_day, 8,
+                                                                                 ifelse(SurePlace_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(SurePlace_Seconds <= one_week, 6,
+                                                                                               ifelse(SurePlace_Seconds <= two_week, 5,
+                                                                                                      ifelse(SurePlace_Seconds <= one_month, 4,
+                                                                                                             ifelse(SurePlace_Seconds <= six_month, 3,
+                                                                                                                    ifelse(SurePlace_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(SurePlace_Seconds <= five_year, 1, 0
+                                                                                                                                  )))))))))))))))))) %>%
+  mutate(FirstMethod_Seconds_index = 
+           ifelse(FirstMethod_Seconds <= a_minute, 17, 
+                  ifelse(FirstMethod_Seconds <= a_minute*5, 16,
+                         ifelse(FirstMethod_Seconds <= a_minute*15, 15,
+                                ifelse(FirstMethod_Seconds <= a_minute*30, 14,
+                                       ifelse(FirstMethod_Seconds <= an_hour, 13, 
+                                              ifelse(FirstMethod_Seconds <= an_hour*2, 12,
+                                                     ifelse(FirstMethod_Seconds <= an_hour*3, 11,
+                                                            ifelse(FirstMethod_Seconds <= an_hour*6, 10,
+                                                                   ifelse(FirstMethod_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(FirstMethod_Seconds <= one_day, 8,
+                                                                                 ifelse(FirstMethod_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(FirstMethod_Seconds <= one_week, 6,
+                                                                                               ifelse(FirstMethod_Seconds <=two_week, 5,
+                                                                                                      ifelse(FirstMethod_Seconds <= one_month, 4,
+                                                                                                             ifelse(FirstMethod_Seconds <= six_month, 3,
+                                                                                                                    ifelse(FirstMethod_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(FirstMethod_Seconds <= five_year, 1, 0
+                                                                                                                                  ))))))))))))))))))  %>%
+  mutate(ThoughtsStart_Seconds_index = 
+           ifelse(ThoughtsStart_Seconds <= a_minute, 17, 
+                  ifelse(ThoughtsStart_Seconds <= a_minute*5, 16,
+                         ifelse(ThoughtsStart_Seconds <= a_minute*15, 15,
+                                ifelse(ThoughtsStart_Seconds <= a_minute*30, 14,
+                                       ifelse(ThoughtsStart_Seconds <= an_hour, 13, 
+                                              ifelse(ThoughtsStart_Seconds <= an_hour*2, 12,
+                                                     ifelse(ThoughtsStart_Seconds <= an_hour*3, 11,
+                                                            ifelse(ThoughtsStart_Seconds <= an_hour*6, 10,
+                                                                   ifelse(ThoughtsStart_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(ThoughtsStart_Seconds <= one_day, 8,
+                                                                                 ifelse(ThoughtsStart_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(ThoughtsStart_Seconds <= one_week, 6,
+                                                                                               ifelse(ThoughtsStart_Seconds <=two_week, 5,
+                                                                                                      ifelse(ThoughtsStart_Seconds <= one_month, 4,
+                                                                                                             ifelse(ThoughtsStart_Seconds <= six_month, 3,
+                                                                                                                    ifelse(ThoughtsStart_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(ThoughtsStart_Seconds <= five_year, 1, 0
+                                                                                                                                  )))))))))))))))))) %>%
+  mutate(FirstPlace_Seconds_index = 
+           ifelse(FirstPlace_Seconds <= a_minute, 17, 
+                  ifelse(FirstPlace_Seconds <= a_minute*5, 16,
+                         ifelse(FirstPlace_Seconds <= a_minute*15, 15,
+                                ifelse(FirstPlace_Seconds <= a_minute*30, 14,
+                                       ifelse(FirstPlace_Seconds <= an_hour, 13, 
+                                              ifelse(FirstPlace_Seconds <= an_hour*2, 12,
+                                                     ifelse(FirstPlace_Seconds <= an_hour*3, 11,
+                                                            ifelse(FirstPlace_Seconds <= an_hour*6, 10,
+                                                                   ifelse(FirstPlace_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(FirstPlace_Seconds <= one_day, 8,
+                                                                                 ifelse(FirstPlace_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(FirstPlace_Seconds <= one_week, 6,
+                                                                                               ifelse(FirstPlace_Seconds <=two_week, 5,
+                                                                                                      ifelse(FirstPlace_Seconds <= one_month, 4,
+                                                                                                             ifelse(FirstPlace_Seconds <= six_month, 3,
+                                                                                                                    ifelse(FirstPlace_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(FirstPlace_Seconds <= five_year, 1, 0
+                                                                                                                                  )))))))))))))))))) %>%
+  mutate(SureMethod_Seconds_index = 
+           ifelse(SureMethod_Seconds <= a_minute, 17, 
+                  ifelse(SureMethod_Seconds <= a_minute*5, 16,
+                         ifelse(SureMethod_Seconds <= a_minute*15, 15,
+                                ifelse(SureMethod_Seconds <= a_minute*30, 14,
+                                       ifelse(SureMethod_Seconds <= an_hour, 13, 
+                                              ifelse(SureMethod_Seconds <= an_hour*2, 12,
+                                                     ifelse(SureMethod_Seconds <= an_hour*3, 11,
+                                                            ifelse(SureMethod_Seconds <= an_hour*6, 10,
+                                                                   ifelse(SureMethod_Seconds <= an_hour*12, 9, 
+                                                                          ifelse(SureMethod_Seconds <= one_day, 8,
+                                                                                 ifelse(SureMethod_Seconds <= one_day*3, 7, 
+                                                                                        ifelse(SureMethod_Seconds <= one_week, 6,
+                                                                                               ifelse(SureMethod_Seconds <=two_week, 5,
+                                                                                                      ifelse(SureMethod_Seconds <= one_month, 4,
+                                                                                                             ifelse(SureMethod_Seconds <= six_month, 3,
+                                                                                                                    ifelse(SureMethod_Seconds <= one_year, 2, 
+                                                                                                                           ifelse(SureMethod_Seconds <= five_year, 1, 0
+                                                                                                                                  ))))))))))))))))))
+##```
+
+##```{r calculateTotalPthwyMean}
+# according to the ipynb calculation
+data_totalPthwy <- data_totalPthwy %>%
+  mutate(researched = ifelse(Research_1_YES_2_NO_3_InPast_4_YES_but_not_on_Method != 2, 1, 0), 
+         obtainedMethod = ifelse(X5.9_Obtain_Method_Sure_useforsuicide == 1, 1, 0), 
+         drank_before_after = ifelse(X11.3_Decide_before_or_after != 1, ifelse(X11.3_Decide_before_or_after == "Both", 1, 0), 1), 
+         NumPrep_Total = ifelse(!is.na(NumPrep),
+                                ifelse(!is.na(researched),
+                                       ifelse(!is.na(obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), 
+                                                     NumPrep+researched+obtainedMethod+drank_before_after,
+                                                     NumPrep+researched+obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), NumPrep+researched+drank_before_after)),
+                                       ifelse(!is.na(obtainedMethod), 
+                                              ifelse(!is.na(drank_before_after), NumPrep+obtainedMethod+drank_before_after, NumPrep+obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), NumPrep+drank_before_after, NumPrep))),
+                                ifelse(!is.na(researched), 
+                                       ifelse(!is.na(obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), researched+obtainedMethod+drank_before_after, researched+obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), researched+drank_before_after, researched)),
+                                       ifelse(!is.na(obtainedMethod), 
+                                              ifelse(!is.na(drank_before_after), obtainedMethod+drank_before_after,obtainedMethod),
+                                              ifelse(!is.na(drank_before_after), drank_before_after, NA)))),
+                                                
+         TotalPthwy_Max = max(MullingStarts_Seconds_index, Decision_Seconds_index, SurePlace_Seconds_index, SureMethod_Seconds_index, ThoughtsStart_Seconds_index, FirstPlace_Seconds_index, FirstMethod_Seconds_index))
+
+data_totalPthwy$Pthwy_mean = rowMeans(subset(data_totalPthwy, select = c(MullingStarts_Seconds_index, Decision_Seconds_index, SurePlace_Seconds_index, SureMethod_Seconds_index, ThoughtsStart_Seconds_index, FirstPlace_Seconds_index, FirstMethod_Seconds_index)), na.rm = TRUE)
+
+data_totalPthwy <- data_totalPthwy %>%
+  mutate(TotalpthwyMean = ifelse(!is.na(NumPrep_Total), 
+                                 ifelse(!is.na(TotalPthwy_Max), 
+                                        Pthwy_mean + TotalPthwy_Max * 0.5 + NumPrep_Total, 
+                                        NumPrep_Total + Pthwy_mean), 
+                                 ifelse(!is.na(TotalPthwy_Max), 
+                                        TotalPthwy_Max * 0.5 + Pthwy_mean, 
+                                        Pthwy_mean)))
+write_csv(data_totalPthwy, "updated_june_2020.csv") 
+```
+
+```{r TimingDataframes}
+data_mullStarts <- data_transformedTime %>%
+  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds))
+data_thoughtsStart <- data_transformedTime %>%
+  mutate(ThoughtsStart_Seconds = ifelse(ThoughtsStart_Seconds == 0, 0.01, ThoughtsStart_Seconds))
+data_sure <- data_transformedTime %>%
+  mutate(Decision_Seconds = ifelse(Decision_Seconds == 0, 0.01, Decision_Seconds))
+data_firstMethod <- data_transformedTime %>%
+  mutate(FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds))
+data_sureMethod <- data_transformedTime %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+data_firstPlace <- data_transformedTime %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+data_surePlace <- data_transformedTime %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+```
+
+### Lifetime SI and ...
+#### within Lifetime SI
+```{r}
+calculate(data_lifetime$sd_ideation, data_lifetime$duration_ideation, data_lifetime)
+calculate(data_lifetime$sd_ideation, data_lifetime$mean_ideation, data_lifetime)         ## YES
+calculate(data_lifetime$sd_ideation, data_lifetime$onset_age, data_lifetime)
+calculate(data_lifetime$sd_ideation, data_lifetime$range_ideation, data_lifetime)        ## YES
+
+calculate(data_lifetime$mean_ideation, data_lifetime$duration_ideation, data_lifetime)
+calculate(data_lifetime$mean_ideation, data_lifetime$onset_age, data_lifetime)
+calculate(data_lifetime$mean_ideation, data_lifetime$range_ideation, data_lifetime)      ## YES
+
+calculate(data_lifetime$duration_ideation, data_lifetime$range_ideation, data_lifetime)
+calculate(data_lifetime$range_ideation, data_lifetime$mean_ideation, data_lifetime)      ## YES
+calculate(data_lifetime$range_ideation, data_lifetime$onset_age, data_lifetime)
+
+
+calculate(data_lifetime$Group, data_lifetime$duration_ideation, data_lifetime)
+calculate(data_lifetime$Group, data_lifetime$range_ideation, data_lifetime)      ## ***
+calculate(data_lifetime$Group, data_lifetime$onset_age, data_lifetime)
+calculate(data_lifetime$Group, data_lifetime$sd_ideation, data_lifetime)         ## **
+calculate(data_lifetime$Group, data_lifetime$mean_ideation, data_lifetime)
+
+# AT vs AB/INT
+data_lifetime <- data_lifetime %>%
+  mutate(group_2 = ifelse(Group != "AT", "AB/INT", "AT"))
+calculate(data_lifetime$group_2, data_lifetime$duration_ideation, data_lifetime)
+calculate(data_lifetime$group_2, data_lifetime$range_ideation, data_lifetime)      ## ***
+calculate(data_lifetime$group_2, data_lifetime$onset_age, data_lifetime)
+calculate(data_lifetime$group_2, data_lifetime$sd_ideation, data_lifetime)         ## **
+calculate(data_lifetime$group_2, data_lifetime$mean_ideation, data_lifetime)
+
+# AT vs INT
+data_ATINT <- data_lifetime %>%
+  filter(Group != "AB")
+calculate(data_ATINT$Group, data_ATINT$duration_ideation, data_ATINT)   ## NO
+calculate(data_ATINT$Group, data_ATINT$range_ideation, data_ATINT)      ## NO
+calculate(data_ATINT$Group, data_ATINT$onset_age, data_ATINT)           ## NO
+calculate(data_ATINT$Group, data_ATINT$sd_ideation, data_ATINT)         ## NO
+calculate(data_ATINT$Group, data_ATINT$mean_ideation, data_ATINT)       ## NO
+
+# AB vs INT
+data_ABINT <- data_lifetime %>%
+  filter(Group != "AT")
+calculate(data_ABINT$Group, data_ABINT$duration_ideation, data_ABINT)   ## NO
+calculate(data_ABINT$Group, data_ABINT$range_ideation, data_ABINT)      ## NO
+calculate(data_ABINT$Group, data_ABINT$onset_age, data_ABINT)           ## NO
+calculate(data_ABINT$Group, data_ABINT$sd_ideation, data_ABINT)         ## NO
+calculate(data_ABINT$Group, data_ABINT$mean_ideation, data_ABINT)       ## NO
+
+```
+
+#### thoughts & traits
+##### 1. SD 
+```{r}
+## thoughts?
+calculate(data_lifetime$sd_ideation, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)                  # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)                     # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)                    # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$sd_ideation, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$sd_ideation, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$sd_ideation, data_lifetime$TotalPthwyMean, data_lifetime)        # ??? NOT DONE YET
+```
+
+##### 2. Duration 
+```{r}
+## thoughts?
+calculate(data_lifetime$duration_ideation, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)                  # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)                     # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)                    # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$duration_ideation, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$duration_ideation, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$duration_ideation, data_lifetime$TotalPthwyMean, data_lifetime)        # NOT DONE YET
+```
+
+##### 3. Average intensity/frequency    NO
+```{r}
+## thoughts?
+calculate(data_lifetime$mean_ideation, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # YES
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)                  # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)                     # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)                    # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$mean_ideation, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$mean_ideation, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$mean_ideation, data_lifetime$TotalPthwyMean, data_lifetime)        # NOT DONE YET
+```
+
+##### 4. Onset
+```{r}
+## thoughts?
+calculate(data_lifetime$onset_age, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$onset_age, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$onset_age, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$onset_age, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$onset_age, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$onset_age, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$onset_age, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$onset_age, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$onset_age, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$onset_age, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$onset_age, data_lifetime$TotalPthwyMean, data_lifetime)        # NOT DONE YET
+```
+
+##### 5. Range   NO
+```{r}
+## thoughts?
+calculate(data_lifetime$range_ideation, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$range_ideation, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$range_ideation, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$range_ideation, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$range_ideation, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$range_ideation, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$range_ideation, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$range_ideation, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$range_ideation, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$range_ideation, data_lifetime$TotalPthwyMean, data_lifetime)        # NOT DONE YET
+```
+
+
+
+
+
+#### with timing
+##### 1. having a plan
+```{r Planned}
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$sd_ideation, data_transformedTime)            # NO
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$duration_ideation, data_transformedTime)      # NO
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$mean_ideation, data_transformedTime)          # NO
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$onset_age, data_transformedTime)              # NO
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$range_ideation, data_transformedTime)         # NO
+```
+
+##### 2. whether mulled
+```{r Mulled}
+calculate(data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime$sd_ideation, data_transformedTime)            # NO
+calculate(data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime$duration_ideation, data_transformedTime)      # NO
+calculate(data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime$mean_ideation, data_transformedTime)          # YES
+calculate(data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime$onset_age, data_transformedTime)              # NO
+calculate(data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime$range_ideation, data_transformedTime)         # NO
+```
+
+##### 3. Mulling start (zeros get added 0.01) 
+```{r Log_MullStarts}
+calculateExpon(data_mullStarts$sd_ideation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)            # NO
+calculateExpon(data_mullStarts$duration_ideation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)      # NO
+calculateExpon(data_mullStarts$mean_ideation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)          # *
+calculateExpon(data_mullStarts$onset_age, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO
+calculateExpon(data_mullStarts$range_ideation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)         # NO
+```
+
+##### 4. Thoughts start 
+```{r Log_ThoughtsStarts}
+calculateExpon(data_thoughtsStart$sd_ideation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)            # NO
+calculateExpon(data_thoughtsStart$duration_ideation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)      # NO
+calculateExpon(data_thoughtsStart$mean_ideation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)          # NO
+calculateExpon(data_thoughtsStart$onset_age, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)              # NO
+calculateExpon(data_thoughtsStart$range_ideation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)         # NO
+```
+
+##### 5. Sure/Decision
+```{r Log_Sure}
+calculateExpon(data_sure$sd_ideation, data_sure$Decision_Seconds, data_sure)            # NO
+calculateExpon(data_sure$duration_ideation, data_sure$Decision_Seconds, data_sure)      # NO
+calculateExpon(data_sure$mean_ideation, data_sure$Decision_Seconds, data_sure)          # NO
+calculateExpon(data_sure$onset_age, data_sure$Decision_Seconds, data_sure)              # **
+calculateExpon(data_sure$range_ideation, data_sure$Decision_Seconds, data_sure)         # NO
+```
+
+##### 6. First thought of method 
+```{r Log_FirstMethod}
+calculateExpon(data_firstMethod$sd_ideation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)            # NO
+calculateExpon(data_firstMethod$duration_ideation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)      # *
+calculateExpon(data_firstMethod$mean_ideation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)          # NO
+calculateExpon(data_firstMethod$onset_age, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)              # *
+calculateExpon(data_firstMethod$range_ideation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)         # NO
+```
+
+##### 7. Sure of method                 
+```{r Log_SureMethod}
+calculateExpon(data_sureMethod$sd_ideation, data_sureMethod$SureMethod_Seconds, data_sureMethod)            # NO
+calculateExpon(data_sureMethod$duration_ideation, data_sureMethod$SureMethod_Seconds, data_sureMethod)      # NO
+calculateExpon(data_sureMethod$mean_ideation, data_sureMethod$SureMethod_Seconds, data_sureMethod)          # NO
+calculateExpon(data_sureMethod$onset_age, data_sureMethod$SureMethod_Seconds, data_sureMethod)              # NO
+calculateExpon(data_sureMethod$range_ideation, data_sureMethod$SureMethod_Seconds, data_sureMethod)         # NO
+```
+
+##### 8. First thought of place    
+```{r Log_FirstPlace}
+calculateExpon(data_firstPlace$sd_ideation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)            # NO
+calculateExpon(data_firstPlace$duration_ideation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)      # *
+calculateExpon(data_firstPlace$mean_ideation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)          # NO
+calculateExpon(data_firstPlace$onset_age, data_firstPlace$FirstPlace_Seconds, data_firstPlace)              # *
+calculateExpon(data_firstPlace$range_ideation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)         # NO
+```
+
+##### 9. Sure of place                 
+```{r Log_SurePlace}
+calculateExpon(data_surePlace$sd_ideation, data_surePlace$SurePlace_Seconds, data_surePlace)            # NO
+calculateExpon(data_surePlace$duration_ideation, data_surePlace$SurePlace_Seconds, data_surePlace)      # NO
+calculateExpon(data_surePlace$mean_ideation, data_surePlace$SurePlace_Seconds, data_surePlace)          # NO
+calculateExpon(data_surePlace$onset_age, data_surePlace$SurePlace_Seconds, data_surePlace)              # NO
+calculateExpon(data_surePlace$range_ideation, data_surePlace$SurePlace_Seconds, data_surePlace)         # NO
+```
+
+##### 10.Intention to die in current Attempt (Y/N)     
+```{r Intention}
+calculate(data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime$sd_ideation, data_transformedTime)            # NO
+calculate(data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime$duration_ideation, data_transformedTime)      # NO
+calculate(data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime$mean_ideation, data_transformedTime)          # NO
+calculate(data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime$onset_age, data_transformedTime)              # NO
+calculate(data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime$range_ideation, data_transformedTime)         # NO
+```
+
+##### 11.Intention to die (continuous)        
+```{r IntentionToDie}
+calculate(data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime$sd_ideation, data_transformedTime)            # NO
+calculate(data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime$duration_ideation, data_transformedTime)      # NO
+calculate(data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime$mean_ideation, data_transformedTime)          # NO
+calculate(data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime$onset_age, data_transformedTime)              # NO
+calculate(data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime$range_ideation, data_transformedTime)         # NO
+```
+
+##### 12.Num or prep                ***
+```{r NumofPrep}
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$sd_ideation, data_totalPthwy)            # **
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$duration_ideation, data_totalPthwy)      # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$mean_ideation, data_totalPthwy)          # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$onset_age, data_totalPthwy)              # ***
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$range_ideation, data_totalPthwy)         # **
+```
+
+##### 13.Num of Attempt             
+```{r NumofAt}
+calculate(data_transformedTime$X2.6_Num_AT, data_transformedTime$sd_ideation, data_transformedTime)            # NO
+calculate(data_transformedTime$X2.6_Num_AT, data_transformedTime$duration_ideation, data_transformedTime)      # NO
+calculate(data_transformedTime$X2.6_Num_AT, data_transformedTime$mean_ideation, data_transformedTime)          # *
+calculate(data_transformedTime$X2.6_Num_AT, data_transformedTime$onset_age, data_transformedTime)              # NO
+calculate(data_transformedTime$X2.6_Num_AT, data_transformedTime$range_ideation, data_transformedTime)         # NO
+```
+
+### Timing and ...
+#### within timing
+##### 1. having a plan
+```{r}
+calculate(data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime)  # NO
+
+calculateExpon(data_mullStarts$X1.2_Ever_made_a_plan, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO
+calculateExpon(data_thoughtsStart$X1.2_Ever_made_a_plan, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)     # *
+calculateExpon(data_sure$X1.2_Ever_made_a_plan, data_sure$Decision_Seconds, data_sure)                                     # **
+calculateExpon(data_firstMethod$X1.2_Ever_made_a_plan, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)      # NO
+calculateExpon(data_sureMethod$X1.2_Ever_made_a_plan, data_sureMethod$SureMethod_Seconds, data_sureMethod)                 # ***
+calculateExpon(data_firstPlace$X1.2_Ever_made_a_plan, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                 # NO
+calculateExpon(data_surePlace$X1.2_Ever_made_a_plan, data_surePlace$SurePlace_Seconds, data_surePlace)                     # **
+
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$X1.2_Ever_made_a_plan, data_lifetime)     # **
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$X1.2_Ever_made_a_plan, data_lifetime)     # **
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$X1.2_Ever_made_a_plan, data_totalPthwy)             # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$X1.2_Ever_made_a_plan, data_lifetime)                     # NO
+```
+
+##### 2. whether mulled 
+```{r}
+calculateExpon(data_mullStarts$X8.3_Mulled_for_this_attempt, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # ***
+calculateExpon(data_thoughtsStart$X8.3_Mulled_for_this_attempt, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)     # *
+calculateExpon(data_sure$X8.3_Mulled_for_this_attempt, data_sure$Decision_Seconds, data_sure)                                     # <.06
+calculateExpon(data_firstMethod$X8.3_Mulled_for_this_attempt, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)      # *
+calculateExpon(data_sureMethod$X8.3_Mulled_for_this_attempt, data_sureMethod$SureMethod_Seconds, data_sureMethod)                 # NO
+calculateExpon(data_firstPlace$X8.3_Mulled_for_this_attempt, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                 # *
+calculateExpon(data_surePlace$X8.3_Mulled_for_this_attempt, data_surePlace$SurePlace_Seconds, data_surePlace)                     # NO
+
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime)     # <.06
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime)     # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$X8.3_Mulled_for_this_attempt, data_totalPthwy)             # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime)                     # NO
+```
+
+##### 3. Mulling start
+```{r}
+d10 <- data_mullStarts %>%
+  mutate(ThoughtsStart_Seconds = ifelse(ThoughtsStart_Seconds == 0, 0.01, ThoughtsStart_Seconds))
+d11 <- data_mullStarts %>%
+  mutate(Decision_Seconds = ifelse(Decision_Seconds == 0, 0.01, Decision_Seconds))
+d12 <- data_mullStarts %>%
+  mutate(FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds))
+d13 <- data_mullStarts %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+d14 <- data_mullStarts %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+d15 <- data_mullStarts %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d10$ThoughtsStart_Seconds), d10$MullingStarts_Seconds, d10)      # NO
+calculateExpon(log(d11$Decision_Seconds), d11$MullingStarts_Seconds, d11)           # NO
+calculateExpon(log(d12$FirstMethod_Seconds), d12$MullingStarts_Seconds, d12)        # NO
+calculateExpon(log(d13$SureMethod_Seconds), d13$MullingStarts_Seconds, d13)         # NO
+calculateExpon(log(d14$FirstPlace_Seconds), d14$MullingStarts_Seconds, d14)         # NO
+calculateExpon(log(d15$SurePlace_Seconds), d15$MullingStarts_Seconds, d15)          # NO
+
+calculateExpon(data_mullStarts$X2.6_Confirm_suicide_intent, data_mullStarts$MullingStarts_Seconds, data_mullStarts)     # NO
+calculateExpon(data_mullStarts$X12.15_How_sure_want_to_die, data_mullStarts$MullingStarts_Seconds, data_mullStarts)     # NO
+data_totalPthwy_mull <- data_totalPthwy %>%
+  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds))
+calculateExpon(data_totalPthwy_mull$NumPrep_Total, data_totalPthwy_mull$MullingStarts_Seconds, data_totalPthwy_mull)    # NO
+calculateExpon(data_mullStarts$X2.6_Num_AT, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                     # NO
+```
+
+##### 4. Thoughts start
+```{r}
+d21 <- data_thoughtsStart %>%
+  mutate(Decision_Seconds = ifelse(Decision_Seconds == 0, 0.01, Decision_Seconds))
+d22 <- data_thoughtsStart %>%
+  mutate(FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds))
+d23 <- data_thoughtsStart %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+d24 <- data_thoughtsStart %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+d25 <- data_thoughtsStart %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d21$Decision_Seconds), d21$ThoughtsStart_Seconds, d21)           # **
+calculateExpon(log(d22$FirstMethod_Seconds), d22$ThoughtsStart_Seconds, d22)        # ***
+calculateExpon(log(d23$SureMethod_Seconds), d23$ThoughtsStart_Seconds, d23)         # ***
+calculateExpon(log(d24$FirstPlace_Seconds), d24$ThoughtsStart_Seconds, d24)         # ***
+calculateExpon(log(d25$SurePlace_Seconds), d25$ThoughtsStart_Seconds, d25)          # **
+
+calculateExpon(data_thoughtsStart$X2.6_Confirm_suicide_intent, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)     # **
+calculateExpon(data_thoughtsStart$X12.15_How_sure_want_to_die, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)     # NO
+data_totalPthwy_thought <- data_totalPthwy %>%
+  mutate(ThoughtsStart_Seconds = ifelse(ThoughtsStart_Seconds == 0, 0.01, ThoughtsStart_Seconds))
+calculateExpon(data_totalPthwy_thought$NumPrep_Total, data_totalPthwy_thought$ThoughtsStart_Seconds, data_totalPthwy_thought)    # NO
+calculateExpon(data_thoughtsStart$X2.6_Num_AT, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                     # NO
+```
+
+##### 5. Sure/Decision   
+```{r}
+d32 <- data_sure %>%
+  mutate(FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds))
+d33 <- data_sure %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+d34 <- data_sure %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+d35 <- data_sure %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d32$FirstMethod_Seconds), d32$Decision_Seconds, d32)        # ***
+calculateExpon(log(d33$SureMethod_Seconds), d33$Decision_Seconds, d33)         # ***
+calculateExpon(log(d34$FirstPlace_Seconds), d34$Decision_Seconds, d34)         # ***
+calculateExpon(log(d35$SurePlace_Seconds), d35$Decision_Seconds, d35)          # ***
+
+calculateExpon(data_sure$X2.6_Confirm_suicide_intent, data_sure$Decision_Seconds, data_sure)     # **
+calculateExpon(data_sure$X12.15_How_sure_want_to_die, data_sure$Decision_Seconds, data_sure)     # NO
+data_totalPthwy_sure <- data_totalPthwy %>%
+  mutate(Decision_Seconds = ifelse(Decision_Seconds == 0, 0.01, Decision_Seconds))
+calculateExpon(data_totalPthwy_sure$NumPrep_Total, data_totalPthwy_sure$Decision_Seconds, data_totalPthwy_sure)    # ***
+calculateExpon(data_sure$X2.6_Num_AT, data_sure$Decision_Seconds, data_sure)                                       # NO
+```
+
+##### 6. First thought of method
+```{r}
+d43 <- data_firstMethod %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+d44 <- data_firstMethod %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+d45 <- data_firstMethod %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d43$SureMethod_Seconds), d43$FirstMethod_Seconds, d43)         # ***
+calculateExpon(log(d44$FirstPlace_Seconds), d44$FirstMethod_Seconds, d44)         # ***
+calculateExpon(log(d45$SurePlace_Seconds), d45$FirstMethod_Seconds, d45)          # **
+
+calculateExpon(data_firstMethod$X2.6_Confirm_suicide_intent, data_firstMethod$FirstMethod_Seconds, data_firstMethod)     # **
+calculateExpon(data_firstMethod$X12.15_How_sure_want_to_die, data_firstMethod$FirstMethod_Seconds, data_firstMethod)     # NO
+data_totalPthwy_firMed <- data_totalPthwy %>%
+  mutate(FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds))
+calculateExpon(data_totalPthwy_firMed$NumPrep_Total, data_totalPthwy_firMed$FirstMethod_Seconds, data_totalPthwy_firMed)    # *
+calculateExpon(data_firstMethod$X2.6_Num_AT, data_sure$FirstMethod_Seconds, data_firstMethod)                               # NO
+```
+##### 7. Sure of method
+```{r}
+d54 <- data_sureMethod %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+d55 <- data_sureMethod %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d54$FirstPlace_Seconds), d54$SureMethod_Seconds, d54)         # ***
+calculateExpon(log(d55$SurePlace_Seconds), d55$SureMethod_Seconds, d55)          # ***
+
+calculateExpon(data_sureMethod$X2.6_Confirm_suicide_intent, data_sureMethod$SureMethod_Seconds, data_sureMethod)     # *
+calculateExpon(data_sureMethod$X12.15_How_sure_want_to_die, data_sureMethod$SureMethod_Seconds, data_sureMethod)     # NO
+data_totalPthwy_sureMed <- data_totalPthwy %>%
+  mutate(SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds))
+calculateExpon(data_totalPthwy_sureMed$NumPrep_Total, data_totalPthwy_sureMed$SureMethod_Seconds, data_totalPthwy_sureMed)    # *
+calculateExpon(data_sureMethod$X2.6_Num_AT, data_sureMethod$SureMethod_Seconds, data_sureMethod)                              # NO
+```
+##### 8. First thought of place 
+```{r}
+d65 <- data_firstPlace %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+
+calculateExpon(log(d65$SurePlace_Seconds), d65$FirstPlace_Seconds, d65)          # ***
+
+calculateExpon(data_firstPlace$X2.6_Confirm_suicide_intent, data_firstPlace$FirstPlace_Seconds, data_firstPlace)     # *
+calculateExpon(data_firstPlace$X12.15_How_sure_want_to_die, data_firstPlace$FirstPlace_Seconds, data_firstPlace)     # NO
+data_totalPthwy_firPla <- data_totalPthwy %>%
+  mutate(FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds))
+calculateExpon(data_totalPthwy_firPla$NumPrep_Total, data_totalPthwy_firPla$FirstPlace_Seconds, data_totalPthwy_firPla)    # **
+calculateExpon(data_firstPlace$X2.6_Num_AT, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                           # NO
+```
+##### 9. Sure of place
+```{r}
+calculateExpon(data_surePlace$X2.6_Confirm_suicide_intent, data_surePlace$SurePlace_Seconds, data_surePlace)     # <.06
+calculateExpon(data_surePlace$X12.15_How_sure_want_to_die, data_surePlace$SurePlace_Seconds, data_surePlace)     # NO
+data_totalPthwy_surePla <- data_totalPthwy %>%
+  mutate(SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
+calculateExpon(data_totalPthwy_surePla$NumPrep_Total, data_totalPthwy_surePla$SurePlace_Seconds, data_totalPthwy_surePla)    # **
+calculateExpon(data_surePlace$X2.6_Num_AT, data_surePlace$SurePlace_Seconds, data_surePlace)                                 # NO
+```
+
+##### 10. Intention to die in current attempt (Y/N)
+```{r}
+calculate(data_totalPthwy$X12.15_How_sure_want_to_die, data_totalPthwy$X2.6_Confirm_suicide_intent, data_totalPthwy)     # ***
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$X2.6_Confirm_suicide_intent, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X2.6_Confirm_suicide_intent, data_totalPthwy)                     # NO
+```
+##### 11. Intention to die (continuous)
+```{r}
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$X12.15_How_sure_want_to_die, data_totalPthwy)                   # *
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X12.15_How_sure_want_to_die, data_totalPthwy)                     # NO
+```
+##### 12. Num of prep
+```{r}
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$NumPrep_Total, data_totalPthwy)                     # NO
+```
+#### Group differences
+##### AT vs AB/INT
+```{r}
+data_transformedTime <- data_transformedTime %>% mutate(group_2 = ifelse(Group == "AT", "AT", "AB/INT"))
+calculate(data_transformedTime$group_2, data_transformedTime$X1.2_Ever_made_a_plan, data_transformedTime)              # NO
+calculate(data_transformedTime$group_2, data_transformedTime$X8.3_Mulled_for_this_attempt, data_transformedTime)       # NO
+
+d1 <- data_transformedTime %>%
+  filter(MullingStarts_Seconds != 0)
+calculateExpon(d1$group_2, d1$MullingStarts_Seconds, d1)         # NO
+
+d2 <- data_transformedTime %>%
+  filter(ThoughtsStart_Seconds != 0)
+calculateExpon(d2$group_2, d2$ThoughtsStart_Seconds, d2)         # NO
+
+d3 <- data_transformedTime %>%
+  filter(Decision_Seconds != 0)
+calculateExpon(d3$group_2, d3$Decision_Seconds, d3)              # NO
+
+d4 <- data_transformedTime %>%
+  filter(SureMethod_Seconds != 0)
+calculateExpon(d4$group_2, d4$SureMethod_Seconds, d4)    # NO
+
+d5 <- data_transformedTime %>%
+  filter(SureMethod_Seconds != 0)
+calculateExpon(d5$group_2, d5$SureMethod_Seconds, d5)            # NO
+
+d6 <- data_transformedTime %>%
+  filter(FirstPlace_Seconds != 0)
+calculateExpon(d6$group_2, d6$FirstPlace_Seconds, d6)            # NO
+
+d7 <- data_transformedTime %>%
+  filter(SurePlace_Seconds != 0)
+calculateExpon(d7$group_2, d7$SurePlace_Seconds, d7)             # *
+
+calculate(data_transformedTime$group_2, data_transformedTime$X2.6_Confirm_suicide_intent, data_transformedTime)       # NA
+calculate(data_transformedTime$group_2, data_transformedTime$X12.15_How_sure_want_to_die, data_transformedTime)       # NO
+calculate(data_transformedTime$group_2, data_transformedTime$NumPrep, data_transformedTime)                           # NO
+calculate(data_transformedTime$group_2, data_transformedTime$X2.6_Num_AT, data_transformedTime)                       # NA
+
+```
+
+#### thoughts & traits
+##### 1. having a plan
+```{r}
+## thoughts?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # *
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$X1.2_Ever_made_a_plan, data_lifetime$TotalPthwyMean, data_lifetime)        # ??? NOT DONE YET
+```
+
+##### 2. whether mulled 
+```{r}
+## thoughts?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$thoughts_score_2, data_lifetime)       # *
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$thoughts_not_want, data_lifetime)      # *
+
+## UPPS?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$X8.3_Mulled_for_this_attempt, data_lifetime$TotalPthwyMean, data_lifetime)        # NOT DONE YET
+```
+
+##### 3. Mulling start (zeros get added 0.01)
+```{r log}
+## thoughts?
+calculateExpon(data_mullStarts$thoughts_score_2, data_mullStarts$MullingStarts_Seconds, data_mullStarts)    # NO
+calculateExpon(data_mullStarts$thoughts_score, data_mullStarts$MullingStarts_Seconds, data_mullStarts)      # NO
+calculateExpon(data_mullStarts$thoughts_want, data_mullStarts$MullingStarts_Seconds, data_mullStarts)       # NO
+calculateExpon(data_mullStarts$thoughts_not_want, data_mullStarts$MullingStarts_Seconds, data_mullStarts)   # *
+
+## UPPS?
+calculateExpon(data_mullStarts$Q_UPPS_NegUrgency, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO
+calculateExpon(data_mullStarts$Q_UPPS_Premeditation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$Q_UPPS_Perseverance, data_mullStarts$MullingStarts_Seconds, data_mullStarts)            # NO
+calculateExpon(data_mullStarts$Q_UPPS_SensationSeeking, data_mullStarts$MullingStarts_Seconds, data_mullStarts)        # NO
+calculateExpon(data_mullStarts$Q_UPPS_PosUrgency, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO
+## BIS,BHS?
+calculateExpon(data_mullStarts$Q_BIS_Total, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                       # NO
+calculateExpon(data_mullStarts$Q_BIS_1_Attention, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                 # NO
+calculateExpon(data_mullStarts$Q_BIS_1_Motor, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                     # NO
+calculateExpon(data_mullStarts$Q_BIS_1_Self_Control, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO
+calculateExpon(data_mullStarts$Q_BIS_1_Cognitive_Complexity, data_mullStarts$MullingStarts_Seconds, data_mullStarts)      # NO
+calculateExpon(data_mullStarts$Q_BIS_1_Preseverance, data_mullStarts$MullingStarts_Seconds, data_mullStarts)              # NO 
+calculateExpon(data_mullStarts$Q_BIS_1_Cogntive_Instability, data_mullStarts$MullingStarts_Seconds, data_mullStarts)       # NO
+calculateExpon(data_mullStarts$Q_BIS_2_Attentional_Impulsiveness, data_mullStarts$MullingStarts_Seconds, data_mullStarts)  # NO
+calculateExpon(data_mullStarts$Q_BIS_2_Motor_Impulsiveness, data_mullStarts$MullingStarts_Seconds, data_mullStarts)        # NO
+calculateExpon(data_mullStarts$Q_BIS_2_Nonplanning_Impulsiveness, data_mullStarts$MullingStarts_Seconds, data_mullStarts)  # NO
+## BHS?
+calculateExpon(data_mullStarts$Q_BHS_Total, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                        # NO
+calculateExpon(data_mullStarts$Q_BHS_Feelings_about_future, data_mullStarts$MullingStarts_Seconds, data_mullStarts)        # NO
+calculateExpon(data_mullStarts$Q_BHS_Loss_of_motivation, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$Q_BHS_Future_Expectations, data_mullStarts$MullingStarts_Seconds, data_mullStarts)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_mullStarts$IST_FreeBlockMean_pCorrs, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$IST_CostBlockMean_pCorrs, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$CPTGNG_dprime_All, data_mullStarts$MullingStarts_Seconds, data_mullStarts)                  # NO
+calculateExpon(data_mullStarts$CPTGNG_omission_errors, data_mullStarts$MullingStarts_Seconds, data_mullStarts)             # NO
+calculateExpon(data_mullStarts$CPTGNG_commission_errors, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$MDQ_k_Final, data_mullStarts$MullingStarts_Seconds, data_mullStarts)           # NO
+calculateExpon(data_mullStarts$SSRT_sossrtInt, data_mullStarts$MullingStarts_Seconds, data_mullStarts)        # NO
+```
+
+##### 4. Thoughts start
+```{r log}
+calculateExpon(data_thoughtsStart$thoughts_score_2, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)    # NO
+calculateExpon(data_thoughtsStart$thoughts_score, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)      # NO
+calculateExpon(data_thoughtsStart$thoughts_want, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)       # NO
+calculateExpon(data_thoughtsStart$thoughts_not_want, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)   # NO
+
+## UPPS?
+calculateExpon(data_thoughtsStart$Q_UPPS_NegUrgency, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)              # NO
+calculateExpon(data_thoughtsStart$Q_UPPS_Premeditation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)           # NO
+calculateExpon(data_thoughtsStart$Q_UPPS_Perseverance, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)            # NO
+calculateExpon(data_thoughtsStart$Q_UPPS_SensationSeeking, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)        # NO
+calculateExpon(data_thoughtsStart$Q_UPPS_PosUrgency, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)              # NO
+## BIS,BHS?
+calculateExpon(data_thoughtsStart$Q_BIS_Total, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                       # NO
+calculateExpon(data_thoughtsStart$Q_BIS_1_Attention, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                 # NO
+calculateExpon(data_thoughtsStart$Q_BIS_1_Motor, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                     # NO
+calculateExpon(data_thoughtsStart$Q_BIS_1_Self_Control, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)              # NO
+calculateExpon(data_thoughtsStart$Q_BIS_1_Cognitive_Complexity, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)      # NO
+calculateExpon(data_thoughtsStart$Q_BIS_1_Preseverance, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)              # NO 
+calculateExpon(data_thoughtsStart$Q_BIS_1_Cogntive_Instability, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)       # NO
+calculateExpon(data_thoughtsStart$Q_BIS_2_Attentional_Impulsiveness, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)  # NO
+calculateExpon(data_thoughtsStart$Q_BIS_2_Motor_Impulsiveness, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)        # NO
+calculateExpon(data_thoughtsStart$Q_BIS_2_Nonplanning_Impulsiveness, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)  # NO
+
+calculateExpon(data_thoughtsStart$Q_BHS_Total, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                      # **
+calculateExpon(data_thoughtsStart$Q_BHS_Feelings_about_future, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)      # <.06
+calculateExpon(data_thoughtsStart$Q_BHS_Loss_of_motivation, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)         # **
+calculateExpon(data_thoughtsStart$Q_BHS_Future_Expectations, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)        # *
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_thoughtsStart$IST_FreeBlockMean_pCorrs, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)           # <.06
+calculateExpon(data_thoughtsStart$IST_CostBlockMean_pCorrs, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)           # NO
+calculateExpon(data_thoughtsStart$CPTGNG_dprime_All, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)                  # NO
+calculateExpon(data_thoughtsStart$CPTGNG_commission_errors, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)           # NO
+calculateExpon(data_thoughtsStart$CPTGNG_omission_errors, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)        # NO
+calculateExpon(data_thoughtsStart$MDQ_k_Final, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)           # NO
+calculateExpon(data_thoughtsStart$SSRT_sossrtInt, data_thoughtsStart$ThoughtsStart_Seconds, data_thoughtsStart)        # NO
+```
+
+##### 5. Sure/Decision  
+```{r log}
+## thoughts?
+calculateExpon(data_sure$thoughts_score_2, data_sure$Decision_Seconds, data_sure)    # NO
+calculateExpon(data_sure$thoughts_score, data_sure$Decision_Seconds, data_sure)      # NO
+calculateExpon(data_sure$thoughts_want, data_sure$Decision_Seconds, data_sure)       # NO
+calculateExpon(data_sure$thoughts_not_want, data_sure$Decision_Seconds, data_sure)   # NO
+
+## UPPS?
+calculateExpon(data_sure$Q_UPPS_NegUrgency, data_sure$Decision_Seconds, data_sure)              # NO
+calculateExpon(data_sure$Q_UPPS_Premeditation, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$Q_UPPS_Perseverance, data_sure$Decision_Seconds, data_sure)            # NO
+calculateExpon(data_sure$Q_UPPS_SensationSeeking, data_sure$Decision_Seconds, data_sure)        # NO
+calculateExpon(data_sure$Q_UPPS_PosUrgency, data_sure$Decision_Seconds, data_sure)              # NO
+## BIS?
+calculateExpon(data_sure$Q_BIS_Total, data_sure$Decision_Seconds, data_sure)                       # NO
+calculateExpon(data_sure$Q_BIS_1_Attention, data_sure$Decision_Seconds, data_sure)                 # NO
+calculateExpon(data_sure$Q_BIS_1_Motor, data_sure$Decision_Seconds, data_sure)                     # NO
+calculateExpon(data_sure$Q_BIS_1_Self_Control, data_sure$Decision_Seconds, data_sure)              # NO
+calculateExpon(data_sure$Q_BIS_1_Cognitive_Complexity, data_sure$Decision_Seconds, data_sure)      # NO
+calculateExpon(data_sure$Q_BIS_1_Preseverance, data_sure$Decision_Seconds, data_sure)              # NO 
+calculateExpon(data_sure$Q_BIS_1_Cogntive_Instability, data_sure$Decision_Seconds, data_sure)       # NO
+calculateExpon(data_sure$Q_BIS_2_Attentional_Impulsiveness, data_sure$Decision_Seconds, data_sure)  # NO
+calculateExpon(data_sure$Q_BIS_2_Motor_Impulsiveness, data_sure$Decision_Seconds, data_sure)        # NO
+calculateExpon(data_sure$Q_BIS_2_Nonplanning_Impulsiveness, data_sure$Decision_Seconds, data_sure)  # NO
+## BHS?
+calculateExpon(data_sure$Q_BHS_Total, data_sure$Decision_Seconds, data_sure)                        # NO
+calculateExpon(data_sure$Q_BHS_Feelings_about_future, data_sure$Decision_Seconds, data_sure)        # NO
+calculateExpon(data_sure$Q_BHS_Loss_of_motivation, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$Q_BHS_Future_Expectations, data_sure$Decision_Seconds, data_sure)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_sure$IST_FreeBlockMean_pCorrs, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$IST_CostBlockMean_pCorrs, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$CPTGNG_dprime_All, data_sure$Decision_Seconds, data_sure)                  # NO
+calculateExpon(data_sure$CPTGNG_omission_errors, data_sure$Decision_Seconds, data_sure)             # NO
+calculateExpon(data_sure$CPTGNG_commission_errors, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$MDQ_k_Final, data_sure$Decision_Seconds, data_sure)           # NO
+calculateExpon(data_sure$SSRT_sossrtInt, data_sure$Decision_Seconds, data_sure)        # NO
+```
+
+
+##### 6. First thought of method 
+```{r log}
+## thoughts?
+calculateExpon(data_firstMethod$thoughts_score_2, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)    # NO
+calculateExpon(data_firstMethod$thoughts_score, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)      # NO
+calculateExpon(data_firstMethod$thoughts_want, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)       # NO
+calculateExpon(data_firstMethod$thoughts_not_want, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)   # NO
+
+## UPPS?
+calculateExpon(data_firstMethod$Q_UPPS_NegUrgency, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)              # NO
+calculateExpon(data_firstMethod$Q_UPPS_Premeditation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$Q_UPPS_Perseverance, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)            # NO
+calculateExpon(data_firstMethod$Q_UPPS_SensationSeeking, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)        # NO
+calculateExpon(data_firstMethod$Q_UPPS_PosUrgency, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)              # NO
+## BIS?
+calculateExpon(data_firstMethod$Q_BIS_Total, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)                       # NO
+calculateExpon(data_firstMethod$Q_BIS_1_Attention, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)                 # NO
+calculateExpon(data_firstMethod$Q_BIS_1_Motor, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)                     # NO
+calculateExpon(data_firstMethod$Q_BIS_1_Self_Control, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)              # NO
+calculateExpon(data_firstMethod$Q_BIS_1_Cognitive_Complexity, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)      # NO
+calculateExpon(data_firstMethod$Q_BIS_1_Preseverance, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)              # NO 
+calculateExpon(data_firstMethod$Q_BIS_1_Cogntive_Instability, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)       # NO
+calculateExpon(data_firstMethod$Q_BIS_2_Attentional_Impulsiveness, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)  # NO
+calculateExpon(data_firstMethod$Q_BIS_2_Motor_Impulsiveness, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)        # NO
+calculateExpon(data_firstMethod$Q_BIS_2_Nonplanning_Impulsiveness, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)  # NO
+## BHS?
+calculateExpon(data_firstMethod$Q_BHS_Total, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)                        # NO
+calculateExpon(data_firstMethod$Q_BHS_Feelings_about_future, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)        # NO
+calculateExpon(data_firstMethod$Q_BHS_Loss_of_motivation, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$Q_BHS_Future_Expectations, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_firstMethod$IST_FreeBlockMean_pCorrs, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$IST_CostBlockMean_pCorrs, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$CPTGNG_dprime_All, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)                  # NO
+calculateExpon(data_firstMethod$CPTGNG_omission_errors, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)             # NO
+calculateExpon(data_firstMethod$CPTGNG_commission_errors, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$MDQ_k_Final, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)           # NO
+calculateExpon(data_firstMethod$SSRT_sossrtInt, data_firstMethod$FirstThoughtMethod_Seconds, data_firstMethod)        # NO
+```
+
+##### 7. Sure of method
+```{r log}
+## thoughts?
+calculateExpon(data_sureMethod$thoughts_score_2, data_sureMethod$SureMethod_Seconds, data_sureMethod)    # NO
+calculateExpon(data_sureMethod$thoughts_score, data_sureMethod$SureMethod_Seconds, data_sureMethod)      # NO
+calculateExpon(data_sureMethod$thoughts_want, data_sureMethod$SureMethod_Seconds, data_sureMethod)       # NO
+calculateExpon(data_sureMethod$thoughts_not_want, data_sureMethod$SureMethod_Seconds, data_sureMethod)   # NO
+
+## UPPS?
+calculateExpon(data_sureMethod$Q_UPPS_NegUrgency, data_sureMethod$SureMethod_Seconds, data_sureMethod)              # NO
+calculateExpon(data_sureMethod$Q_UPPS_Premeditation, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$Q_UPPS_Perseverance, data_sureMethod$SureMethod_Seconds, data_sureMethod)            # NO
+calculateExpon(data_sureMethod$Q_UPPS_SensationSeeking, data_sureMethod$SureMethod_Seconds, data_sureMethod)        # NO
+calculateExpon(data_sureMethod$Q_UPPS_PosUrgency, data_sureMethod$SureMethod_Seconds, data_sureMethod)              # NO
+## BIS?
+calculateExpon(data_sureMethod$Q_BIS_Total, data_sureMethod$SureMethod_Seconds, data_sureMethod)                       # NO
+calculateExpon(data_sureMethod$Q_BIS_1_Attention, data_sureMethod$SureMethod_Seconds, data_sureMethod)                 # NO
+calculateExpon(data_sureMethod$Q_BIS_1_Motor, data_sureMethod$SureMethod_Seconds, data_sureMethod)                     # NO
+calculateExpon(data_sureMethod$Q_BIS_1_Self_Control, data_sureMethod$SureMethod_Seconds, data_sureMethod)              # NO
+calculateExpon(data_sureMethod$Q_BIS_1_Cognitive_Complexity, data_sureMethod$SureMethod_Seconds, data_sureMethod)      # NO
+calculateExpon(data_sureMethod$Q_BIS_1_Preseverance, data_sureMethod$SureMethod_Seconds, data_sureMethod)              # NO 
+calculateExpon(data_sureMethod$Q_BIS_1_Cogntive_Instability, data_sureMethod$SureMethod_Seconds, data_sureMethod)       # NO
+calculateExpon(data_sureMethod$Q_BIS_2_Attentional_Impulsiveness, data_sureMethod$SureMethod_Seconds, data_sureMethod)  # NO
+calculateExpon(data_sureMethod$Q_BIS_2_Motor_Impulsiveness, data_sureMethod$SureMethod_Seconds, data_sureMethod)        # NO
+calculateExpon(data_sureMethod$Q_BIS_2_Nonplanning_Impulsiveness, data_sureMethod$SureMethod_Seconds, data_sureMethod)  # NO
+## BHS?
+calculateExpon(data_sureMethod$Q_BHS_Total, data_sureMethod$SureMethod_Seconds, data_sureMethod)                        # NO
+calculateExpon(data_sureMethod$Q_BHS_Feelings_about_future, data_sureMethod$SureMethod_Seconds, data_sureMethod)        # NO
+calculateExpon(data_sureMethod$Q_BHS_Loss_of_motivation, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$Q_BHS_Future_Expectations, data_sureMethod$SureMethod_Seconds, data_sureMethod)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_sureMethod$IST_FreeBlockMean_pCorrs, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$IST_CostBlockMean_pCorrs, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$CPTGNG_dprime_All, data_sureMethod$SureMethod_Seconds, data_sureMethod)                  # NO
+calculateExpon(data_sureMethod$CPTGNG_omission_errors, data_sureMethod$SureMethod_Seconds, data_sureMethod)             # NO
+calculateExpon(data_sureMethod$CPTGNG_commission_errors, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$MDQ_k_Final, data_sureMethod$SureMethod_Seconds, data_sureMethod)           # NO
+calculateExpon(data_sureMethod$SSRT_sossrtInt, data_sureMethod$SureMethod_Seconds, data_sureMethod)        # NO
+```
+
+##### 8. First thought of place ***
+```{r log}
+## thoughts?
+calculateExpon(data_firstPlace$thoughts_score_2, data_firstPlace$FirstPlace_Seconds, data_firstPlace)    # *
+calculateExpon(data_firstPlace$thoughts_score, data_firstPlace$FirstPlace_Seconds, data_firstPlace)      # NO
+calculateExpon(data_firstPlace$thoughts_want, data_firstPlace$FirstPlace_Seconds, data_firstPlace)       # NO
+calculateExpon(data_firstPlace$thoughts_not_want, data_firstPlace$FirstPlace_Seconds, data_firstPlace)   # NO
+
+## UPPS?
+calculateExpon(data_firstPlace$Q_UPPS_NegUrgency, data_firstPlace$FirstPlace_Seconds, data_firstPlace)              # NO
+calculateExpon(data_firstPlace$Q_UPPS_Premeditation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$Q_UPPS_Perseverance, data_firstPlace$FirstPlace_Seconds, data_firstPlace)            # NO
+calculateExpon(data_firstPlace$Q_UPPS_SensationSeeking, data_firstPlace$FirstPlace_Seconds, data_firstPlace)        # NO
+calculateExpon(data_firstPlace$Q_UPPS_PosUrgency, data_firstPlace$FirstPlace_Seconds, data_firstPlace)              # NO
+## BIS?
+calculateExpon(data_firstPlace$Q_BIS_Total, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                       # NO
+calculateExpon(data_firstPlace$Q_BIS_1_Attention, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                 # NO
+calculateExpon(data_firstPlace$Q_BIS_1_Motor, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                     # NO
+calculateExpon(data_firstPlace$Q_BIS_1_Self_Control, data_firstPlace$FirstPlace_Seconds, data_firstPlace)              # NO
+calculateExpon(data_firstPlace$Q_BIS_1_Cognitive_Complexity, data_firstPlace$FirstPlace_Seconds, data_firstPlace)      # NO
+calculateExpon(data_firstPlace$Q_BIS_1_Preseverance, data_firstPlace$FirstPlace_Seconds, data_firstPlace)              # NO 
+calculateExpon(data_firstPlace$Q_BIS_1_Cogntive_Instability, data_firstPlace$FirstPlace_Seconds, data_firstPlace)       # NO
+calculateExpon(data_firstPlace$Q_BIS_2_Attentional_Impulsiveness, data_firstPlace$FirstPlace_Seconds, data_firstPlace)  # NO
+calculateExpon(data_firstPlace$Q_BIS_2_Motor_Impulsiveness, data_firstPlace$FirstPlace_Seconds, data_firstPlace)        # NO
+calculateExpon(data_firstPlace$Q_BIS_2_Nonplanning_Impulsiveness, data_firstPlace$FirstPlace_Seconds, data_firstPlace)  # NO
+## BHS?
+calculateExpon(data_firstPlace$Q_BHS_Total, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                        # NO
+calculateExpon(data_firstPlace$Q_BHS_Feelings_about_future, data_firstPlace$FirstPlace_Seconds, data_firstPlace)        # NO
+calculateExpon(data_firstPlace$Q_BHS_Loss_of_motivation, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$Q_BHS_Future_Expectations, data_firstPlace$FirstPlace_Seconds, data_firstPlace)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_firstPlace$IST_FreeBlockMean_pCorrs, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$IST_CostBlockMean_pCorrs, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$CPTGNG_dprime_All, data_firstPlace$FirstPlace_Seconds, data_firstPlace)                  # NO
+calculateExpon(data_firstPlace$CPTGNG_omission_errors, data_firstPlace$FirstPlace_Seconds, data_firstPlace)             # NO
+calculateExpon(data_firstPlace$CPTGNG_commission_errors, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$MDQ_k_Final, data_firstPlace$FirstPlace_Seconds, data_firstPlace)           # NO
+calculateExpon(data_firstPlace$SSRT_sossrtInt, data_firstPlace$FirstPlace_Seconds, data_firstPlace)        # NO
+```
+
+##### 9. Sure of place
+```{r log}
+## thoughts?
+calculateExpon(data_surePlace$thoughts_score_2, data_surePlace$SurePlace_Seconds, data_surePlace)    # NO
+calculateExpon(data_surePlace$thoughts_score, data_surePlace$SurePlace_Seconds, data_surePlace)      # NO
+calculateExpon(data_surePlace$thoughts_want, data_surePlace$SurePlace_Seconds, data_surePlace)       # NO
+calculateExpon(data_surePlace$thoughts_not_want, data_surePlace$SurePlace_Seconds, data_surePlace)   # NO
+
+## UPPS?
+calculateExpon(data_surePlace$Q_UPPS_NegUrgency, data_surePlace$SurePlace_Seconds, data_surePlace)              # NO
+calculateExpon(data_surePlace$Q_UPPS_Premeditation, data_surePlace$SurePlace_Seconds, data_surePlace)           # NO
+calculateExpon(data_surePlace$Q_UPPS_Perseverance, data_surePlace$SurePlace_Seconds, data_surePlace)            # NO
+calculateExpon(data_surePlace$Q_UPPS_SensationSeeking, data_surePlace$SurePlace_Seconds, data_surePlace)        # NO
+calculateExpon(data_surePlace$Q_UPPS_PosUrgency, data_surePlace$SurePlace_Seconds, data_surePlace)              # NO
+## BIS?
+calculateExpon(data_surePlace$Q_BIS_Total, data_surePlace$SurePlace_Seconds, data_surePlace)                       # NO
+calculateExpon(data_surePlace$Q_BIS_1_Attention, data_surePlace$SurePlace_Seconds, data_surePlace)                 # NO
+calculateExpon(data_surePlace$Q_BIS_1_Motor, data_surePlace$SurePlace_Seconds, data_surePlace)                     # NO
+calculateExpon(data_surePlace$Q_BIS_1_Self_Control, data_surePlace$SurePlace_Seconds, data_surePlace)              # NO
+calculateExpon(data_surePlace$Q_BIS_1_Cognitive_Complexity, data_surePlace$SurePlace_Seconds, data_surePlace)      # NO
+calculateExpon(data_surePlace$Q_BIS_1_Preseverance, data_surePlace$SurePlace_Seconds, data_surePlace)              # NO 
+calculateExpon(data_surePlace$Q_BIS_1_Cogntive_Instability, data_surePlace$SurePlace_Seconds, data_surePlace)       # NO
+calculateExpon(data_surePlace$Q_BIS_2_Attentional_Impulsiveness, data_surePlace$SurePlace_Seconds, data_surePlace)  # NO
+calculateExpon(data_surePlace$Q_BIS_2_Motor_Impulsiveness, data_surePlace$SurePlace_Seconds, data_surePlace)        # NO
+calculateExpon(data_surePlace$Q_BIS_2_Nonplanning_Impulsiveness, data_surePlace$SurePlace_Seconds, data_surePlace)  # NO
+## BHS?
+calculateExpon(data_surePlace$Q_BHS_Total, data_surePlace$SurePlace_Seconds, data_surePlace)                        # NO
+calculateExpon(data_surePlace$Q_BHS_Feelings_about_future, data_surePlace$SurePlace_Seconds, data_surePlace)        # NO
+calculateExpon(data_surePlace$Q_BHS_Loss_of_motivation, data_surePlace$SurePlace_Seconds, data_surePlace)           # NO
+calculateExpon(data_surePlace$Q_BHS_Future_Expectations, data_surePlace$SurePlace_Seconds, data_surePlace)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculateExpon(data_surePlace$IST_FreeBlockMean_pCorrs, data_surePlace$SurePlace_Seconds, data_surePlace)           # NO
+calculateExpon(data_surePlace$IST_CostBlockMean_pCorrs, data_surePlace$SurePlace_Seconds, data_surePlace)           # *
+calculateExpon(data_surePlace$CPTGNG_dprime_All, data_surePlace$SurePlace_Seconds, data_surePlace)                  # NO
+calculateExpon(data_surePlace$CPTGNG_omission_errors, data_surePlace$SurePlace_Seconds, data_surePlace)             # NO
+calculateExpon(data_surePlace$CPTGNG_commission_errors, data_surePlace$SurePlace_Seconds, data_surePlace)           # NO
+calculateExpon(data_surePlace$MDQ_k_Final, data_surePlace$SurePlace_Seconds, data_surePlace)           # NO
+calculateExpon(data_surePlace$SSRT_sossrtInt, data_surePlace$SurePlace_Seconds, data_surePlace)        # NO
+```
+
+##### 10. Intention to die in current attempt (Y/N)
+```{r}
+## thoughts?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+## BHS?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$X2.6_Confirm_suicide_intent, data_lifetime$TotalPthwyMean, data_lifetime)        # ??? NOT DONE YET
+```
+
+##### 11. Intention to die (continuous)
+```{r}
+## thoughts?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO 
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$MDQ_k_Final, data_lifetime)           # NO
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$X12.15_How_sure_want_to_die, data_lifetime$TotalPthwyMean, data_lifetime)        # ??? NOT DONE YET
+```
+
+##### 12. Num of prep
+```{r}
+## thoughts?
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$thoughts_score_2, data_totalPthwy)       # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$thoughts_score, data_totalPthwy)         # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$thoughts_want, data_totalPthwy)          # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$thoughts_not_want, data_totalPthwy)      # NO
+
+## UPPS?
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)              # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)            # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)        # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)              # NO
+## BIS,BHS?
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_Total, data_totalPthwy)                    # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy)              # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy)                  # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy)   # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)           # NO 
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)       # *
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)  # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)        # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)  # NO
+## BHS?
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                        # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)        # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)          # NO
+
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)                  # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)             # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$MDQ_k_Final, data_totalPthwy)           # NO
+calculate(data_totalPthwy$NumPrep_Total, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)        # NO
+```
+##### 13. Num of attempt
+```{r}
+## thoughts?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$thoughts_score_2, data_lifetime)       # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$thoughts_score, data_lifetime)         # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$thoughts_want, data_lifetime)          # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$thoughts_not_want, data_lifetime)      # NO
+
+## UPPS?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_UPPS_NegUrgency, data_lifetime)              # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_UPPS_Premeditation, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_UPPS_Perseverance, data_lifetime)            # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_UPPS_SensationSeeking, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_UPPS_PosUrgency, data_lifetime)              # NO
+## BIS,BHS?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_Total, data_lifetime)                    # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Attention, data_lifetime)              # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Motor, data_lifetime)                  # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Self_Control, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Cognitive_Complexity, data_lifetime)   # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Preseverance, data_lifetime)           # NO 
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_1_Cogntive_Instability, data_lifetime)       # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_2_Attentional_Impulsiveness, data_lifetime)  # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_2_Motor_Impulsiveness, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BIS_2_Nonplanning_Impulsiveness, data_lifetime)  # NO
+## BHS?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BHS_Total, data_lifetime)                        # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BHS_Feelings_about_future, data_lifetime)        # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BHS_Loss_of_motivation, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$Q_BHS_Future_Expectations, data_lifetime)          # NO
+## IST,CPTGNG,MDQ,SSRT?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$IST_FreeBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$IST_CostBlockMean_pCorrs, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$CPTGNG_dprime_All, data_lifetime)                  # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$CPTGNG_commission_errors, data_lifetime)           # NO
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$CPTGNG_omission_errors, data_lifetime)             # *
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$MDQ_k_Final, data_lifetime)           # **
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$SSRT_sossrtInt, data_lifetime)        # NO
+## TotalPthwy?
+calculate(data_lifetime$X2.6_Num_AT, data_lifetime$TotalPthwyMean, data_lifetime)        # ??? NOT DONE YET
+```
+##### 13.1 Num of attempt and timing
+```{r}
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X1.2_Ever_made_a_plan, data_totalPthwy)            # NO
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X8.3_Mulled_for_this_attempt, data_totalPthwy)     # NO
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X2.6_Confirm_suicide_intent, data_totalPthwy)      # NO
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$X12.15_How_sure_want_to_die, data_totalPthwy)      # NO
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$NumPrep_Total, data_totalPthwy)                    # NO
+```
+
+
+
+### BHS and ...
+#### within BHS
+```{r}
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)            # ***
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)           # ***
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)       # ***
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)      # ***
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)         # ***
+
+```
+
+#### with thoughts
+```{r}
+## Group differences
+calculate(data_transformedTime$Group, data_transformedTime$Q_BHS_Feelings_about_future, data_transformedTime)   ## NO
+calculate(data_transformedTime$Group, data_transformedTime$Q_BHS_Loss_of_motivation, data_transformedTime)      ## NO
+calculate(data_transformedTime$Group, data_transformedTime$Q_BHS_Future_Expectations, data_transformedTime)     ## NO
+
+data_ABINTvsAT <- data_transformedTime %>%
+  mutate(group_ABINTvsAT = ifelse(Group %in% c("AB", "INT"), "ABINT", "AT"))
+calculate(data_ABINTvsAT$group_ABINTvsAT, data_ABINTvsAT$Q_BHS_Feelings_about_future, data_ABINTvsAT)    ## * AT lower
+calculate(data_ABINTvsAT$group_ABINTvsAT, data_ABINTvsAT$Q_BHS_Loss_of_motivation, data_ABINTvsAT)       ## NO
+calculate(data_ABINTvsAT$group_ABINTvsAT, data_ABINTvsAT$Q_BHS_Future_Expectations, data_ABINTvsAT)      ## NO
+
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$Q_BHS_Feelings_about_future, data_transformedTime)      ## NO
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$Q_BHS_Loss_of_motivation, data_transformedTime)         ## NO
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$Q_BHS_Future_Expectations, data_transformedTime)        ## NO
+
+calculate(data_transformedTime$thoughts_score, data_transformedTime$Q_BHS_Feelings_about_future, data_transformedTime)      ## NO
+calculate(data_transformedTime$thoughts_score, data_transformedTime$Q_BHS_Loss_of_motivation, data_transformedTime)         ## NO
+calculate(data_transformedTime$thoughts_score, data_transformedTime$Q_BHS_Future_Expectations, data_transformedTime)        ## NO
+
+calculate(data_transformedTime$thoughts_want, data_transformedTime$Q_BHS_Feelings_about_future, data_transformedTime)      ## NO
+calculate(data_transformedTime$thoughts_want, data_transformedTime$Q_BHS_Loss_of_motivation, data_transformedTime)         ## NO
+calculate(data_transformedTime$thoughts_want, data_transformedTime$Q_BHS_Future_Expectations, data_transformedTime)        ## NO
+
+calculate(data_transformedTime$thoughts_not_want, data_transformedTime$Q_BHS_Feelings_about_future, data_transformedTime)      ## NO
+calculate(data_transformedTime$thoughts_not_want, data_transformedTime$Q_BHS_Loss_of_motivation, data_transformedTime)         ## NO
+calculate(data_transformedTime$thoughts_not_want, data_transformedTime$Q_BHS_Future_Expectations, data_transformedTime)        ## NO
+```
+#### with UPPS
+```{r}
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)       # *
+
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)       # NO
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)        # *
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)    # NO
+
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)       # NO
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)    # *
+
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)       # NO
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)    # NO
+```
+
+### Totalpthwy
+#### group diff, with trait, thoughts and timing
+```{r}
+## Group differences
+data_experiment_ABINT <- data_totalPthwy %>%
+  filter(Group != "AT")
+
+data_experiment_ATAB <- data_totalPthwy %>%
+  filter(Group != "INT")
+
+## AT vs AB 
+calculate(data_experiment_ATAB$Group, data_experiment_ATAB$TotalpthwyMean, data_experiment_ATAB)   ## NO
+
+## AT vs AB/INT
+data_ABINT <- data_totalPthwy %>%
+  mutate(group_2 = ifelse(Group != "AT", "AB/INT", "AT"))
+calculate(data_ABINT$group_2, data_ABINT$TotalpthwyMean, data_ABINT)  ## NO
+
+## AB vs INT
+calculate(data_experiment_ABINT$Group, data_experiment_ABINT$TotalpthwyMean, data_experiment_ABINT)   ## NO
+
+# thoughts
+calculate(data_totalPthwy$thoughts_score_2, data_totalPthwy$TotalpthwyMean, data_totalPthwy)   ## NO
+calculate(data_totalPthwy$thoughts_score, data_totalPthwy$TotalpthwyMean, data_totalPthwy)     ## NO
+calculate(data_totalPthwy$thoughts_want, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$thoughts_not_want, data_totalPthwy$TotalpthwyMean, data_totalPthwy)  ## NO
+# UPPS
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         ## NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       ## NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         ## NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$TotalpthwyMean, data_totalPthwy)   ## NO
+# BIS
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                    ## NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$TotalpthwyMean, data_totalPthwy)              ## NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                  ## NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$TotalpthwyMean, data_totalPthwy)           ## NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$TotalpthwyMean, data_totalPthwy)   ## NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$TotalpthwyMean, data_totalPthwy)           ## NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$TotalpthwyMean, data_totalPthwy)   ## NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       ## NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$TotalpthwyMean, data_totalPthwy)             ## NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       ## NO
+# BHS
+calculate(data_totalPthwy$Q_BHS_Total, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                      ## NO
+calculate(data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         ## NO
+calculate(data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy$TotalpthwyMean, data_totalPthwy)        ## NO
+# behavioral
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$TotalpthwyMean, data_totalPthwy)             ## NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$TotalpthwyMean, data_totalPthwy)        ## NO
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                   ## NO
+calculate(data_totalPthwy$SSRT_sossrtInt, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                ## NO
+# lifetime si
+calculate(data_totalPthwy$onset_age, data_totalPthwy$TotalpthwyMean, data_totalPthwy)              ## ***
+calculate(data_totalPthwy$duration_ideation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)      ## NO
+calculate(data_totalPthwy$sd_ideation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)            ## NO
+calculate(data_totalPthwy$mean_ideation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)          ## NO
+calculate(data_totalPthwy$range_ideation, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         ## NO
+# timing
+calculate(data_totalPthwy$X1.2_Ever_made_a_plan, data_totalPthwy$TotalpthwyMean, data_totalPthwy)              # NO
+calculate(data_totalPthwy$X8.3_Mulled_for_this_attempt, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       # * 
+calculateExpon(data_totalPthwy$MullingStarts_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         # ***
+calculateExpon(data_totalPthwy$ThoughtsStart_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)         # NO
+calculateExpon(data_totalPthwy$Decision_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)              # **
+calculateExpon(data_totalPthwy$SureMethod_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)    # NO
+calculateExpon(data_totalPthwy$SureMethod_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)            # NO
+calculateExpon(data_totalPthwy$FirstPlace_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)            # NO
+calculateExpon(data_totalPthwy$SurePlace_Seconds, data_totalPthwy$TotalpthwyMean, data_totalPthwy)             # NO
+calculate(data_totalPthwy$X2.6_Confirm_suicide_intent, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       # NO
+calculate(data_totalPthwy$X12.15_How_sure_want_to_die, data_totalPthwy$TotalpthwyMean, data_totalPthwy)       # NO
+calculate(data_totalPthwy$NumPrep, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                           # ***
+calculate(data_totalPthwy$X2.6_Num_AT, data_totalPthwy$TotalpthwyMean, data_totalPthwy)                       # NO
+```
+### within thoughts
+```{r}
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$thoughts_want, data_transformedTime)        ## ***
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$thoughts_not_want, data_transformedTime)    ## ***
+calculate(data_transformedTime$thoughts_score_2, data_transformedTime$thoughts_score, data_transformedTime)       ## ***
+
+calculate(data_transformedTime$thoughts_want, data_transformedTime$thoughts_not_want, data_transformedTime)       ## *
+calculate(data_transformedTime$thoughts_want, data_transformedTime$thoughts_score, data_transformedTime)          ## no
+
+calculate(data_transformedTime$thoughts_not_want, data_transformedTime$thoughts_score, data_transformedTime)      ## ***
+```
+
+
+### within traits
+#### UPPS and ...
+##### within UPPS
+```{r}
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)            # ***
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)          # *
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)      # NO
+  
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)          # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)      # **
+
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)       # *
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)   # **
+
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)
+```
+##### with behavioral
+```{r}
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # *
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+```
+
+#### Behavioral and ...
+##### within behavioral
+```{r}
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)      # **
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)             # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)        # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                   # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                # NO
+
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)   # NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$MDQ_k_Final, data_totalPthwy)              # NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)           # NO
+
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$MDQ_k_Final, data_totalPthwy)           # NO
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)                   # NO
+```
+##### with BHS
+```{r}
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$MDQ_k_Final, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+
+calculate(data_totalPthwy$SSRT_sossrtInt, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                     # NO
+calculate(data_totalPthwy$SSRT_sossrtInt, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)     # NO
+calculate(data_totalPthwy$SSRT_sossrtInt, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)        # NO
+calculate(data_totalPthwy$SSRT_sossrtInt, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)       # NO
+```
+#### BIS and 
+##### within BIS
+```{r}
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy)                    # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy)     # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)             # **
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # ***
+
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy)                    # *
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy)     # **
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # **
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # ***
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # *
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # ***
+
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy)                # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy)        # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)                # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # ***
+
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy)        # **
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)                # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # **
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # ***
+
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy)                # *
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # *
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # ***
+
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy)        # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # ***
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # *
+
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy)   # ***
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # **
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy)         # **
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)   # **
+
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy)         # ***
+```
+##### with UPPS
+```{r}
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # **
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # *
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # **
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # *
+
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # ***
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # **
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # **
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # *
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # *
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # *
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # *
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # **
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # **
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # **
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_UPPS_NegUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_UPPS_PosUrgency, data_totalPthwy)                # ***
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_UPPS_Premeditation, data_totalPthwy)             # ***
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_UPPS_Perseverance, data_totalPthwy)              # ***
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_UPPS_SensationSeeking, data_totalPthwy)          # **
+```
+##### with behavioral
+```{r}
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # *
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # *
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # *
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # *
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$IST_FreeBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$IST_CostBlockMean_pCorrs, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$CPTGNG_dprime_All, data_totalPthwy)           # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$CPTGNG_commission_errors, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$CPTGNG_omission_errors, data_totalPthwy)      # *
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$MDQ_k_Final, data_totalPthwy)                 # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$SSRT_sossrtInt, data_totalPthwy)              # NO
+```
+##### with BHS
+```{r}
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                    # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)    # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)       # NO
+calculate(data_totalPthwy$Q_BIS_Total, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)      # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_1_Attention, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # **
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # *
+calculate(data_totalPthwy$Q_BIS_1_Motor, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # **
+
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_1_Self_Control, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_1_Cognitive_Complexity, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # *
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_1_Preseverance, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # *
+
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_1_Cogntive_Instability, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_2_Attentional_Impulsiveness, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_2_Motor_Impulsiveness, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_BHS_Total, data_totalPthwy)                      # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_BHS_Feelings_about_future, data_totalPthwy)      # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_BHS_Loss_of_motivation, data_totalPthwy)         # NO
+calculate(data_totalPthwy$Q_BIS_2_Nonplanning_Impulsiveness, data_totalPthwy$Q_BHS_Future_Expectations, data_totalPthwy)        # NO
+```
