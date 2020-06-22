@@ -7,7 +7,7 @@ output: html_document
 
 ```{r dataWrangling, include=FALSE}
 library(tidyverse)
-data <- read.csv(file = "./Data/updated_june_2020.csv") 
+data <- read.csv(file = "./Data/updated_june22_2020.csv") 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 cal_func <- function(x, y) {
   m1 <- lm(y ~ x, data_new)
@@ -343,6 +343,232 @@ cal_func(data_new$SSRT_sossrtInt, data_new$Q_BHS_Future_Expectations)           
 cal_func(data_new$CPTGNG_omission_errors, data_new$Q_BHS_Future_Expectations)             # NO
 cal_func(data_new$MDQ_k_Final, data_new$Q_BHS_Future_Expectations)                        # NO
 ```
+
+
+
+
+
+# CPTGNG
+## d-prime (hit rate)
+```{r GNGdprime}
+cal_func(data_new$group, data_new$CPTGNG_dprime_All)                              # NO
+cal_func(data_new$gender, data_new$CPTGNG_dprime_All)                             # NO
+cal_func(data_new$dpr_f, data_new$CPTGNG_dprime_All)                              # NO
+cal_func(data_new$Q_BDI_Total, data_new$CPTGNG_dprime_All)                        # NO
+cal_func(data_new$Q_BHS_Total, data_new$CPTGNG_dprime_All)                        # NO
+cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_dprime_All)        # NO
+cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_dprime_All)           # NO
+cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_dprime_All)          # NO
+
+cal_func(data_new$thoughts_score_2, data_new$CPTGNG_dprime_All)                   # NO
+cal_func(data_new$thoughts_score, data_new$CPTGNG_dprime_All)                     # NO
+cal_func(data_new$thoughts_want, data_new$CPTGNG_dprime_All)                      # * .11+
+cal_func(data_new$thoughts_not_want, data_new$CPTGNG_dprime_All)                  # NO
+
+cal_func(data_new$TotalpthwyMean, data_new$CPTGNG_dprime_All)                     # NO
+cal_func(data_new$pthwy_thoughts_amt, data_new$CPTGNG_dprime_All)                 # NO
+cal_func(data_new$pthwy_thoughts_push, data_new$CPTGNG_dprime_All)                # NO
+cal_func(data_new$pthwy_thoughts_pull, data_new$CPTGNG_dprime_All)                # NO
+cal_func(data_new$pthwy_thoughts_counbal, data_new$CPTGNG_dprime_All)             # NO
+
+cal_func(data_new$whether_planned_f, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$whether_mulled_f, data_new$CPTGNG_dprime_All)                   # NO
+cal_func(data_new$suicide_intent_f, data_new$CPTGNG_dprime_All)                   # NO
+
+cal_func(data_new$ThoughtsStart_Seconds_index, data_new$CPTGNG_dprime_All)        # NO
+cal_func(data_new$MullingStarts_Seconds_index, data_new$CPTGNG_dprime_All)        # NO
+cal_func(data_new$Decision_Seconds_index, data_new$CPTGNG_dprime_All)             # NO
+cal_func(data_new$FirstMethod_Seconds_index, data_new$CPTGNG_dprime_All)          # NO
+cal_func(data_new$SureMethod_Seconds_index, data_new$CPTGNG_dprime_All)           # NO
+cal_func(data_new$FirstPlace_Seconds_index, data_new$CPTGNG_dprime_All)           # NO
+cal_func(data_new$SurePlace_Seconds_index, data_new$CPTGNG_dprime_All)            # NO
+
+cal_func(data_new$think_mull_decide, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$first_sure_method, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$first_sure_place, data_new$CPTGNG_dprime_All)                   # NO
+cal_func(data_new$decide_method_place, data_new$CPTGNG_dprime_All)                # NO
+cal_func(data_new$all_bins, data_new$CPTGNG_dprime_All)                           # NO
+
+cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_dprime_All)        # NO
+cal_func(data_new$NumPrep_Total, data_new$CPTGNG_dprime_All)                      # NO
+cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_dprime_All)                        # NO
+
+cal_func(data_new$onset_age, data_new$CPTGNG_dprime_All)                          # NO
+cal_func(data_new$mean_ideation, data_new$CPTGNG_dprime_All)                      # NO
+cal_func(data_new$duration_ideation, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$range_ideation, data_new$CPTGNG_dprime_All)                     # NO
+cal_func(data_new$sd_ideation, data_new$CPTGNG_dprime_All)                        # NO
+
+cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_dprime_All)                # NO
+cal_func(data_new$Q_UPPS_Premeditation, data_new$CPTGNG_dprime_All)               # NO
+cal_func(data_new$Q_UPPS_PosUrgency, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$Q_UPPS_SensationSeeking, data_new$CPTGNG_dprime_All)            # NO
+
+cal_func(data_new$Q_BIS_Total, data_new$CPTGNG_dprime_All)                        # NO
+cal_func(data_new$Q_BIS_1_Attention, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$Q_BIS_1_Motor, data_new$CPTGNG_dprime_All)                      # * .09-
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$CPTGNG_dprime_All)               # NO
+cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$CPTGNG_dprime_All)       # NO
+cal_func(data_new$Q_BIS_1_Preseverance, data_new$CPTGNG_dprime_All)               # NO
+cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$CPTGNG_dprime_All)       # NO
+cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$CPTGNG_dprime_All)  # NO
+cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$CPTGNG_dprime_All)        # NO
+cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$CPTGNG_dprime_All)  # NO
+
+cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$CPTGNG_dprime_All)           # NO
+cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$CPTGNG_dprime_All)           # NO
+cal_func(data_new$SSRT_sossrtInt, data_new$CPTGNG_dprime_All)                     # NO
+cal_func(data_new$MDQ_k_Final, data_new$CPTGNG_dprime_All)                        # NO
+cal_func(data_new$CPTGNG_commission_errors, data_new$CPTGNG_dprime_All)           # ** .20-
+cal_func(data_new$CPTGNG_omission_errors, data_new$CPTGNG_dprime_All)             # *** .41-
+```
+## commission error rate
+```{r commissionError}
+cal_func(data_new$group, data_new$CPTGNG_commission_errors)                              # NO
+cal_func(data_new$gender, data_new$CPTGNG_commission_errors)                             # NO
+cal_func(data_new$dpr_f, data_new$CPTGNG_commission_errors)                              # NO
+cal_func(data_new$Q_BDI_Total, data_new$CPTGNG_commission_errors)                        # NO
+cal_func(data_new$Q_BHS_Total, data_new$CPTGNG_commission_errors)                        # NO
+cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_commission_errors)        # NO
+cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_commission_errors)          # NO
+
+cal_func(data_new$thoughts_score_2, data_new$CPTGNG_commission_errors)                   # NO
+cal_func(data_new$thoughts_score, data_new$CPTGNG_commission_errors)                     # NO
+cal_func(data_new$thoughts_want, data_new$CPTGNG_commission_errors)                      # NO
+cal_func(data_new$thoughts_not_want, data_new$CPTGNG_commission_errors)                  # NO
+
+cal_func(data_new$TotalpthwyMean, data_new$CPTGNG_commission_errors)                     # NO
+cal_func(data_new$pthwy_thoughts_amt, data_new$CPTGNG_commission_errors)                 # NO
+cal_func(data_new$pthwy_thoughts_push, data_new$CPTGNG_commission_errors)                # NO
+cal_func(data_new$pthwy_thoughts_pull, data_new$CPTGNG_commission_errors)                # NO
+cal_func(data_new$pthwy_thoughts_counbal, data_new$CPTGNG_commission_errors)             # NO
+
+cal_func(data_new$whether_planned_f, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$whether_mulled_f, data_new$CPTGNG_commission_errors)                   # NO
+cal_func(data_new$suicide_intent_f, data_new$CPTGNG_commission_errors)                   # NO
+
+cal_func(data_new$ThoughtsStart_Seconds_index, data_new$CPTGNG_commission_errors)        # NO
+cal_func(data_new$MullingStarts_Seconds_index, data_new$CPTGNG_commission_errors)        # NO
+cal_func(data_new$Decision_Seconds_index, data_new$CPTGNG_commission_errors)             # NO
+cal_func(data_new$FirstMethod_Seconds_index, data_new$CPTGNG_commission_errors)          # NO
+cal_func(data_new$SureMethod_Seconds_index, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$FirstPlace_Seconds_index, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$SurePlace_Seconds_index, data_new$CPTGNG_commission_errors)            # NO
+
+cal_func(data_new$think_mull_decide, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$first_sure_method, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$first_sure_place, data_new$CPTGNG_commission_errors)                   # NO
+cal_func(data_new$decide_method_place, data_new$CPTGNG_commission_errors)                # NO
+cal_func(data_new$all_bins, data_new$CPTGNG_commission_errors)                           # NO
+
+cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_commission_errors)        # NO
+cal_func(data_new$NumPrep_Total, data_new$CPTGNG_commission_errors)                      # NO
+cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_commission_errors)                        # NO
+
+cal_func(data_new$onset_age, data_new$CPTGNG_commission_errors)                          # NO
+cal_func(data_new$mean_ideation, data_new$CPTGNG_commission_errors)                      # NO
+cal_func(data_new$duration_ideation, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$range_ideation, data_new$CPTGNG_commission_errors)                     # NO
+cal_func(data_new$sd_ideation, data_new$CPTGNG_commission_errors)                        # NO
+
+cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_commission_errors)                # NO
+cal_func(data_new$Q_UPPS_Premeditation, data_new$CPTGNG_commission_errors)               # NO
+cal_func(data_new$Q_UPPS_PosUrgency, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$Q_UPPS_SensationSeeking, data_new$CPTGNG_commission_errors)            # * .09+
+
+cal_func(data_new$Q_BIS_Total, data_new$CPTGNG_commission_errors)                        # NO
+cal_func(data_new$Q_BIS_1_Attention, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$Q_BIS_1_Motor, data_new$CPTGNG_commission_errors)                      # NO
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$CPTGNG_commission_errors)               # NO
+cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$CPTGNG_commission_errors)       # NO
+cal_func(data_new$Q_BIS_1_Preseverance, data_new$CPTGNG_commission_errors)               # NO
+cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$CPTGNG_commission_errors)       # NO
+cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$CPTGNG_commission_errors)  # NO
+cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$CPTGNG_commission_errors)        # NO
+cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$CPTGNG_commission_errors)  # NO
+
+cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$SSRT_sossrtInt, data_new$CPTGNG_commission_errors)                     # NO
+cal_func(data_new$MDQ_k_Final, data_new$CPTGNG_commission_errors)                        # NO
+cal_func(data_new$CPTGNG_omission_errors, data_new$CPTGNG_commission_errors)             # NO
+```
+## omission error rate
+```{r omissionError}
+cal_func(data_new$group, data_new$CPTGNG_omission_errors)                              # NO
+cal_func(data_new$gender, data_new$CPTGNG_omission_errors)                             # NO
+cal_func(data_new$dpr_f, data_new$CPTGNG_omission_errors)                              # NO
+cal_func(data_new$Q_BDI_Total, data_new$CPTGNG_omission_errors)                        # NO
+cal_func(data_new$Q_BHS_Total, data_new$CPTGNG_omission_errors)                        # NO
+cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_omission_errors)        # NO
+cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_omission_errors)           # NO
+cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_omission_errors)          # NO
+
+cal_func(data_new$thoughts_score_2, data_new$CPTGNG_omission_errors)                   # NO
+cal_func(data_new$thoughts_score, data_new$CPTGNG_omission_errors)                     # NO
+cal_func(data_new$thoughts_want, data_new$CPTGNG_omission_errors)                      # NO
+cal_func(data_new$thoughts_not_want, data_new$CPTGNG_omission_errors)                  # NO
+
+cal_func(data_new$TotalpthwyMean, data_new$CPTGNG_omission_errors)                     # NO
+cal_func(data_new$pthwy_thoughts_amt, data_new$CPTGNG_omission_errors)                 # NO
+cal_func(data_new$pthwy_thoughts_push, data_new$CPTGNG_omission_errors)                # NO
+cal_func(data_new$pthwy_thoughts_pull, data_new$CPTGNG_omission_errors)                # NO
+cal_func(data_new$pthwy_thoughts_counbal, data_new$CPTGNG_omission_errors)             # NO
+
+cal_func(data_new$whether_planned_f, data_new$CPTGNG_omission_errors)                  # * .08+
+cal_func(data_new$whether_mulled_f, data_new$CPTGNG_omission_errors)                   # NO
+cal_func(data_new$suicide_intent_f, data_new$CPTGNG_omission_errors)                   # NO
+
+cal_func(data_new$ThoughtsStart_Seconds_index, data_new$CPTGNG_omission_errors)        # NO
+cal_func(data_new$MullingStarts_Seconds_index, data_new$CPTGNG_omission_errors)        # NO
+cal_func(data_new$Decision_Seconds_index, data_new$CPTGNG_omission_errors)             # NO
+cal_func(data_new$FirstMethod_Seconds_index, data_new$CPTGNG_omission_errors)          # NO
+cal_func(data_new$SureMethod_Seconds_index, data_new$CPTGNG_omission_errors)           # NO
+cal_func(data_new$FirstPlace_Seconds_index, data_new$CPTGNG_omission_errors)           # NO
+cal_func(data_new$SurePlace_Seconds_index, data_new$CPTGNG_omission_errors)            # NO
+
+cal_func(data_new$think_mull_decide, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$first_sure_method, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$first_sure_place, data_new$CPTGNG_omission_errors)                   # NO
+cal_func(data_new$decide_method_place, data_new$CPTGNG_omission_errors)                # NO
+cal_func(data_new$all_bins, data_new$CPTGNG_omission_errors)                           # NO
+
+cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_omission_errors)        # NO
+cal_func(data_new$NumPrep_Total, data_new$CPTGNG_omission_errors)                      # NO
+cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_omission_errors)                        # * .16+
+
+cal_func(data_new$onset_age, data_new$CPTGNG_omission_errors)                          # NO
+cal_func(data_new$mean_ideation, data_new$CPTGNG_omission_errors)                      # NO
+cal_func(data_new$duration_ideation, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$range_ideation, data_new$CPTGNG_omission_errors)                     # NO
+cal_func(data_new$sd_ideation, data_new$CPTGNG_omission_errors)                        # NO
+
+cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_omission_errors)                # NO
+cal_func(data_new$Q_UPPS_Premeditation, data_new$CPTGNG_omission_errors)               # NO
+cal_func(data_new$Q_UPPS_PosUrgency, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$Q_UPPS_SensationSeeking, data_new$CPTGNG_omission_errors)            # NO
+
+cal_func(data_new$Q_BIS_Total, data_new$CPTGNG_omission_errors)                        # * .08+
+cal_func(data_new$Q_BIS_1_Attention, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$Q_BIS_1_Motor, data_new$CPTGNG_omission_errors)                      # * .11+
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$CPTGNG_omission_errors)               # NO
+cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$CPTGNG_omission_errors)       # <.06 .08+
+cal_func(data_new$Q_BIS_1_Preseverance, data_new$CPTGNG_omission_errors)               # NO
+cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$CPTGNG_omission_errors)       # NO
+cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$CPTGNG_omission_errors)  # NO
+cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$CPTGNG_omission_errors)        # * .11+
+cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$CPTGNG_omission_errors)  # * .09+
+
+cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$CPTGNG_omission_errors)           # NO
+cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$CPTGNG_omission_errors)           # NO
+cal_func(data_new$SSRT_sossrtInt, data_new$CPTGNG_omission_errors)                     # NO
+cal_func(data_new$MDQ_k_Final, data_new$CPTGNG_omission_errors)                        # NO
+```
+
 
 
 # does anything about **trait** relate to the time spent thinking?
@@ -1435,6 +1661,80 @@ cal_func(data_new$group, data_new$decide_method_place)             # NO
 cal_func(data_new$group, data_new$all_bins)                        # NO
 ```
 
+# Gender
+```{r}
+data_gender_num <- data_new %>%
+  mutate(gender_num = ifelse(gender == "F", 0, 1))
+cal_func(data_gender_num$group, data_gender_num$gender_num)              # NO
+cal_func(data_new$gender, data_new$thoughts_score_2)                     # NO
+cal_func(data_new$gender, data_new$thoughts_want)                        # NO
+cal_func(data_new$gender, data_new$thoughts_not_want)                    # NO
+cal_func(data_new$gender, data_new$thoughts_score)                       # NO
+cal_func(data_gender_num$dpr_f, data_gender_num$gender_num)              # NO
+cal_func(data_gender_num$suicide_intent_f, data_gender_num$gender_num)   # NO
+
+cal_func(data_new$gender, data_new$TotalpthwyMean)                       # NO
+cal_func(data_new$gender, data_new$pthwy_thoughts_amt)                   # NO
+cal_func(data_new$gender, data_new$pthwy_thoughts_push)                  # NO
+cal_func(data_new$gender, data_new$pthwy_thoughts_pull)                  # NO
+cal_func(data_new$gender, data_new$pthwy_thoughts_counbal)               # NO
+
+cal_func(data_new$gender, data_new$ThoughtsStart_Seconds_index)          # NO
+cal_func(data_new$gender, data_new$MullingStarts_Seconds_index)          # NO
+cal_func(data_new$gender, data_new$Decision_Seconds_index)               # NO
+cal_func(data_new$gender, data_new$FirstMethod_Seconds_index)            # NO
+cal_func(data_new$gender, data_new$SureMethod_Seconds_index)             # NO
+cal_func(data_new$gender, data_new$FirstPlace_Seconds_index)             # NO
+cal_func(data_new$gender, data_new$SurePlace_Seconds_index)              # NO
+
+cal_func(data_new$gender, data_new$think_mull_decide)                    # NO
+cal_func(data_new$gender, data_new$first_sure_method)                    # NO
+cal_func(data_new$gender, data_new$first_sure_place)                     # NO
+cal_func(data_new$gender, data_new$decide_method_place)                  # NO
+cal_func(data_new$gender, data_new$all_bins)                             # NO
+
+cal_func(data_new$gender, data_new$X12.15_How_sure_want_to_die)        # NO
+cal_func(data_new$gender, data_new$NumPrep_Total)                      # NO
+cal_func(data_new$gender, data_new$X2.6_Num_AT)                        # NO
+
+cal_func(data_new$gender, data_new$onset_age)                          # NO
+cal_func(data_new$gender, data_new$mean_ideation)                      # *  .11
+cal_func(data_new$gender, data_new$duration_ideation)                  # NO
+cal_func(data_new$gender, data_new$range_ideation)                     # NO
+cal_func(data_new$gender, data_new$sd_ideation)                        # NO
+
+cal_func(data_new$gender, data_new$Q_UPPS_NegUrgency)                  # NO
+cal_func(data_new$gender, data_new$Q_UPPS_Perseverance)                # NO
+cal_func(data_new$gender, data_new$Q_UPPS_Premeditation)               # NO
+cal_func(data_new$gender, data_new$Q_UPPS_PosUrgency)                  # NO
+cal_func(data_new$gender, data_new$Q_UPPS_SensationSeeking)            # NO
+
+cal_func(data_new$gender, data_new$Q_BIS_Total)                        # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Attention)                  # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Motor)                      # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Self_Control)               # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Cognitive_Complexity)       # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Preseverance)               # NO
+cal_func(data_new$gender, data_new$Q_BIS_1_Cogntive_Instability)       # NO
+cal_func(data_new$gender, data_new$Q_BIS_2_Attentional_Impulsiveness)  # NO
+cal_func(data_new$gender, data_new$Q_BIS_2_Motor_Impulsiveness)        # NO
+cal_func(data_new$gender, data_new$Q_BIS_2_Nonplanning_Impulsiveness)  # NO
+
+cal_func(data_new$gender, data_new$IST_FreeBlockMean_pCorrs)           # NO
+cal_func(data_new$gender, data_new$IST_CostBlockMean_pCorrs)           # NO
+cal_func(data_new$gender, data_new$SSRT_sossrtInt)                     # NO
+cal_func(data_new$gender, data_new$CPTGNG_omission_errors)             # NO
+cal_func(data_new$gender, data_new$CPTGNG_commission_errors)           # NO
+cal_func(data_new$gender, data_new$MDQ_k_Final)                        # ** .16 male higher
+
+cal_func(data_new$gender, data_new$Q_BHS_Total)                        # NO
+cal_func(data_new$gender, data_new$Q_BHS_Feelings_about_future)        # NO
+cal_func(data_new$gender, data_new$Q_BHS_Loss_of_motivation)           # NO
+cal_func(data_new$gender, data_new$Q_BHS_Future_Expectations)          # NO
+cal_func(data_new$gender, data_new$perceived_lethality)                # <.06 .11 male high
+cal_func(data_new$gender, data_new$Q_BDI_Total)                        # * .08 f high
+```
+
 # TotalPthwyMean * Thoughts
 ### Amount
 ```{r}
@@ -1741,148 +2041,6 @@ cal_func(data_new$nssi_times, data_new$nssi_duration)                         # 
 cal_func(data_new$X2.4_Aborted_Num_Times_FINAL, data_new$nssi_duration)       # NO
 ```
 
-# Perceived Lethality
-```{r}
-cal_func(data_new$group, data_new$perceived_lethality)                              # **  .20 at high
-cal_func(data_new$thoughts_score_2, data_new$perceived_lethality)                   # NO
-cal_func(data_new$thoughts_want, data_new$perceived_lethality)                      # NO
-cal_func(data_new$thoughts_not_want, data_new$perceived_lethality)                  # NO
-cal_func(data_new$thoughts_score, data_new$perceived_lethality)                     # NO
-
-cal_func(data_new$TotalpthwyMean, data_new$perceived_lethality)                     # NO
-cal_func(data_new$pthwy_thoughts_amt, data_new$perceived_lethality)                 # NO
-cal_func(data_new$pthwy_thoughts_push, data_new$perceived_lethality)                # NO
-cal_func(data_new$pthwy_thoughts_pull, data_new$perceived_lethality)                # NO
-cal_func(data_new$pthwy_thoughts_counbal, data_new$perceived_lethality)             # NO
-
-cal_func(data_new$X1.2_Ever_made_a_plan, data_new$perceived_lethality)              # NO
-cal_func(data_new$X8.3_Mulled_for_this_attempt, data_new$perceived_lethality)       # NO
-
-cal_func(data_new$ThoughtsStart_Seconds_index, data_new$perceived_lethality)        # NO
-cal_func(data_new$MullingStarts_Seconds_index, data_new$perceived_lethality)        # NO
-cal_func(data_new$Decision_Seconds_index, data_new$perceived_lethality)             # NO
-cal_func(data_new$FirstMethod_Seconds_index, data_new$perceived_lethality)          # NO
-cal_func(data_new$SureMethod_Seconds_index, data_new$perceived_lethality)           # NO
-cal_func(data_new$FirstPlace_Seconds_index, data_new$perceived_lethality)           # NO
-cal_func(data_new$SurePlace_Seconds_index, data_new$perceived_lethality)            # NO
-
-cal_func(data_new$think_mull_decide, data_new$perceived_lethality)                  # NO
-cal_func(data_new$first_sure_method, data_new$perceived_lethality)                  # NO
-cal_func(data_new$first_sure_place, data_new$perceived_lethality)                   # NO
-cal_func(data_new$decide_method_place, data_new$perceived_lethality)                # NO
-cal_func(data_new$all_bins, data_new$perceived_lethality)                           # NO
-
-cal_func(data_new$X12.15_How_sure_want_to_die, data_new$perceived_lethality)        # *** .37 +
-cal_func(data_new$NumPrep_Total, data_new$perceived_lethality)                      # NO
-cal_func(data_new$X2.6_Num_AT, data_new$perceived_lethality)                        # NO
-
-cal_func(data_new$onset_age, data_new$perceived_lethality)                          # NO
-cal_func(data_new$mean_ideation, data_new$perceived_lethality)                      # NO
-cal_func(data_new$duration_ideation, data_new$perceived_lethality)                  # NO
-cal_func(data_new$range_ideation, data_new$perceived_lethality)                     # NO
-cal_func(data_new$sd_ideation, data_new$perceived_lethality)                        # NO
-
-cal_func(data_new$Q_UPPS_NegUrgency, data_new$perceived_lethality)                  # NO
-cal_func(data_new$Q_UPPS_Perseverance, data_new$perceived_lethality)                # NO
-cal_func(data_new$Q_UPPS_Premeditation, data_new$perceived_lethality)               # NO
-cal_func(data_new$Q_UPPS_PosUrgency, data_new$perceived_lethality)                  # NO
-cal_func(data_new$Q_UPPS_SensationSeeking, data_new$perceived_lethality)            # NO
-
-cal_func(data_new$Q_BIS_Total, data_new$perceived_lethality)                        # NO
-cal_func(data_new$Q_BIS_1_Attention, data_new$perceived_lethality)                  # NO
-cal_func(data_new$Q_BIS_1_Motor, data_new$perceived_lethality)                      # NO
-cal_func(data_new$Q_BIS_1_Self_Control, data_new$perceived_lethality)               # NO
-cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$perceived_lethality)       # NO
-cal_func(data_new$Q_BIS_1_Preseverance, data_new$perceived_lethality)               # NO
-cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$perceived_lethality)       # NO
-cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$perceived_lethality)  # NO
-cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$perceived_lethality)        # NO
-cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$perceived_lethality)  # NO
-
-cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$perceived_lethality)           # NO
-cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$perceived_lethality)           # NO
-cal_func(data_new$SSRT_sossrtInt, data_new$perceived_lethality)                     # NO
-cal_func(data_new$CPTGNG_omission_errors, data_new$perceived_lethality)             # NO
-cal_func(data_new$MDQ_k_Final, data_new$perceived_lethality)                        # NO
-
-cal_func(data_new$Q_BHS_Total, data_new$perceived_lethality)                        # NO
-cal_func(data_new$Q_BHS_Feelings_about_future, data_new$perceived_lethality)        # NO
-cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$perceived_lethality)           # NO
-cal_func(data_new$Q_BHS_Future_Expectations, data_new$perceived_lethality)          # NO
-```
-# Gender
-```{r}
-data_gender_num <- data_new %>%
-  mutate(gender_num = ifelse(gender == "F", 0, 1))
-cal_func(data_gender_num$group, data_gender_num$gender_num)              # NO
-cal_func(data_new$gender, data_new$thoughts_score_2)                     # NO
-cal_func(data_new$gender, data_new$thoughts_want)                        # NO
-cal_func(data_new$gender, data_new$thoughts_not_want)                    # NO
-cal_func(data_new$gender, data_new$thoughts_score)                       # NO
-cal_func(data_gender_num$dpr_f, data_gender_num$gender_num)              # NO
-cal_func(data_gender_num$suicide_intent_f, data_gender_num$gender_num)   # NO
-
-cal_func(data_new$gender, data_new$TotalpthwyMean)                       # NO
-cal_func(data_new$gender, data_new$pthwy_thoughts_amt)                   # NO
-cal_func(data_new$gender, data_new$pthwy_thoughts_push)                  # NO
-cal_func(data_new$gender, data_new$pthwy_thoughts_pull)                  # NO
-cal_func(data_new$gender, data_new$pthwy_thoughts_counbal)               # NO
-
-cal_func(data_new$gender, data_new$ThoughtsStart_Seconds_index)          # NO
-cal_func(data_new$gender, data_new$MullingStarts_Seconds_index)          # NO
-cal_func(data_new$gender, data_new$Decision_Seconds_index)               # NO
-cal_func(data_new$gender, data_new$FirstMethod_Seconds_index)            # NO
-cal_func(data_new$gender, data_new$SureMethod_Seconds_index)             # NO
-cal_func(data_new$gender, data_new$FirstPlace_Seconds_index)             # NO
-cal_func(data_new$gender, data_new$SurePlace_Seconds_index)              # NO
-
-cal_func(data_new$gender, data_new$think_mull_decide)                    # NO
-cal_func(data_new$gender, data_new$first_sure_method)                    # NO
-cal_func(data_new$gender, data_new$first_sure_place)                     # NO
-cal_func(data_new$gender, data_new$decide_method_place)                  # NO
-cal_func(data_new$gender, data_new$all_bins)                             # NO
-
-cal_func(data_new$gender, data_new$X12.15_How_sure_want_to_die)        # NO
-cal_func(data_new$gender, data_new$NumPrep_Total)                      # NO
-cal_func(data_new$gender, data_new$X2.6_Num_AT)                        # NO
-
-cal_func(data_new$gender, data_new$onset_age)                          # NO
-cal_func(data_new$gender, data_new$mean_ideation)                      # *  .11
-cal_func(data_new$gender, data_new$duration_ideation)                  # NO
-cal_func(data_new$gender, data_new$range_ideation)                     # NO
-cal_func(data_new$gender, data_new$sd_ideation)                        # NO
-
-cal_func(data_new$gender, data_new$Q_UPPS_NegUrgency)                  # NO
-cal_func(data_new$gender, data_new$Q_UPPS_Perseverance)                # NO
-cal_func(data_new$gender, data_new$Q_UPPS_Premeditation)               # NO
-cal_func(data_new$gender, data_new$Q_UPPS_PosUrgency)                  # NO
-cal_func(data_new$gender, data_new$Q_UPPS_SensationSeeking)            # NO
-
-cal_func(data_new$gender, data_new$Q_BIS_Total)                        # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Attention)                  # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Motor)                      # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Self_Control)               # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Cognitive_Complexity)       # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Preseverance)               # NO
-cal_func(data_new$gender, data_new$Q_BIS_1_Cogntive_Instability)       # NO
-cal_func(data_new$gender, data_new$Q_BIS_2_Attentional_Impulsiveness)  # NO
-cal_func(data_new$gender, data_new$Q_BIS_2_Motor_Impulsiveness)        # NO
-cal_func(data_new$gender, data_new$Q_BIS_2_Nonplanning_Impulsiveness)  # NO
-
-cal_func(data_new$gender, data_new$IST_FreeBlockMean_pCorrs)           # NO
-cal_func(data_new$gender, data_new$IST_CostBlockMean_pCorrs)           # NO
-cal_func(data_new$gender, data_new$SSRT_sossrtInt)                     # NO
-cal_func(data_new$gender, data_new$CPTGNG_omission_errors)             # NO
-cal_func(data_new$gender, data_new$CPTGNG_commission_errors)           # NO
-cal_func(data_new$gender, data_new$MDQ_k_Final)                        # ** .16 male higher
-
-cal_func(data_new$gender, data_new$Q_BHS_Total)                        # NO
-cal_func(data_new$gender, data_new$Q_BHS_Feelings_about_future)        # NO
-cal_func(data_new$gender, data_new$Q_BHS_Loss_of_motivation)           # NO
-cal_func(data_new$gender, data_new$Q_BHS_Future_Expectations)          # NO
-cal_func(data_new$gender, data_new$perceived_lethality)                # <.06 .11 male high
-cal_func(data_new$gender, data_new$Q_BDI_Total)                        # * .08 f high
-```
 
 # BDI & Dpr
 ## BDI
@@ -2310,7 +2468,7 @@ cal_func(data_new$Q_UPPS_SensationSeeking, data_new$nssi_freq)            # NO
 cal_func(data_new$Q_BIS_Total, data_new$nssi_freq)                        # * .28-
 cal_func(data_new$Q_BIS_1_Attention, data_new$nssi_freq)                  # NO
 cal_func(data_new$Q_BIS_1_Motor, data_new$nssi_freq)                      # * .30-
-cal_func(data_new$Q_BIS_1_Self_Control, data_new$nssi_freq)               # * .35- 
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$nssi_freq)               # * .35- (df=14) 
 cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$nssi_freq)       # NO
 cal_func(data_new$Q_BIS_1_Preseverance, data_new$nssi_freq)               # NO
 cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$nssi_freq)       # NO
@@ -2635,7 +2793,7 @@ cal_func(data_new$aborted_freq, data_new$Q_UPPS_NegUrgency)                     
 cal_func(data_new$aborted_freq, data_new$Q_UPPS_Perseverance)                   # NO
 cal_func(data_new$aborted_freq, data_new$Q_UPPS_Premeditation)                  # NO
 cal_func(data_new$aborted_freq, data_new$Q_UPPS_PosUrgency)                     # NO
-cal_func(data_new$aborted_freq, data_new$Q_UPPS_SensationSeeking)               # ** .33-
+cal_func(data_new$aborted_freq, data_new$Q_UPPS_SensationSeeking)               # ** .33- (df=21)
 
 cal_func(data_new$aborted_freq, data_new$Q_BIS_Total)                           # NO
 cal_func(data_new$aborted_freq, data_new$Q_BIS_1_Attention)                     # NO
@@ -2673,7 +2831,77 @@ cal_func(data_new$aborted_freq, data_new$aborted_onset)                         
 cal_func(data_new$aborted_freq, data_new$aborted_duration)                      # NO
 ```
 
-# Realized Not Dead*
+# Lethality
+## Perceived Lethality ***
+```{r}
+cal_func(data_new$group, data_new$perceived_lethality)                              # **  .20 at high
+cal_func(data_new$thoughts_score_2, data_new$perceived_lethality)                   # NO
+cal_func(data_new$thoughts_want, data_new$perceived_lethality)                      # NO
+cal_func(data_new$thoughts_not_want, data_new$perceived_lethality)                  # NO
+cal_func(data_new$thoughts_score, data_new$perceived_lethality)                     # NO
+
+cal_func(data_new$TotalpthwyMean, data_new$perceived_lethality)                     # NO
+cal_func(data_new$pthwy_thoughts_amt, data_new$perceived_lethality)                 # NO
+cal_func(data_new$pthwy_thoughts_push, data_new$perceived_lethality)                # NO
+cal_func(data_new$pthwy_thoughts_pull, data_new$perceived_lethality)                # NO
+cal_func(data_new$pthwy_thoughts_counbal, data_new$perceived_lethality)             # NO
+
+cal_func(data_new$X1.2_Ever_made_a_plan, data_new$perceived_lethality)              # NO
+cal_func(data_new$X8.3_Mulled_for_this_attempt, data_new$perceived_lethality)       # NO
+
+cal_func(data_new$ThoughtsStart_Seconds_index, data_new$perceived_lethality)        # NO
+cal_func(data_new$MullingStarts_Seconds_index, data_new$perceived_lethality)        # NO
+cal_func(data_new$Decision_Seconds_index, data_new$perceived_lethality)             # NO
+cal_func(data_new$FirstMethod_Seconds_index, data_new$perceived_lethality)          # NO
+cal_func(data_new$SureMethod_Seconds_index, data_new$perceived_lethality)           # NO
+cal_func(data_new$FirstPlace_Seconds_index, data_new$perceived_lethality)           # NO
+cal_func(data_new$SurePlace_Seconds_index, data_new$perceived_lethality)            # NO
+
+cal_func(data_new$think_mull_decide, data_new$perceived_lethality)                  # NO
+cal_func(data_new$first_sure_method, data_new$perceived_lethality)                  # NO
+cal_func(data_new$first_sure_place, data_new$perceived_lethality)                   # NO
+cal_func(data_new$decide_method_place, data_new$perceived_lethality)                # NO
+cal_func(data_new$all_bins, data_new$perceived_lethality)                           # NO
+
+cal_func(data_new$X12.15_How_sure_want_to_die, data_new$perceived_lethality)        # *** .37 +
+cal_func(data_new$NumPrep_Total, data_new$perceived_lethality)                      # NO
+cal_func(data_new$X2.6_Num_AT, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$onset_age, data_new$perceived_lethality)                          # NO
+cal_func(data_new$mean_ideation, data_new$perceived_lethality)                      # NO
+cal_func(data_new$duration_ideation, data_new$perceived_lethality)                  # NO
+cal_func(data_new$range_ideation, data_new$perceived_lethality)                     # NO
+cal_func(data_new$sd_ideation, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$Q_UPPS_NegUrgency, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_UPPS_Perseverance, data_new$perceived_lethality)                # NO
+cal_func(data_new$Q_UPPS_Premeditation, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_UPPS_PosUrgency, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_UPPS_SensationSeeking, data_new$perceived_lethality)            # NO
+
+cal_func(data_new$Q_BIS_Total, data_new$perceived_lethality)                        # NO
+cal_func(data_new$Q_BIS_1_Attention, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_BIS_1_Motor, data_new$perceived_lethality)                      # NO
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$perceived_lethality)       # NO
+cal_func(data_new$Q_BIS_1_Preseverance, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$perceived_lethality)       # NO
+cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$perceived_lethality)  # NO
+cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$perceived_lethality)        # NO
+cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$perceived_lethality)  # NO
+
+cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$perceived_lethality)           # NO
+cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$perceived_lethality)           # NO
+cal_func(data_new$SSRT_sossrtInt, data_new$perceived_lethality)                     # NO
+cal_func(data_new$CPTGNG_omission_errors, data_new$perceived_lethality)             # NO
+cal_func(data_new$MDQ_k_Final, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$Q_BHS_Total, data_new$perceived_lethality)                        # NO
+cal_func(data_new$Q_BHS_Feelings_about_future, data_new$perceived_lethality)        # NO
+cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$perceived_lethality)           # NO
+cal_func(data_new$Q_BHS_Future_Expectations, data_new$perceived_lethality)          # NO
+```
+## Realized Not Dead *
 ```{r}
 cal_func(data_new$group, data_new$realize_not_dead)                                # NO
 cal_func(data_new$gender, data_new$realize_not_dead)                               # NO
@@ -2759,7 +2987,77 @@ cal_func(data_new$realize_not_dead, data_new$aborted_duration)                  
 cal_func(data_new$realize_not_dead, data_new$aborted_freq)                          # NO
 ```
 
-# Yrs since 1st at and lethality
+
+## Actual Lethality - not finished
+```{r}
+cal_func(data_new$group, data_new$perceived_lethality)                              # 
+cal_func(data_new$thoughts_score_2, data_new$perceived_lethality)                   # NO
+cal_func(data_new$thoughts_want, data_new$perceived_lethality)                      # NO
+cal_func(data_new$thoughts_not_want, data_new$perceived_lethality)                  # NO
+cal_func(data_new$thoughts_score, data_new$perceived_lethality)                     # NO
+
+cal_func(data_new$TotalpthwyMean, data_new$perceived_lethality)                     # NO
+cal_func(data_new$pthwy_thoughts_amt, data_new$perceived_lethality)                 # NO
+cal_func(data_new$pthwy_thoughts_push, data_new$perceived_lethality)                # NO
+cal_func(data_new$pthwy_thoughts_pull, data_new$perceived_lethality)                # NO
+cal_func(data_new$pthwy_thoughts_counbal, data_new$perceived_lethality)             # NO
+
+cal_func(data_new$X1.2_Ever_made_a_plan, data_new$perceived_lethality)              # NO
+cal_func(data_new$X8.3_Mulled_for_this_attempt, data_new$perceived_lethality)       # NO
+
+cal_func(data_new$ThoughtsStart_Seconds_index, data_new$perceived_lethality)        # NO
+cal_func(data_new$MullingStarts_Seconds_index, data_new$perceived_lethality)        # NO
+cal_func(data_new$Decision_Seconds_index, data_new$perceived_lethality)             # NO
+cal_func(data_new$FirstMethod_Seconds_index, data_new$perceived_lethality)          # NO
+cal_func(data_new$SureMethod_Seconds_index, data_new$perceived_lethality)           # NO
+cal_func(data_new$FirstPlace_Seconds_index, data_new$perceived_lethality)           # NO
+cal_func(data_new$SurePlace_Seconds_index, data_new$perceived_lethality)            # NO
+
+cal_func(data_new$think_mull_decide, data_new$perceived_lethality)                  # NO
+cal_func(data_new$first_sure_method, data_new$perceived_lethality)                  # NO
+cal_func(data_new$first_sure_place, data_new$perceived_lethality)                   # NO
+cal_func(data_new$decide_method_place, data_new$perceived_lethality)                # NO
+cal_func(data_new$all_bins, data_new$perceived_lethality)                           # NO
+
+cal_func(data_new$X12.15_How_sure_want_to_die, data_new$perceived_lethality)        # 
+cal_func(data_new$NumPrep_Total, data_new$perceived_lethality)                      # NO
+cal_func(data_new$X2.6_Num_AT, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$onset_age, data_new$perceived_lethality)                          # NO
+cal_func(data_new$mean_ideation, data_new$perceived_lethality)                      # NO
+cal_func(data_new$duration_ideation, data_new$perceived_lethality)                  # NO
+cal_func(data_new$range_ideation, data_new$perceived_lethality)                     # NO
+cal_func(data_new$sd_ideation, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$Q_UPPS_NegUrgency, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_UPPS_Perseverance, data_new$perceived_lethality)                # NO
+cal_func(data_new$Q_UPPS_Premeditation, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_UPPS_PosUrgency, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_UPPS_SensationSeeking, data_new$perceived_lethality)            # NO
+
+cal_func(data_new$Q_BIS_Total, data_new$perceived_lethality)                        # NO
+cal_func(data_new$Q_BIS_1_Attention, data_new$perceived_lethality)                  # NO
+cal_func(data_new$Q_BIS_1_Motor, data_new$perceived_lethality)                      # NO
+cal_func(data_new$Q_BIS_1_Self_Control, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_BIS_1_Cognitive_Complexity, data_new$perceived_lethality)       # NO
+cal_func(data_new$Q_BIS_1_Preseverance, data_new$perceived_lethality)               # NO
+cal_func(data_new$Q_BIS_1_Cogntive_Instability, data_new$perceived_lethality)       # NO
+cal_func(data_new$Q_BIS_2_Attentional_Impulsiveness, data_new$perceived_lethality)  # NO
+cal_func(data_new$Q_BIS_2_Motor_Impulsiveness, data_new$perceived_lethality)        # NO
+cal_func(data_new$Q_BIS_2_Nonplanning_Impulsiveness, data_new$perceived_lethality)  # NO
+
+cal_func(data_new$IST_FreeBlockMean_pCorrs, data_new$perceived_lethality)           # NO
+cal_func(data_new$IST_CostBlockMean_pCorrs, data_new$perceived_lethality)           # NO
+cal_func(data_new$SSRT_sossrtInt, data_new$perceived_lethality)                     # NO
+cal_func(data_new$CPTGNG_omission_errors, data_new$perceived_lethality)             # NO
+cal_func(data_new$MDQ_k_Final, data_new$perceived_lethality)                        # NO
+
+cal_func(data_new$Q_BHS_Total, data_new$perceived_lethality)                        # NO
+cal_func(data_new$Q_BHS_Feelings_about_future, data_new$perceived_lethality)        # NO
+cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$perceived_lethality)           # NO
+cal_func(data_new$Q_BHS_Future_Expectations, data_new$perceived_lethality)          # NO
+```
+# Yrs since 1st at and lethality?
 ```{r}
 cal_func(data_new$gender, data_new$yrs_since_1st_at)                               # NO
 cal_func(data_new$dpr_f, data_new$yrs_since_1st_at)                                # NO
@@ -2796,9 +3094,9 @@ cal_func(data_new$yrs_since_1st_at, data_new$X12.15_How_sure_want_to_die)       
 cal_func(data_new$yrs_since_1st_at, data_new$NumPrep_Total)                         # NO
 cal_func(data_new$yrs_since_1st_at, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$onset_age)                             # *
+cal_func(data_new$yrs_since_1st_at, data_new$onset_age)                             # * .18-
 cal_func(data_new$yrs_since_1st_at, data_new$mean_ideation)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$duration_ideation)                     # **
+cal_func(data_new$yrs_since_1st_at, data_new$duration_ideation)                     # ** .27+
 cal_func(data_new$yrs_since_1st_at, data_new$range_ideation)                        # NO
 cal_func(data_new$yrs_since_1st_at, data_new$sd_ideation)                           # NO
 
@@ -2849,7 +3147,7 @@ cal_func(data_new$yrs_since_1st_at, data_new$FirstID_to_FirstAction)            
 ```
 
 
-# ID to AT 
+# 1st ID to 1st AT 
 ```{r}
 cal_func(data_new$gender, data_new$FirstID_to_FirstAction)                               # NO
 cal_func(data_new$group, data_new$FirstID_to_FirstAction)                                # NO
@@ -2888,7 +3186,7 @@ cal_func(data_new$FirstID_to_FirstAction, data_new$X2.6_Num_AT)                 
 
 cal_func(data_new$FirstID_to_FirstAction, data_new$onset_age)                             # NO
 cal_func(data_new$FirstID_to_FirstAction, data_new$mean_ideation)                         # NO
-cal_func(data_new$FirstID_to_FirstAction, data_new$duration_ideation)                     # ***
+cal_func(data_new$FirstID_to_FirstAction, data_new$duration_ideation)                     # *** .31+
 cal_func(data_new$FirstID_to_FirstAction, data_new$range_ideation)                        # NO
 cal_func(data_new$FirstID_to_FirstAction, data_new$sd_ideation)                           # NO
 
@@ -2942,4 +3240,7 @@ cal_func(data_new$FirstID_to_FirstAction, data_new$aborted_freq)                
 data_new$FirstID_to_FirstAction
 summary(data_new$FirstID_to_FirstAction)
 ```
+
+
+
 

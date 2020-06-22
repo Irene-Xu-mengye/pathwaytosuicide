@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1592669805972.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "7|34|351|0|\n353|23|368|0|\n370|23|744|0|\n627|16|744|0|\n745|18|1525|0|\n882|23|898|3|\n899|32|912|3|\n913|22|922|0|\n923|51|928|3|\n929|39|933|3|\n934|21|937|3|\n938|22|979|0|\n980|22|1525|0|\n1526|15|1593|0|\n1594|14|1670|3|\n1671|19|1683|0|\n1684|17|2065|0|\n",
+    "hash" : "249122922",
+    "id" : "8EBD5733",
+    "lastKnownWriteTime" : 1592801893,
+    "last_content_update" : 1592801959796,
+    "path" : "~/Desktop/pathwaytosuicide/Impulsivity and Pathway to Suicide.rmd",
+    "project_path" : "Impulsivity and Pathway to Suicide.rmd",
+    "properties" : {
+        "cursorPosition" : "2065,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
