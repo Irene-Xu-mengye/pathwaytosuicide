@@ -12,15 +12,15 @@
     "path" : null,
     "project_path" : null,
     "properties" : {
-        "cacheKey" : "BF9337F0",
+        "cacheKey" : "6245D71B",
         "caption" : "data_new",
-        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=data_new&cache_key=BF9337F0",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=data_new&cache_key=6245D71B",
         "displayedObservations" : "50",
         "environment" : "",
         "object" : "data_new",
         "preview" : "0",
         "totalObservations" : "50",
-        "variables" : "156"
+        "variables" : "178"
     },
     "relative_order" : 3,
     "source_on_save" : false,
