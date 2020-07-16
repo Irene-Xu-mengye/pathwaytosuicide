@@ -1,5 +1,5 @@
 ---
-title: "Correlations"
+title: "Correlations (Time bins were outdated)"
 date: "Last updated on `r Sys.Date()`"
 author: "Irene"
 output:
@@ -36,7 +36,7 @@ cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_dprime_All)      
 cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_dprime_All)           # NO
 cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_dprime_All)          # NO
 
-cal_func(data_new$thoughts_score_2, data_new$CPTGNG_dprime_All)                   # NO
+cal_func(data_new$thoughts_amt, data_new$CPTGNG_dprime_All)                   # NO
 cal_func(data_new$thoughts_score, data_new$CPTGNG_dprime_All)                     # NO
 cal_func(data_new$thoughts_want, data_new$CPTGNG_dprime_All)                      # * .11+
 cal_func(data_new$thoughts_not_want, data_new$CPTGNG_dprime_All)                  # NO
@@ -69,11 +69,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_dprime_All)      
 cal_func(data_new$NumPrep_Total, data_new$CPTGNG_dprime_All)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_dprime_All)                        # NO
 
-cal_func(data_new$onset_age, data_new$CPTGNG_dprime_All)                          # NO
-cal_func(data_new$mean_ideation, data_new$CPTGNG_dprime_All)                      # NO
-cal_func(data_new$duration_ideation, data_new$CPTGNG_dprime_All)                  # NO
-cal_func(data_new$range_ideation, data_new$CPTGNG_dprime_All)                     # NO
-cal_func(data_new$sd_ideation, data_new$CPTGNG_dprime_All)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$CPTGNG_dprime_All)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$CPTGNG_dprime_All)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$CPTGNG_dprime_All)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$CPTGNG_dprime_All)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$CPTGNG_dprime_All)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_dprime_All)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_dprime_All)                # NO
@@ -110,7 +110,7 @@ cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_commission_errors
 cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_commission_errors)           # NO
 cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_commission_errors)          # NO
 
-cal_func(data_new$thoughts_score_2, data_new$CPTGNG_commission_errors)                   # NO
+cal_func(data_new$thoughts_amt, data_new$CPTGNG_commission_errors)                   # NO
 cal_func(data_new$thoughts_score, data_new$CPTGNG_commission_errors)                     # NO
 cal_func(data_new$thoughts_want, data_new$CPTGNG_commission_errors)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$CPTGNG_commission_errors)                  # NO
@@ -143,11 +143,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_commission_errors
 cal_func(data_new$NumPrep_Total, data_new$CPTGNG_commission_errors)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_commission_errors)                        # NO
 
-cal_func(data_new$onset_age, data_new$CPTGNG_commission_errors)                          # NO
-cal_func(data_new$mean_ideation, data_new$CPTGNG_commission_errors)                      # NO
-cal_func(data_new$duration_ideation, data_new$CPTGNG_commission_errors)                  # NO
-cal_func(data_new$range_ideation, data_new$CPTGNG_commission_errors)                     # NO
-cal_func(data_new$sd_ideation, data_new$CPTGNG_commission_errors)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$CPTGNG_commission_errors)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$CPTGNG_commission_errors)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$CPTGNG_commission_errors)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$CPTGNG_commission_errors)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$CPTGNG_commission_errors)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_commission_errors)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_commission_errors)                # NO
@@ -183,7 +183,7 @@ cal_func(data_new$Q_BHS_Feelings_about_future, data_new$CPTGNG_omission_errors) 
 cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$CPTGNG_omission_errors)           # NO
 cal_func(data_new$Q_BHS_Future_Expectations, data_new$CPTGNG_omission_errors)          # NO
 
-cal_func(data_new$thoughts_score_2, data_new$CPTGNG_omission_errors)                   # NO
+cal_func(data_new$thoughts_amt, data_new$CPTGNG_omission_errors)                   # NO
 cal_func(data_new$thoughts_score, data_new$CPTGNG_omission_errors)                     # NO
 cal_func(data_new$thoughts_want, data_new$CPTGNG_omission_errors)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$CPTGNG_omission_errors)                  # NO
@@ -216,11 +216,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$CPTGNG_omission_errors) 
 cal_func(data_new$NumPrep_Total, data_new$CPTGNG_omission_errors)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$CPTGNG_omission_errors)                        # * .16+
 
-cal_func(data_new$onset_age, data_new$CPTGNG_omission_errors)                          # NO
-cal_func(data_new$mean_ideation, data_new$CPTGNG_omission_errors)                      # NO
-cal_func(data_new$duration_ideation, data_new$CPTGNG_omission_errors)                  # NO
-cal_func(data_new$range_ideation, data_new$CPTGNG_omission_errors)                     # NO
-cal_func(data_new$sd_ideation, data_new$CPTGNG_omission_errors)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$CPTGNG_omission_errors)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$CPTGNG_omission_errors)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$CPTGNG_omission_errors)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$CPTGNG_omission_errors)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$CPTGNG_omission_errors)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$CPTGNG_omission_errors)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$CPTGNG_omission_errors)                # NO
@@ -366,21 +366,21 @@ cal_func(data_new$all_bins, data_new$thoughts_not_want)               # NO
 ```
 #### Amount *
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$thoughts_score_2)     # NO
-cal_func(data_new$Mull_bin, data_new$thoughts_score_2)              # NO
-cal_func(data_new$Decision_bin, data_new$thoughts_score_2)          # NO
-cal_func(data_new$firstMethod_bin, data_new$thoughts_score_2)       # NO
-cal_func(data_new$SureMethod_bin, data_new$thoughts_score_2)        # NO
-cal_func(data_new$firstPlace_bin, data_new$thoughts_score_2)        # * .13 -
-cal_func(data_new$SurePlace_bin, data_new$thoughts_score_2)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$thoughts_amt)     # NO
+cal_func(data_new$Mull_bin, data_new$thoughts_amt)              # NO
+cal_func(data_new$Decision_bin, data_new$thoughts_amt)          # NO
+cal_func(data_new$firstMethod_bin, data_new$thoughts_amt)       # NO
+cal_func(data_new$SureMethod_bin, data_new$thoughts_amt)        # NO
+cal_func(data_new$firstPlace_bin, data_new$thoughts_amt)        # * .13 -
+cal_func(data_new$SurePlace_bin, data_new$thoughts_amt)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$thoughts_score_2)      # NO
-cal_func(data_new$first_sure_method, data_new$thoughts_score_2)      # NO
-cal_func(data_new$first_sure_place, data_new$thoughts_score_2)       # * .14 -
-cal_func(data_new$decide_method_place, data_new$thoughts_score_2)    # NO
-cal_func(data_new$all_bins, data_new$thoughts_score_2)               # NO
+cal_func(data_new$think_mull_decide, data_new$thoughts_amt)      # NO
+cal_func(data_new$first_sure_method, data_new$thoughts_amt)      # NO
+cal_func(data_new$first_sure_place, data_new$thoughts_amt)       # * .14 -
+cal_func(data_new$decide_method_place, data_new$thoughts_amt)    # NO
+cal_func(data_new$all_bins, data_new$thoughts_amt)               # NO
 
-ggplot(data_new, aes(x = thoughts_score_2, y = firstPlace_bin)) +
+ggplot(data_new, aes(x = thoughts_amt, y = firstPlace_bin)) +
   geom_point(col = "red", size = 5, alpha = 0.5) +
   geom_point(data = data_new, size = 5, aes(y = first_sure_place), color = "blue", alpha = 0.5) +
 ```
@@ -423,11 +423,11 @@ cal_func(data_new$all_bins, data_new$NumPrep_Total)                          # *
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$NumPrep_Total)       # *  .11 +
 cal_func(data_new$X2.6_Num_AT, data_new$NumPrep_Total)                       # NO
 
-cal_func(data_new$onset_age, data_new$NumPrep_Total)                         # *** .23 +
-cal_func(data_new$mean_ideation, data_new$NumPrep_Total)                     # NO
-cal_func(data_new$duration_ideation, data_new$NumPrep_Total)                 # NO
-cal_func(data_new$range_ideation, data_new$NumPrep_Total)                    # **  .19 +
-cal_func(data_new$sd_ideation, data_new$NumPrep_Total)                       # **  .16 +
+cal_func(data_new$lifetimeSI_onset, data_new$NumPrep_Total)                         # *** .23 +
+cal_func(data_new$lifetimeSI_mean, data_new$NumPrep_Total)                     # NO
+cal_func(data_new$lifetimeSI_duration, data_new$NumPrep_Total)                 # NO
+cal_func(data_new$lifetimeSI_range, data_new$NumPrep_Total)                    # **  .19 +
+cal_func(data_new$lifetimeSI_sd, data_new$NumPrep_Total)                       # **  .16 +
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$NumPrep_Total)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$NumPrep_Total)                # NO
@@ -482,7 +482,7 @@ cal_func(data_new$suicide_intent_f, data_new$decide_method_place)               
 cal_func(data_new$suicide_intent_f, data_new$all_bins)                                  # **  .25 +
 
 cal_func(data_new$gender, data_new$X2.6_Confirm_suicide_intent)                         # NO
-cal_func(data_new$suicide_intent_f, data_new$thoughts_score_2)                          # NO
+cal_func(data_new$suicide_intent_f, data_new$thoughts_amt)                          # NO
 cal_func(data_new$suicide_intent_f, data_new$thoughts_want)                             # NO
 cal_func(data_new$suicide_intent_f, data_new$thoughts_not_want)                         # NO
 cal_func(data_new$suicide_intent_f, data_new$thoughts_score)                            # NO
@@ -515,11 +515,11 @@ cal_func(data_new$suicide_intent_f, data_new$X12.15_How_sure_want_to_die)       
 cal_func(data_new$suicide_intent_f, data_new$NumPrep_Total)                             # NO
 cal_func(data_new$suicide_intent_f, data_new$X2.6_Num_AT)                               # NO
 
-cal_func(data_new$suicide_intent_f, data_new$onset_age)                                 # NO
-cal_func(data_new$suicide_intent_f, data_new$mean_ideation)                             # NO
-cal_func(data_new$suicide_intent_f, data_new$duration_ideation)                         # NO
-cal_func(data_new$suicide_intent_f, data_new$range_ideation)                            # NO
-cal_func(data_new$suicide_intent_f, data_new$sd_ideation)                               # NO
+cal_func(data_new$suicide_intent_f, data_new$lifetimeSI_onset)                                 # NO
+cal_func(data_new$suicide_intent_f, data_new$lifetimeSI_mean)                             # NO
+cal_func(data_new$suicide_intent_f, data_new$lifetimeSI_duration)                         # NO
+cal_func(data_new$suicide_intent_f, data_new$lifetimeSI_range)                            # NO
+cal_func(data_new$suicide_intent_f, data_new$lifetimeSI_sd)                               # NO
 
 cal_func(data_new$suicide_intent_f, data_new$Q_UPPS_NegUrgency)                         # NO
 cal_func(data_new$suicide_intent_f, data_new$Q_UPPS_Perseverance)                       # NO
@@ -929,86 +929,151 @@ cal_func(data_new$first_sure_place, data_new$CPTGNG_commission_errors)       # N
 cal_func(data_new$decide_method_place, data_new$CPTGNG_commission_errors)    # NO
 cal_func(data_new$all_bins, data_new$CPTGNG_commission_errors)               # NO
 ```
+## Hopelessness?
+### BHS **
+```{r}
+cal_func(data_new$ThoughtsStart_bin, data_new$Q_BHS_Total)     # ** .14 -
+cal_func(data_new$Mull_bin, data_new$Q_BHS_Total)              # NO
+cal_func(data_new$Decision_bin, data_new$Q_BHS_Total)          # NO
+cal_func(data_new$firstMethod_bin, data_new$Q_BHS_Total)       # NO
+cal_func(data_new$SureMethod_bin, data_new$Q_BHS_Total)        # NO
+cal_func(data_new$firstPlace_bin, data_new$Q_BHS_Total)        # NO
+cal_func(data_new$SurePlace_bin, data_new$Q_BHS_Total)         # NO
+
+cal_func(data_new$think_mull_decide, data_new$Q_BHS_Total)     # NO
+cal_func(data_new$first_sure_method, data_new$Q_BHS_Total)     # NO
+cal_func(data_new$first_sure_place, data_new$Q_BHS_Total)      # NO
+cal_func(data_new$decide_method_place, data_new$Q_BHS_Total)   # NO
+cal_func(data_new$all_bins, data_new$Q_BHS_Total)              # NO
+```
+#### Feelings about future -NO
+```{r}
+cal_func(data_new$ThoughtsStart_bin, data_new$Q_BHS_Feelings_about_future)     # NO
+cal_func(data_new$Mull_bin, data_new$Q_BHS_Feelings_about_future)              # NO
+cal_func(data_new$Decision_bin, data_new$Q_BHS_Feelings_about_future)          # NO
+cal_func(data_new$firstMethod_bin, data_new$Q_BHS_Feelings_about_future)       # NO
+cal_func(data_new$SureMethod_bin, data_new$Q_BHS_Feelings_about_future)        # NO
+cal_func(data_new$firstPlace_bin, data_new$Q_BHS_Feelings_about_future)        # NO
+cal_func(data_new$SurePlace_bin, data_new$Q_BHS_Feelings_about_future)         # NO
+
+cal_func(data_new$think_mull_decide, data_new$Q_BHS_Feelings_about_future)     # NO
+cal_func(data_new$first_sure_method, data_new$Q_BHS_Feelings_about_future)     # NO
+cal_func(data_new$first_sure_place, data_new$Q_BHS_Feelings_about_future)      # NO
+cal_func(data_new$decide_method_place, data_new$Q_BHS_Feelings_about_future)   # NO
+cal_func(data_new$all_bins, data_new$Q_BHS_Feelings_about_future)              # NO
+```
+#### loss of motivation **
+```{r}
+cal_func(data_new$ThoughtsStart_bin, data_new$Q_BHS_Loss_of_motivation)     # ** .18 -
+cal_func(data_new$Mull_bin, data_new$Q_BHS_Loss_of_motivation)              # NO
+cal_func(data_new$Decision_bin, data_new$Q_BHS_Loss_of_motivation)          # NO
+cal_func(data_new$firstMethod_bin, data_new$Q_BHS_Loss_of_motivation)       # NO
+cal_func(data_new$SureMethod_bin, data_new$Q_BHS_Loss_of_motivation)        # NO
+cal_func(data_new$firstPlace_bin, data_new$Q_BHS_Loss_of_motivation)        # NO
+cal_func(data_new$SurePlace_bin, data_new$Q_BHS_Loss_of_motivation)         # NO
+
+cal_func(data_new$think_mull_decide, data_new$Q_BHS_Loss_of_motivation)     # NO
+cal_func(data_new$first_sure_method, data_new$Q_BHS_Loss_of_motivation)     # NO
+cal_func(data_new$first_sure_place, data_new$Q_BHS_Loss_of_motivation)      # NO
+cal_func(data_new$decide_method_place, data_new$Q_BHS_Loss_of_motivation)   # NO
+cal_func(data_new$all_bins, data_new$Q_BHS_Loss_of_motivation)              # NO
+```
+#### future expectations *
+```{r}
+cal_func(data_new$ThoughtsStart_bin, data_new$Q_BHS_Future_Expectations)     # * .09 -
+cal_func(data_new$Mull_bin, data_new$Q_BHS_Future_Expectations)              # NO
+cal_func(data_new$Decision_bin, data_new$Q_BHS_Future_Expectations)          # NO
+cal_func(data_new$firstMethod_bin, data_new$Q_BHS_Future_Expectations)       # NO
+cal_func(data_new$SureMethod_bin, data_new$Q_BHS_Future_Expectations)        # NO
+cal_func(data_new$firstPlace_bin, data_new$Q_BHS_Future_Expectations)        # NO
+cal_func(data_new$SurePlace_bin, data_new$Q_BHS_Future_Expectations)         # NO
+
+cal_func(data_new$think_mull_decide, data_new$Q_BHS_Future_Expectations)     # NO
+cal_func(data_new$first_sure_method, data_new$Q_BHS_Future_Expectations)     # NO
+cal_func(data_new$first_sure_place, data_new$Q_BHS_Future_Expectations)      # NO
+cal_func(data_new$decide_method_place, data_new$Q_BHS_Future_Expectations)   # NO
+cal_func(data_new$all_bins, data_new$Q_BHS_Future_Expectations)              # NO
+```
 ## lifetime SI pattern ***
 ### onset ***
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$onset_age)     # NO
-cal_func(data_new$Mull_bin, data_new$onset_age)              # NO
-cal_func(data_new$Decision_bin, data_new$onset_age)          # *** .27 -
-cal_func(data_new$firstMethod_bin, data_new$onset_age)       # **  .14 -
-cal_func(data_new$SureMethod_bin, data_new$onset_age)        # NO
-cal_func(data_new$firstPlace_bin, data_new$onset_age)        # *   .15 -
-cal_func(data_new$SurePlace_bin, data_new$onset_age)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$lifetimeSI_onset)     # NO
+cal_func(data_new$Mull_bin, data_new$lifetimeSI_onset)              # NO
+cal_func(data_new$Decision_bin, data_new$lifetimeSI_onset)          # *** .27 -
+cal_func(data_new$firstMethod_bin, data_new$lifetimeSI_onset)       # **  .14 -
+cal_func(data_new$SureMethod_bin, data_new$lifetimeSI_onset)        # NO
+cal_func(data_new$firstPlace_bin, data_new$lifetimeSI_onset)        # *   .15 -
+cal_func(data_new$SurePlace_bin, data_new$lifetimeSI_onset)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$onset_age)     # *  .17 -
-cal_func(data_new$first_sure_method, data_new$onset_age)     # NO
-cal_func(data_new$first_sure_place, data_new$onset_age)      # *  .14 -
-cal_func(data_new$decide_method_place, data_new$onset_age)   # *  .15 -
-cal_func(data_new$all_bins, data_new$onset_age)              # ** .20 -
+cal_func(data_new$think_mull_decide, data_new$lifetimeSI_onset)     # *  .17 -
+cal_func(data_new$first_sure_method, data_new$lifetimeSI_onset)     # NO
+cal_func(data_new$first_sure_place, data_new$lifetimeSI_onset)      # *  .14 -
+cal_func(data_new$decide_method_place, data_new$lifetimeSI_onset)   # *  .15 -
+cal_func(data_new$all_bins, data_new$lifetimeSI_onset)              # ** .20 -
 ```
 ### mean *
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$mean_ideation)     # NO
-cal_func(data_new$Mull_bin, data_new$mean_ideation)              # NO
-cal_func(data_new$Decision_bin, data_new$mean_ideation)          # NO
-cal_func(data_new$firstMethod_bin, data_new$mean_ideation)       # NO
-cal_func(data_new$SureMethod_bin, data_new$mean_ideation)        # NO
-cal_func(data_new$firstPlace_bin, data_new$mean_ideation)        # NO
-cal_func(data_new$SurePlace_bin, data_new$mean_ideation)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$lifetimeSI_mean)     # NO
+cal_func(data_new$Mull_bin, data_new$lifetimeSI_mean)              # NO
+cal_func(data_new$Decision_bin, data_new$lifetimeSI_mean)          # NO
+cal_func(data_new$firstMethod_bin, data_new$lifetimeSI_mean)       # NO
+cal_func(data_new$SureMethod_bin, data_new$lifetimeSI_mean)        # NO
+cal_func(data_new$firstPlace_bin, data_new$lifetimeSI_mean)        # NO
+cal_func(data_new$SurePlace_bin, data_new$lifetimeSI_mean)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$mean_ideation)     # * .12 -
-cal_func(data_new$first_sure_method, data_new$mean_ideation)     # NO
-cal_func(data_new$first_sure_place, data_new$mean_ideation)      # NO
-cal_func(data_new$decide_method_place, data_new$mean_ideation)   # NO
-cal_func(data_new$all_bins, data_new$mean_ideation)              # NO
+cal_func(data_new$think_mull_decide, data_new$lifetimeSI_mean)     # * .12 -
+cal_func(data_new$first_sure_method, data_new$lifetimeSI_mean)     # NO
+cal_func(data_new$first_sure_place, data_new$lifetimeSI_mean)      # NO
+cal_func(data_new$decide_method_place, data_new$lifetimeSI_mean)   # NO
+cal_func(data_new$all_bins, data_new$lifetimeSI_mean)              # NO
 ```
 ### sd  -NO
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$sd_ideation)     # NO
-cal_func(data_new$Mull_bin, data_new$sd_ideation)              # NO
-cal_func(data_new$Decision_bin, data_new$sd_ideation)          # NO
-cal_func(data_new$firstMethod_bin, data_new$sd_ideation)       # NO
-cal_func(data_new$SureMethod_bin, data_new$sd_ideation)        # NO
-cal_func(data_new$firstPlace_bin, data_new$sd_ideation)        # NO
-cal_func(data_new$SurePlace_bin, data_new$sd_ideation)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$lifetimeSI_sd)     # NO
+cal_func(data_new$Mull_bin, data_new$lifetimeSI_sd)              # NO
+cal_func(data_new$Decision_bin, data_new$lifetimeSI_sd)          # NO
+cal_func(data_new$firstMethod_bin, data_new$lifetimeSI_sd)       # NO
+cal_func(data_new$SureMethod_bin, data_new$lifetimeSI_sd)        # NO
+cal_func(data_new$firstPlace_bin, data_new$lifetimeSI_sd)        # NO
+cal_func(data_new$SurePlace_bin, data_new$lifetimeSI_sd)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$sd_ideation)     # NO
-cal_func(data_new$first_sure_method, data_new$sd_ideation)     # NO
-cal_func(data_new$first_sure_place, data_new$sd_ideation)      # NO
-cal_func(data_new$decide_method_place, data_new$sd_ideation)   # NO
-cal_func(data_new$all_bins, data_new$sd_ideation)              # NO
+cal_func(data_new$think_mull_decide, data_new$lifetimeSI_sd)     # NO
+cal_func(data_new$first_sure_method, data_new$lifetimeSI_sd)     # NO
+cal_func(data_new$first_sure_place, data_new$lifetimeSI_sd)      # NO
+cal_func(data_new$decide_method_place, data_new$lifetimeSI_sd)   # NO
+cal_func(data_new$all_bins, data_new$lifetimeSI_sd)              # NO
 ```
 ### duration **
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$duration_ideation)     # NO
-cal_func(data_new$Mull_bin, data_new$duration_ideation)              # NO
-cal_func(data_new$Decision_bin, data_new$duration_ideation)          # NO
-cal_func(data_new$firstMethod_bin, data_new$duration_ideation)       # **  .14 +
-cal_func(data_new$SureMethod_bin, data_new$duration_ideation)        # NO
-cal_func(data_new$firstPlace_bin, data_new$duration_ideation)        # *   .12 +
-cal_func(data_new$SurePlace_bin, data_new$duration_ideation)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$lifetimeSI_duration)     # NO
+cal_func(data_new$Mull_bin, data_new$lifetimeSI_duration)              # NO
+cal_func(data_new$Decision_bin, data_new$lifetimeSI_duration)          # NO
+cal_func(data_new$firstMethod_bin, data_new$lifetimeSI_duration)       # **  .14 +
+cal_func(data_new$SureMethod_bin, data_new$lifetimeSI_duration)        # NO
+cal_func(data_new$firstPlace_bin, data_new$lifetimeSI_duration)        # *   .12 +
+cal_func(data_new$SurePlace_bin, data_new$lifetimeSI_duration)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$duration_ideation)     # NO
-cal_func(data_new$first_sure_method, data_new$duration_ideation)     # NO
-cal_func(data_new$first_sure_place, data_new$duration_ideation)      # NO
-cal_func(data_new$decide_method_place, data_new$duration_ideation)   # NO
-cal_func(data_new$all_bins, data_new$duration_ideation)              # NO
+cal_func(data_new$think_mull_decide, data_new$lifetimeSI_duration)     # NO
+cal_func(data_new$first_sure_method, data_new$lifetimeSI_duration)     # NO
+cal_func(data_new$first_sure_place, data_new$lifetimeSI_duration)      # NO
+cal_func(data_new$decide_method_place, data_new$lifetimeSI_duration)   # NO
+cal_func(data_new$all_bins, data_new$lifetimeSI_duration)              # NO
 ```
 ### range -NO
 ```{r}
-cal_func(data_new$ThoughtsStart_bin, data_new$range_ideation)     # NO
-cal_func(data_new$Mull_bin, data_new$range_ideation)              # NO
-cal_func(data_new$Decision_bin, data_new$range_ideation)          # NO
-cal_func(data_new$firstMethod_bin, data_new$range_ideation)       # NO
-cal_func(data_new$SureMethod_bin, data_new$range_ideation)        # NO
-cal_func(data_new$firstPlace_bin, data_new$range_ideation)        # NO
-cal_func(data_new$SurePlace_bin, data_new$range_ideation)         # NO
+cal_func(data_new$ThoughtsStart_bin, data_new$lifetimeSI_range)     # NO
+cal_func(data_new$Mull_bin, data_new$lifetimeSI_range)              # NO
+cal_func(data_new$Decision_bin, data_new$lifetimeSI_range)          # NO
+cal_func(data_new$firstMethod_bin, data_new$lifetimeSI_range)       # NO
+cal_func(data_new$SureMethod_bin, data_new$lifetimeSI_range)        # NO
+cal_func(data_new$firstPlace_bin, data_new$lifetimeSI_range)        # NO
+cal_func(data_new$SurePlace_bin, data_new$lifetimeSI_range)         # NO
 
-cal_func(data_new$think_mull_decide, data_new$range_ideation)     # NO
-cal_func(data_new$first_sure_method, data_new$range_ideation)     # NO
-cal_func(data_new$first_sure_place, data_new$range_ideation)      # NO
-cal_func(data_new$decide_method_place, data_new$range_ideation)   # NO
-cal_func(data_new$all_bins, data_new$range_ideation)              # NO
+cal_func(data_new$think_mull_decide, data_new$lifetimeSI_range)     # NO
+cal_func(data_new$first_sure_method, data_new$lifetimeSI_range)     # NO
+cal_func(data_new$first_sure_place, data_new$lifetimeSI_range)      # NO
+cal_func(data_new$decide_method_place, data_new$lifetimeSI_range)   # NO
+cal_func(data_new$all_bins, data_new$lifetimeSI_range)              # NO
 ```
 ### num of at -NO
 ```{r}
@@ -1045,11 +1110,11 @@ cal_func(data_new$all_bins, data_new$TotalpthwyMean)                           #
 cal_func(data_new$NumPrep_Total, data_new$TotalpthwyMean)                      # <.06 .06 +
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$TotalpthwyMean)        # NO
 
-cal_func(data_new$onset_age, data_new$TotalpthwyMean)                          # NO
-cal_func(data_new$mean_ideation, data_new$TotalpthwyMean)                      # NO
-cal_func(data_new$duration_ideation, data_new$TotalpthwyMean)                  # NO
-cal_func(data_new$range_ideation, data_new$TotalpthwyMean)                     # *** .22 +
-cal_func(data_new$sd_ideation, data_new$TotalpthwyMean)                        # *   .14 +
+cal_func(data_new$lifetimeSI_onset, data_new$TotalpthwyMean)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$TotalpthwyMean)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$TotalpthwyMean)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$TotalpthwyMean)                     # *** .22 +
+cal_func(data_new$lifetimeSI_sd, data_new$TotalpthwyMean)                        # *   .14 +
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$TotalpthwyMean)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$TotalpthwyMean)                # NO
@@ -1103,11 +1168,11 @@ cal_func(data_new$whether_planned_f, data_new$X12.15_How_sure_want_to_die)      
 cal_func(data_new$whether_planned_f, data_new$NumPrep_Total)                          # NO
 
 cal_func(data_new$whether_planned_f, data_new$X2.6_Num_AT)                            # NO
-cal_func(data_new$whether_planned_f, data_new$onset_age)                              # NO
-cal_func(data_new$whether_planned_f, data_new$mean_ideation)                          # NO
-cal_func(data_new$whether_planned_f, data_new$duration_ideation)                      # NO
-cal_func(data_new$whether_planned_f, data_new$range_ideation)                         # NO
-cal_func(data_new$whether_planned_f, data_new$sd_ideation)                            # NO
+cal_func(data_new$whether_planned_f, data_new$lifetimeSI_onset)                              # NO
+cal_func(data_new$whether_planned_f, data_new$lifetimeSI_mean)                          # NO
+cal_func(data_new$whether_planned_f, data_new$lifetimeSI_duration)                      # NO
+cal_func(data_new$whether_planned_f, data_new$lifetimeSI_range)                         # NO
+cal_func(data_new$whether_planned_f, data_new$lifetimeSI_sd)                            # NO
 
 cal_func(data_new$whether_planned_f, data_new$Q_UPPS_NegUrgency)                      # NO
 cal_func(data_new$whether_planned_f, data_new$Q_UPPS_Perseverance)                    # NO
@@ -1152,7 +1217,7 @@ cal_func(data_new$group, data_new$X8.3_Mulled_for_this_attempt)                 
 cal_func(data_new$dpr_f, data_new$X8.3_Mulled_for_this_attempt)                    # NO
 cal_func(data_new$suicide_intent_f, data_new$X8.3_Mulled_for_this_attempt)         # <.06 .14+
 
-cal_func(data_new$whether_mulled_f, data_new$thoughts_score_2)                     # * .12-
+cal_func(data_new$whether_mulled_f, data_new$thoughts_amt)                     # * .12-
 cal_func(data_new$whether_mulled_f, data_new$thoughts_want)                        # NO
 cal_func(data_new$whether_mulled_f, data_new$thoughts_not_want)                    # * .11-
 cal_func(data_new$whether_mulled_f, data_new$thoughts_score)                       # NO
@@ -1177,11 +1242,11 @@ cal_func(data_new$whether_mulled_f, data_new$X12.15_How_sure_want_to_die)       
 cal_func(data_new$whether_mulled_f, data_new$NumPrep_Total)                        # NO
 cal_func(data_new$whether_mulled_f, data_new$X2.6_Num_AT)                          # NO
 
-cal_func(data_new$whether_mulled_f, data_new$onset_age)                            # NO
-cal_func(data_new$whether_mulled_f, data_new$mean_ideation)                        # * .10-
-cal_func(data_new$whether_mulled_f, data_new$sd_ideation)                          # NO
-cal_func(data_new$whether_mulled_f, data_new$range_ideation)                       # NO
-cal_func(data_new$whether_mulled_f, data_new$duration_ideation)                    # NO
+cal_func(data_new$whether_mulled_f, data_new$lifetimeSI_onset)                            # NO
+cal_func(data_new$whether_mulled_f, data_new$lifetimeSI_mean)                        # * .10-
+cal_func(data_new$whether_mulled_f, data_new$lifetimeSI_sd)                          # NO
+cal_func(data_new$whether_mulled_f, data_new$lifetimeSI_range)                       # NO
+cal_func(data_new$whether_mulled_f, data_new$lifetimeSI_duration)                    # NO
 
 cal_func(data_new$whether_mulled_f, data_new$Q_UPPS_NegUrgency)                    # NO
 cal_func(data_new$whether_mulled_f, data_new$Q_UPPS_Perseverance)                  # NO
@@ -1240,7 +1305,7 @@ cal_func(data_new$group, data_new$all_bins)              # NO
 data_gender_num <- data_new %>%
   mutate(gender_num = ifelse(gender == "F", 0, 1))
 cal_func(data_gender_num$group, data_gender_num$gender_num)            # NO
-cal_func(data_new$gender, data_new$thoughts_score_2)                   # NO
+cal_func(data_new$gender, data_new$thoughts_amt)                   # NO
 cal_func(data_new$gender, data_new$thoughts_want)                      # NO
 cal_func(data_new$gender, data_new$thoughts_not_want)                  # NO
 cal_func(data_new$gender, data_new$thoughts_score)                     # NO
@@ -1271,11 +1336,11 @@ cal_func(data_new$gender, data_new$X12.15_How_sure_want_to_die)        # NO
 cal_func(data_new$gender, data_new$NumPrep_Total)                      # NO
 cal_func(data_new$gender, data_new$X2.6_Num_AT)                        # NO
 
-cal_func(data_new$gender, data_new$onset_age)                          # NO
-cal_func(data_new$gender, data_new$mean_ideation)                      # *  .11
-cal_func(data_new$gender, data_new$duration_ideation)                  # NO
-cal_func(data_new$gender, data_new$range_ideation)                     # NO
-cal_func(data_new$gender, data_new$sd_ideation)                        # NO
+cal_func(data_new$gender, data_new$lifetimeSI_onset)                          # NO
+cal_func(data_new$gender, data_new$lifetimeSI_mean)                      # *  .11
+cal_func(data_new$gender, data_new$lifetimeSI_duration)                  # NO
+cal_func(data_new$gender, data_new$lifetimeSI_range)                     # NO
+cal_func(data_new$gender, data_new$lifetimeSI_sd)                        # NO
 
 cal_func(data_new$gender, data_new$Q_UPPS_NegUrgency)                  # NO
 cal_func(data_new$gender, data_new$Q_UPPS_Perseverance)                # NO
@@ -1312,7 +1377,7 @@ cal_func(data_new$gender, data_new$Q_BDI_Total)                        # * .08 f
 ### Amount
 ```{r}
 cal_func(data_new$group, data_new$pthwy_thoughts_amt)                              # *** .31 at more
-cal_func(data_new$thoughts_score_2, data_new$pthwy_thoughts_amt)                   # NO
+cal_func(data_new$thoughts_amt, data_new$pthwy_thoughts_amt)                   # NO
 cal_func(data_new$thoughts_want, data_new$pthwy_thoughts_amt)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$pthwy_thoughts_amt)                  # NO
 cal_func(data_new$thoughts_score, data_new$pthwy_thoughts_amt)                     # NO
@@ -1340,11 +1405,11 @@ cal_func(data_new$NumPrep_Total, data_new$pthwy_thoughts_amt)                   
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$pthwy_thoughts_amt)        # NO
 cal_func(data_new$X2.6_Num_AT, data_new$pthwy_thoughts_amt)                        # NO
 
-cal_func(data_new$onset_age, data_new$pthwy_thoughts_amt)                          # NO
-cal_func(data_new$mean_ideation, data_new$pthwy_thoughts_amt)                      # NO
-cal_func(data_new$duration_ideation, data_new$pthwy_thoughts_amt)                  # NO
-cal_func(data_new$range_ideation, data_new$pthwy_thoughts_amt)                     # *   .12 +
-cal_func(data_new$sd_ideation, data_new$pthwy_thoughts_amt)                        # *   .10 +
+cal_func(data_new$lifetimeSI_onset, data_new$pthwy_thoughts_amt)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$pthwy_thoughts_amt)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$pthwy_thoughts_amt)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$pthwy_thoughts_amt)                     # *   .12 +
+cal_func(data_new$lifetimeSI_sd, data_new$pthwy_thoughts_amt)                        # *   .10 +
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$pthwy_thoughts_amt)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$pthwy_thoughts_amt)                # NO
@@ -1376,7 +1441,7 @@ cal_func(data_new$Q_BHS_Future_Expectations, data_new$pthwy_thoughts_amt)       
 ```
 ### Push
 ```{r}
-cal_func(data_new$thoughts_score_2, data_new$pthwy_thoughts_push)                   # **  .19 +
+cal_func(data_new$thoughts_amt, data_new$pthwy_thoughts_push)                   # **  .19 +
 cal_func(data_new$thoughts_want, data_new$pthwy_thoughts_push)                      # *** .76 +
 cal_func(data_new$thoughts_not_want, data_new$pthwy_thoughts_push)                  # NO
 cal_func(data_new$thoughts_score, data_new$pthwy_thoughts_push)                     # NO
@@ -1404,11 +1469,11 @@ cal_func(data_new$NumPrep_Total, data_new$pthwy_thoughts_push)                  
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$pthwy_thoughts_push)        # NO
 cal_func(data_new$X2.6_Num_AT, data_new$pthwy_thoughts_push)                        # NO
 
-cal_func(data_new$onset_age, data_new$pthwy_thoughts_push)                          # NO
-cal_func(data_new$mean_ideation, data_new$pthwy_thoughts_push)                      # NO
-cal_func(data_new$duration_ideation, data_new$pthwy_thoughts_push)                  # NO
-cal_func(data_new$range_ideation, data_new$pthwy_thoughts_push)                     # NO
-cal_func(data_new$sd_ideation, data_new$pthwy_thoughts_push)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$pthwy_thoughts_push)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$pthwy_thoughts_push)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$pthwy_thoughts_push)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$pthwy_thoughts_push)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$pthwy_thoughts_push)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$pthwy_thoughts_push)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$pthwy_thoughts_push)                # NO
@@ -1440,7 +1505,7 @@ cal_func(data_new$Q_BHS_Future_Expectations, data_new$pthwy_thoughts_push)      
 ```
 ### Pull
 ```{r}
-cal_func(data_new$thoughts_score_2, data_new$pthwy_thoughts_pull)                  # *** .50 +
+cal_func(data_new$thoughts_amt, data_new$pthwy_thoughts_pull)                  # *** .50 +
 cal_func(data_new$thoughts_want, data_new$pthwy_thoughts_pull)                     # *   .12 +
 cal_func(data_new$thoughts_not_want, data_new$pthwy_thoughts_pull)                 # *** .52 -
 cal_func(data_new$thoughts_score, data_new$pthwy_thoughts_pull)                    # NO
@@ -1467,11 +1532,11 @@ cal_func(data_new$NumPrep_Total, data_new$pthwy_thoughts_pull)                  
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$pthwy_thoughts_pull)        # NO
 cal_func(data_new$X2.6_Num_AT, data_new$pthwy_thoughts_pull)                        # NO
 
-cal_func(data_new$onset_age, data_new$pthwy_thoughts_pull)                          # NO
-cal_func(data_new$mean_ideation, data_new$pthwy_thoughts_pull)                      # NO
-cal_func(data_new$duration_ideation, data_new$pthwy_thoughts_pull)                  # NO
-cal_func(data_new$range_ideation, data_new$pthwy_thoughts_pull)                     # NO
-cal_func(data_new$sd_ideation, data_new$pthwy_thoughts_pull)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$pthwy_thoughts_pull)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$pthwy_thoughts_pull)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$pthwy_thoughts_pull)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$pthwy_thoughts_pull)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$pthwy_thoughts_pull)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$pthwy_thoughts_pull)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$pthwy_thoughts_pull)                # NO
@@ -1503,7 +1568,7 @@ cal_func(data_new$Q_BHS_Future_Expectations, data_new$pthwy_thoughts_pull)      
 ```
 ### Counterbalanced *
 ```{r}
-cal_func(data_new$thoughts_score_2, data_new$pthwy_thoughts_counbal)                  # NO
+cal_func(data_new$thoughts_amt, data_new$pthwy_thoughts_counbal)                  # NO
 cal_func(data_new$thoughts_want, data_new$pthwy_thoughts_counbal)                     # NO
 cal_func(data_new$thoughts_not_want, data_new$pthwy_thoughts_counbal)                 # NO
 cal_func(data_new$thoughts_score, data_new$pthwy_thoughts_counbal)                    # NO
@@ -1530,11 +1595,11 @@ cal_func(data_new$NumPrep_Total, data_new$pthwy_thoughts_counbal)               
 cal_func(data_new$X12.15_How_sure_want_to_die, data_new$pthwy_thoughts_counbal)        # NO
 cal_func(data_new$X2.6_Num_AT, data_new$pthwy_thoughts_counbal)                        # NO
 
-cal_func(data_new$onset_age, data_new$pthwy_thoughts_counbal)                          # NO
-cal_func(data_new$mean_ideation, data_new$pthwy_thoughts_counbal)                      # NO
-cal_func(data_new$duration_ideation, data_new$pthwy_thoughts_counbal)                  # NO
-cal_func(data_new$range_ideation, data_new$pthwy_thoughts_counbal)                     # NO
-cal_func(data_new$sd_ideation, data_new$pthwy_thoughts_counbal)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$pthwy_thoughts_counbal)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$pthwy_thoughts_counbal)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$pthwy_thoughts_counbal)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$pthwy_thoughts_counbal)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$pthwy_thoughts_counbal)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$pthwy_thoughts_counbal)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$pthwy_thoughts_counbal)                # NO
@@ -1569,7 +1634,7 @@ cal_func(data_new$Q_BHS_Future_Expectations, data_new$pthwy_thoughts_counbal)   
 library(ggstatsplot)
 ggbetweenstats(data_new, x = group, y = X2.6_Confirm_suicide_intent)
 
-ggplot(data = data_new, aes(x = TotalpthwyMean, y = thoughts_score_2, col = group))+
+ggplot(data = data_new, aes(x = TotalpthwyMean, y = thoughts_amt, col = group))+
   geom_point()
 ggplot(data = data_new, aes(x = TotalpthwyMean, y = pthwy_thoughts_amt, col = group))+
   geom_point()
@@ -1598,7 +1663,7 @@ ggplot(data = data_new, aes(x = X12.15_How_sure_want_to_die, y = perceived_letha
   geom_jitter(size = 5, alpha = 0.5)
 # Interaction term accounts for 0.04 variance 0.454 -> 0.495
 
-ggplot(data = data_new, aes(x = Q_BDI_Total, y = mean_ideation, color = gender))+
+ggplot(data = data_new, aes(x = Q_BDI_Total, y = lifetimeSI_mean, color = gender))+
   geom_point(size = 5, alpha = 0.5)
 
 data_f <- data_gender_num %>% filter(gender == "F") %>% filter(group == "at")
@@ -1624,7 +1689,7 @@ cal_func(data_new$whether_mulled_f, data_new$nssi_times)                   # NO
 cal_func(data_new$dpr_f, data_new$nssi_times)                              # NO
 cal_func(data_new$suicide_intent_f, data_new$nssi_times)                   # NO
 
-cal_func(data_new$thoughts_score_2, data_new$nssi_times)                   # NO
+cal_func(data_new$thoughts_amt, data_new$nssi_times)                   # NO
 cal_func(data_new$thoughts_want, data_new$nssi_times)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$nssi_times)                  # *  .26+
 cal_func(data_new$thoughts_score, data_new$nssi_times)                     # NO
@@ -1653,11 +1718,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$nssi_times)        # NO
 cal_func(data_new$NumPrep_Total, data_new$nssi_times)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$nssi_times)                        # NO
 
-cal_func(data_new$onset_age, data_new$nssi_times)                          # NO
-cal_func(data_new$mean_ideation, data_new$nssi_times)                      # NO
-cal_func(data_new$duration_ideation, data_new$nssi_times)                  # NO
-cal_func(data_new$range_ideation, data_new$nssi_times)                     # NO
-cal_func(data_new$sd_ideation, data_new$nssi_times)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$nssi_times)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$nssi_times)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$nssi_times)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$nssi_times)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$nssi_times)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$nssi_times)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$nssi_times)                # NO
@@ -1691,7 +1756,7 @@ cal_func(data_new$perceived_lethality, data_new$nssi_times)                # NO
 ## NSSI Duration
 ```{r}
 cal_func(data_new$group, data_new$nssi_duration)                              # NO
-cal_func(data_new$thoughts_score_2, data_new$nssi_duration)                   # NO
+cal_func(data_new$thoughts_amt, data_new$nssi_duration)                   # NO
 cal_func(data_new$thoughts_want, data_new$nssi_duration)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$nssi_duration)                  # NO
 cal_func(data_new$thoughts_score, data_new$nssi_duration)                     # NO
@@ -1723,11 +1788,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$nssi_duration)        # 
 cal_func(data_new$NumPrep_Total, data_new$nssi_duration)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$nssi_duration)                        # NO
 
-cal_func(data_new$onset_age, data_new$nssi_duration)                          # NO
-cal_func(data_new$mean_ideation, data_new$nssi_duration)                      # NO
-cal_func(data_new$duration_ideation, data_new$nssi_duration)                  # ** .26+
-cal_func(data_new$range_ideation, data_new$nssi_duration)                     # NO
-cal_func(data_new$sd_ideation, data_new$nssi_duration)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$nssi_duration)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$nssi_duration)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$nssi_duration)                  # ** .26+
+cal_func(data_new$lifetimeSI_range, data_new$nssi_duration)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$nssi_duration)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$nssi_duration)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$nssi_duration)                # NO
@@ -1770,7 +1835,7 @@ cal_func(data_new$whether_mulled_f, data_new$nssi_onset)                   # NO
 cal_func(data_new$suicide_intent_f, data_new$nssi_onset)                   # NO
 cal_func(data_new$dpr_f, data_new$nssi_onset)                              # NO
 
-cal_func(data_new$thoughts_score_2, data_new$nssi_onset)                   # NO
+cal_func(data_new$thoughts_amt, data_new$nssi_onset)                   # NO
 cal_func(data_new$thoughts_want, data_new$nssi_onset)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$nssi_onset)                  # NO
 cal_func(data_new$thoughts_score, data_new$nssi_onset)                     # NO
@@ -1799,11 +1864,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$nssi_onset)        # NO
 cal_func(data_new$NumPrep_Total, data_new$nssi_onset)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$nssi_onset)                        # NO
 
-cal_func(data_new$onset_age, data_new$nssi_onset)                          # NO
-cal_func(data_new$mean_ideation, data_new$nssi_onset)                      # NO
-cal_func(data_new$duration_ideation, data_new$nssi_onset)                  # NO
-cal_func(data_new$range_ideation, data_new$nssi_onset)                     # NO
-cal_func(data_new$sd_ideation, data_new$nssi_onset)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$nssi_onset)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$nssi_onset)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$nssi_onset)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$nssi_onset)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$nssi_onset)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$nssi_onset)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$nssi_onset)                # NO
@@ -1846,7 +1911,7 @@ cal_func(data_new$whether_mulled_f, data_new$nssi_freq)                   # NO
 cal_func(data_new$suicide_intent_f, data_new$nssi_freq)                   # NO
 cal_func(data_new$dpr_f, data_new$nssi_freq)                              # NO
 
-cal_func(data_new$thoughts_score_2, data_new$nssi_freq)                   # NO
+cal_func(data_new$thoughts_amt, data_new$nssi_freq)                   # NO
 cal_func(data_new$thoughts_want, data_new$nssi_freq)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$nssi_freq)                  # NO
 cal_func(data_new$thoughts_score, data_new$nssi_freq)                     # NO
@@ -1875,11 +1940,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$nssi_freq)        # NO
 cal_func(data_new$NumPrep_Total, data_new$nssi_freq)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$nssi_freq)                        # NO
 
-cal_func(data_new$onset_age, data_new$nssi_freq)                          # NO
-cal_func(data_new$mean_ideation, data_new$nssi_freq)                      # NO
-cal_func(data_new$duration_ideation, data_new$nssi_freq)                  # NO
-cal_func(data_new$range_ideation, data_new$nssi_freq)                     # NO
-cal_func(data_new$sd_ideation, data_new$nssi_freq)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$nssi_freq)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$nssi_freq)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$nssi_freq)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$nssi_freq)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$nssi_freq)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$nssi_freq)                  # * .29-
 cal_func(data_new$Q_UPPS_Perseverance, data_new$nssi_freq)                # NO
@@ -1924,7 +1989,7 @@ cal_func(data_new$whether_planned_f, data_new$X2.4_Aborted_Num_Times_FINAL)     
 cal_func(data_new$whether_mulled_f, data_new$X2.4_Aborted_Num_Times_FINAL)                   # NO
 cal_func(data_new$suicide_intent_f, data_new$X2.4_Aborted_Num_Times_FINAL)                   # NO
 
-cal_func(data_new$thoughts_score_2, data_new$X2.4_Aborted_Num_Times_FINAL)                   # NO
+cal_func(data_new$thoughts_amt, data_new$X2.4_Aborted_Num_Times_FINAL)                   # NO
 cal_func(data_new$thoughts_want, data_new$X2.4_Aborted_Num_Times_FINAL)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$X2.4_Aborted_Num_Times_FINAL)                  # NO
 cal_func(data_new$thoughts_score, data_new$X2.4_Aborted_Num_Times_FINAL)                     # NO
@@ -1953,11 +2018,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$X2.4_Aborted_Num_Times_F
 cal_func(data_new$NumPrep_Total, data_new$X2.4_Aborted_Num_Times_FINAL)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$X2.4_Aborted_Num_Times_FINAL)                        # NO
 
-cal_func(data_new$onset_age, data_new$X2.4_Aborted_Num_Times_FINAL)                          # NO
-cal_func(data_new$mean_ideation, data_new$X2.4_Aborted_Num_Times_FINAL)                      # NO
-cal_func(data_new$duration_ideation, data_new$X2.4_Aborted_Num_Times_FINAL)                  # NO
-cal_func(data_new$range_ideation, data_new$X2.4_Aborted_Num_Times_FINAL)                     # NO
-cal_func(data_new$sd_ideation, data_new$X2.4_Aborted_Num_Times_FINAL)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$X2.4_Aborted_Num_Times_FINAL)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$X2.4_Aborted_Num_Times_FINAL)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$X2.4_Aborted_Num_Times_FINAL)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$X2.4_Aborted_Num_Times_FINAL)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$X2.4_Aborted_Num_Times_FINAL)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$X2.4_Aborted_Num_Times_FINAL)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$X2.4_Aborted_Num_Times_FINAL)                # NO
@@ -2003,7 +2068,7 @@ cal_func(data_new$whether_planned_f, data_new$aborted_onset)                    
 cal_func(data_new$whether_mulled_f, data_new$aborted_onset)                     # NO
 cal_func(data_new$suicide_intent_f, data_new$aborted_onset)                     # NA
 
-cal_func(data_new$aborted_onset, data_new$thoughts_score_2)                     # NO
+cal_func(data_new$aborted_onset, data_new$thoughts_amt)                     # NO
 cal_func(data_new$aborted_onset, data_new$thoughts_want)                        # NO
 cal_func(data_new$aborted_onset, data_new$thoughts_not_want)                    # NO
 cal_func(data_new$aborted_onset, data_new$thoughts_score)                       # NO
@@ -2032,11 +2097,11 @@ cal_func(data_new$aborted_onset, data_new$X12.15_How_sure_want_to_die)          
 cal_func(data_new$aborted_onset, data_new$NumPrep_Total)                         # NO
 cal_func(data_new$aborted_onset, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$aborted_onset, data_new$onset_age)                             # ** .24+
-cal_func(data_new$aborted_onset, data_new$mean_ideation)                         # NO
-cal_func(data_new$aborted_onset, data_new$duration_ideation)                     # NO
-cal_func(data_new$aborted_onset, data_new$range_ideation)                        # NO
-cal_func(data_new$aborted_onset, data_new$sd_ideation)                           # NO
+cal_func(data_new$aborted_onset, data_new$lifetimeSI_onset)                             # ** .24+
+cal_func(data_new$aborted_onset, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$aborted_onset, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$aborted_onset, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$aborted_onset, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$aborted_onset, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$aborted_onset, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2086,7 +2151,7 @@ cal_func(data_new$whether_planned_f, data_new$aborted_duration)                 
 cal_func(data_new$whether_mulled_f, data_new$aborted_duration)                     # NO
 cal_func(data_new$suicide_intent_f, data_new$aborted_duration)                     # NA
 
-cal_func(data_new$aborted_duration, data_new$thoughts_score_2)                     # NO
+cal_func(data_new$aborted_duration, data_new$thoughts_amt)                     # NO
 cal_func(data_new$aborted_duration, data_new$thoughts_want)                        # NO
 cal_func(data_new$aborted_duration, data_new$thoughts_not_want)                    # NO
 cal_func(data_new$aborted_duration, data_new$thoughts_score)                       # NO
@@ -2115,11 +2180,11 @@ cal_func(data_new$aborted_duration, data_new$X12.15_How_sure_want_to_die)       
 cal_func(data_new$aborted_duration, data_new$NumPrep_Total)                         # NO
 cal_func(data_new$aborted_duration, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$aborted_duration, data_new$onset_age)                             # NO
-cal_func(data_new$aborted_duration, data_new$mean_ideation)                         # NO
-cal_func(data_new$aborted_duration, data_new$duration_ideation)                     # NO
-cal_func(data_new$aborted_duration, data_new$range_ideation)                        # NO
-cal_func(data_new$aborted_duration, data_new$sd_ideation)                           # NO
+cal_func(data_new$aborted_duration, data_new$lifetimeSI_onset)                             # NO
+cal_func(data_new$aborted_duration, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$aborted_duration, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$aborted_duration, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$aborted_duration, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$aborted_duration, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$aborted_duration, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2170,7 +2235,7 @@ cal_func(data_new$whether_planned_f, data_new$aborted_freq)                    #
 cal_func(data_new$whether_mulled_f, data_new$aborted_freq)                     # NO
 cal_func(data_new$suicide_intent_f, data_new$aborted_freq)                     # NA
 
-cal_func(data_new$aborted_freq, data_new$thoughts_score_2)                     # NO
+cal_func(data_new$aborted_freq, data_new$thoughts_amt)                     # NO
 cal_func(data_new$aborted_freq, data_new$thoughts_want)                        # NO
 cal_func(data_new$aborted_freq, data_new$thoughts_not_want)                    # <.06 .17-
 cal_func(data_new$aborted_freq, data_new$thoughts_score)                       # NO
@@ -2199,11 +2264,11 @@ cal_func(data_new$aborted_freq, data_new$X12.15_How_sure_want_to_die)           
 cal_func(data_new$aborted_freq, data_new$NumPrep_Total)                         # NO
 cal_func(data_new$aborted_freq, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$aborted_freq, data_new$onset_age)                             # NO
-cal_func(data_new$aborted_freq, data_new$mean_ideation)                         # NO
-cal_func(data_new$aborted_freq, data_new$duration_ideation)                     # NO
-cal_func(data_new$aborted_freq, data_new$range_ideation)                        # NO
-cal_func(data_new$aborted_freq, data_new$sd_ideation)                           # NO
+cal_func(data_new$aborted_freq, data_new$lifetimeSI_onset)                             # NO
+cal_func(data_new$aborted_freq, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$aborted_freq, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$aborted_freq, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$aborted_freq, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$aborted_freq, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$aborted_freq, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2259,7 +2324,7 @@ cal_func(data_new$Q_BHS_Feelings_about_future, data_new$perceived_lethality)    
 cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$perceived_lethality)           # NO
 cal_func(data_new$Q_BHS_Future_Expectations, data_new$perceived_lethality)          # NO
 
-cal_func(data_new$thoughts_score_2, data_new$perceived_lethality)                   # NO
+cal_func(data_new$thoughts_amt, data_new$perceived_lethality)                   # NO
 cal_func(data_new$thoughts_want, data_new$perceived_lethality)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$perceived_lethality)                  # NO
 cal_func(data_new$thoughts_score, data_new$perceived_lethality)                     # NO
@@ -2292,11 +2357,11 @@ cal_func(data_new$X12.15_How_sure_want_to_die, data_new$perceived_lethality)    
 cal_func(data_new$NumPrep_Total, data_new$perceived_lethality)                      # NO
 cal_func(data_new$X2.6_Num_AT, data_new$perceived_lethality)                        # NO
 
-cal_func(data_new$onset_age, data_new$perceived_lethality)                          # NO
-cal_func(data_new$mean_ideation, data_new$perceived_lethality)                      # NO
-cal_func(data_new$duration_ideation, data_new$perceived_lethality)                  # NO
-cal_func(data_new$range_ideation, data_new$perceived_lethality)                     # NO
-cal_func(data_new$sd_ideation, data_new$perceived_lethality)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$perceived_lethality)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$perceived_lethality)                      # NO
+cal_func(data_new$lifetimeSI_duration, data_new$perceived_lethality)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$perceived_lethality)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$perceived_lethality)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$perceived_lethality)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$perceived_lethality)                # NO
@@ -2329,7 +2394,7 @@ cal_func(data_new$group, data_new$realize_not_dead)                             
 cal_func(data_new$gender, data_new$realize_not_dead)                               # NO
 cal_func(data_new$dpr_f, data_new$realize_not_dead)                                # NO
 
-cal_func(data_new$realize_not_dead, data_new$thoughts_score_2)                     # NO
+cal_func(data_new$realize_not_dead, data_new$thoughts_amt)                     # NO
 cal_func(data_new$realize_not_dead, data_new$thoughts_want)                        # NO
 cal_func(data_new$realize_not_dead, data_new$thoughts_not_want)                    # NO
 cal_func(data_new$realize_not_dead, data_new$thoughts_score)                       # NO
@@ -2361,11 +2426,11 @@ cal_func(data_new$realize_not_dead, data_new$X12.15_How_sure_want_to_die)       
 cal_func(data_new$realize_not_dead, data_new$NumPrep_Total)                        # NO
 cal_func(data_new$realize_not_dead, data_new$X2.6_Num_AT)                          # NO
 
-cal_func(data_new$realize_not_dead, data_new$onset_age)                             # NO
-cal_func(data_new$realize_not_dead, data_new$mean_ideation)                         # NO
-cal_func(data_new$realize_not_dead, data_new$duration_ideation)                     # NO
-cal_func(data_new$realize_not_dead, data_new$range_ideation)                        # NO
-cal_func(data_new$realize_not_dead, data_new$sd_ideation)                           # <.07 .11+
+cal_func(data_new$realize_not_dead, data_new$lifetimeSI_onset)                             # NO
+cal_func(data_new$realize_not_dead, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$realize_not_dead, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$realize_not_dead, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$realize_not_dead, data_new$lifetimeSI_sd)                           # <.07 .11+
 
 cal_func(data_new$realize_not_dead, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$realize_not_dead, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2420,7 +2485,7 @@ cal_func(data_new$Q_BHS_Feelings_about_future, data_new$X12.18_Injuries_Lethalit
 cal_func(data_new$Q_BHS_Loss_of_motivation, data_new$X12.18_Injuries_LethalityScale)           # NO
 cal_func(data_new$Q_BHS_Future_Expectations, data_new$X12.18_Injuries_LethalityScale)          # NO
 
-cal_func(data_new$thoughts_score_2, data_new$X12.18_Injuries_LethalityScale)                   # NO
+cal_func(data_new$thoughts_amt, data_new$X12.18_Injuries_LethalityScale)                   # NO
 cal_func(data_new$thoughts_want, data_new$X12.18_Injuries_LethalityScale)                      # NO
 cal_func(data_new$thoughts_not_want, data_new$X12.18_Injuries_LethalityScale)                  # NO
 cal_func(data_new$thoughts_score, data_new$X12.18_Injuries_LethalityScale)                     # NO
@@ -2455,11 +2520,11 @@ cal_func(data_new$perceived_lethality, data_new$X12.18_Injuries_LethalityScale) 
 cal_func(data_new$realize_not_dead, data_new$X12.18_Injuries_LethalityScale)                   # NO
 cal_func(data_new$X2.6_Num_AT, data_new$X12.18_Injuries_LethalityScale)                        # NO
 
-cal_func(data_new$onset_age, data_new$X12.18_Injuries_LethalityScale)                          # NO
-cal_func(data_new$mean_ideation, data_new$X12.18_Injuries_LethalityScale)                      # <.07 .11-
-cal_func(data_new$duration_ideation, data_new$X12.18_Injuries_LethalityScale)                  # NO
-cal_func(data_new$range_ideation, data_new$X12.18_Injuries_LethalityScale)                     # NO
-cal_func(data_new$sd_ideation, data_new$X12.18_Injuries_LethalityScale)                        # NO
+cal_func(data_new$lifetimeSI_onset, data_new$X12.18_Injuries_LethalityScale)                          # NO
+cal_func(data_new$lifetimeSI_mean, data_new$X12.18_Injuries_LethalityScale)                      # <.07 .11-
+cal_func(data_new$lifetimeSI_duration, data_new$X12.18_Injuries_LethalityScale)                  # NO
+cal_func(data_new$lifetimeSI_range, data_new$X12.18_Injuries_LethalityScale)                     # NO
+cal_func(data_new$lifetimeSI_sd, data_new$X12.18_Injuries_LethalityScale)                        # NO
 
 cal_func(data_new$Q_UPPS_NegUrgency, data_new$X12.18_Injuries_LethalityScale)                  # NO
 cal_func(data_new$Q_UPPS_Perseverance, data_new$X12.18_Injuries_LethalityScale)                # NO
@@ -2496,96 +2561,96 @@ cal_func(data_new$aborted_onset, data_new$X12.18_Injuries_LethalityScale)       
 cal_func(data_new$aborted_duration, data_new$X12.18_Injuries_LethalityScale)                   # NO
 cal_func(data_new$aborted_freq, data_new$X12.18_Injuries_LethalityScale)                       # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$X12.18_Injuries_LethalityScale)                   # NO
+cal_func(data_new$at_duration, data_new$X12.18_Injuries_LethalityScale)                   # NO
 cal_func(data_new$firstID_to_firstAction, data_new$X12.18_Injuries_LethalityScale)             # NO
 ```
 # Yrs since 1st at and lethality?
 ```{r}
-cal_func(data_new$gender, data_new$yrs_since_1st_at)                               # NO
-cal_func(data_new$dpr_f, data_new$yrs_since_1st_at)                                # NO
-cal_func(data_new$whether_planned_f, data_new$yrs_since_1st_at)                    # NO
-cal_func(data_new$whether_mulled_f, data_new$yrs_since_1st_at)                     # NO
-cal_func(data_new$suicide_intent_f, data_new$yrs_since_1st_at)                     # NO
+cal_func(data_new$gender, data_new$at_duration)                               # NO
+cal_func(data_new$dpr_f, data_new$at_duration)                                # NO
+cal_func(data_new$whether_planned_f, data_new$at_duration)                    # NO
+cal_func(data_new$whether_mulled_f, data_new$at_duration)                     # NO
+cal_func(data_new$suicide_intent_f, data_new$at_duration)                     # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$thoughts_score_2)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$thoughts_want)                        # NO
-cal_func(data_new$yrs_since_1st_at, data_new$thoughts_not_want)                    # NO
-cal_func(data_new$yrs_since_1st_at, data_new$thoughts_score)                       # NO
+cal_func(data_new$at_duration, data_new$thoughts_amt)                     # NO
+cal_func(data_new$at_duration, data_new$thoughts_want)                        # NO
+cal_func(data_new$at_duration, data_new$thoughts_not_want)                    # NO
+cal_func(data_new$at_duration, data_new$thoughts_score)                       # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$TotalpthwyMean)                       # NO
-cal_func(data_new$yrs_since_1st_at, data_new$pthwy_thoughts_amt)                   # NO
-cal_func(data_new$yrs_since_1st_at, data_new$pthwy_thoughts_push)                  # NO
-cal_func(data_new$yrs_since_1st_at, data_new$pthwy_thoughts_pull)                  # NO
-cal_func(data_new$yrs_since_1st_at, data_new$pthwy_thoughts_counbal)               # NO
+cal_func(data_new$at_duration, data_new$TotalpthwyMean)                       # NO
+cal_func(data_new$at_duration, data_new$pthwy_thoughts_amt)                   # NO
+cal_func(data_new$at_duration, data_new$pthwy_thoughts_push)                  # NO
+cal_func(data_new$at_duration, data_new$pthwy_thoughts_pull)                  # NO
+cal_func(data_new$at_duration, data_new$pthwy_thoughts_counbal)               # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$ThoughtsStart_bin)                    # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Mull_bin)                             # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Decision_bin)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$firstMethod_bin)                      # NO
-cal_func(data_new$yrs_since_1st_at, data_new$SureMethod_bin)                       # NO
-cal_func(data_new$yrs_since_1st_at, data_new$firstPlace_bin)                       # NO
-cal_func(data_new$yrs_since_1st_at, data_new$SurePlace_bin)                        # NO
+cal_func(data_new$at_duration, data_new$ThoughtsStart_bin)                    # NO
+cal_func(data_new$at_duration, data_new$Mull_bin)                             # NO
+cal_func(data_new$at_duration, data_new$Decision_bin)                         # NO
+cal_func(data_new$at_duration, data_new$firstMethod_bin)                      # NO
+cal_func(data_new$at_duration, data_new$SureMethod_bin)                       # NO
+cal_func(data_new$at_duration, data_new$firstPlace_bin)                       # NO
+cal_func(data_new$at_duration, data_new$SurePlace_bin)                        # NO
  
-cal_func(data_new$yrs_since_1st_at, data_new$think_mull_decide)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$first_sure_method)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$first_sure_place)                      # NO
-cal_func(data_new$yrs_since_1st_at, data_new$decide_method_place)                   # NO
-cal_func(data_new$yrs_since_1st_at, data_new$all_bins)                              # NO
+cal_func(data_new$at_duration, data_new$think_mull_decide)                     # NO
+cal_func(data_new$at_duration, data_new$first_sure_method)                     # NO
+cal_func(data_new$at_duration, data_new$first_sure_place)                      # NO
+cal_func(data_new$at_duration, data_new$decide_method_place)                   # NO
+cal_func(data_new$at_duration, data_new$all_bins)                              # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$X12.15_How_sure_want_to_die)           # NO
-cal_func(data_new$yrs_since_1st_at, data_new$NumPrep_Total)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$X2.6_Num_AT)                           # NO
+cal_func(data_new$at_duration, data_new$X12.15_How_sure_want_to_die)           # NO
+cal_func(data_new$at_duration, data_new$NumPrep_Total)                         # NO
+cal_func(data_new$at_duration, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$onset_age)                             # * .18-
-cal_func(data_new$yrs_since_1st_at, data_new$mean_ideation)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$duration_ideation)                     # ** .27+
-cal_func(data_new$yrs_since_1st_at, data_new$range_ideation)                        # NO
-cal_func(data_new$yrs_since_1st_at, data_new$sd_ideation)                           # NO
+cal_func(data_new$at_duration, data_new$lifetimeSI_onset)                             # * .18-
+cal_func(data_new$at_duration, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$at_duration, data_new$lifetimeSI_duration)                     # ** .27+
+cal_func(data_new$at_duration, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$at_duration, data_new$lifetimeSI_sd)                           # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$Q_UPPS_NegUrgency)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_UPPS_Perseverance)                   # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_UPPS_Premeditation)                  # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_UPPS_PosUrgency)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_UPPS_SensationSeeking)               # NO
+cal_func(data_new$at_duration, data_new$Q_UPPS_NegUrgency)                     # NO
+cal_func(data_new$at_duration, data_new$Q_UPPS_Perseverance)                   # NO
+cal_func(data_new$at_duration, data_new$Q_UPPS_Premeditation)                  # NO
+cal_func(data_new$at_duration, data_new$Q_UPPS_PosUrgency)                     # NO
+cal_func(data_new$at_duration, data_new$Q_UPPS_SensationSeeking)               # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_Total)                           # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Attention)                     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Motor)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Self_Control)                  # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Cognitive_Complexity)          # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Preseverance)                  # * .15+
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_1_Cogntive_Instability)          # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_2_Attentional_Impulsiveness)     # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_2_Motor_Impulsiveness)           # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BIS_2_Nonplanning_Impulsiveness)     # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_Total)                           # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Attention)                     # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Motor)                         # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Self_Control)                  # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Cognitive_Complexity)          # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Preseverance)                  # * .15+
+cal_func(data_new$at_duration, data_new$Q_BIS_1_Cogntive_Instability)          # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_2_Attentional_Impulsiveness)     # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_2_Motor_Impulsiveness)           # NO
+cal_func(data_new$at_duration, data_new$Q_BIS_2_Nonplanning_Impulsiveness)     # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$IST_FreeBlockMean_pCorrs)              # NO
-cal_func(data_new$yrs_since_1st_at, data_new$IST_CostBlockMean_pCorrs)              # NO
-cal_func(data_new$yrs_since_1st_at, data_new$SSRT_sossrtInt)                        # NO
-cal_func(data_new$yrs_since_1st_at, data_new$CPTGNG_omission_errors)                # NO
-cal_func(data_new$yrs_since_1st_at, data_new$CPTGNG_commission_errors)              # NO
-cal_func(data_new$yrs_since_1st_at, data_new$MDQ_k_Final)                           # NO
+cal_func(data_new$at_duration, data_new$IST_FreeBlockMean_pCorrs)              # NO
+cal_func(data_new$at_duration, data_new$IST_CostBlockMean_pCorrs)              # NO
+cal_func(data_new$at_duration, data_new$SSRT_sossrtInt)                        # NO
+cal_func(data_new$at_duration, data_new$CPTGNG_omission_errors)                # NO
+cal_func(data_new$at_duration, data_new$CPTGNG_commission_errors)              # NO
+cal_func(data_new$at_duration, data_new$MDQ_k_Final)                           # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BHS_Total)                           # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BHS_Feelings_about_future)           # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BHS_Loss_of_motivation)              # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BHS_Future_Expectations)             # NO
-cal_func(data_new$yrs_since_1st_at, data_new$Q_BDI_Total)                           # NO
+cal_func(data_new$at_duration, data_new$Q_BHS_Total)                           # NO
+cal_func(data_new$at_duration, data_new$Q_BHS_Feelings_about_future)           # NO
+cal_func(data_new$at_duration, data_new$Q_BHS_Loss_of_motivation)              # NO
+cal_func(data_new$at_duration, data_new$Q_BHS_Future_Expectations)             # NO
+cal_func(data_new$at_duration, data_new$Q_BDI_Total)                           # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$perceived_lethality)                   # NO
-cal_func(data_new$yrs_since_1st_at, data_new$realize_not_dead)                      # NO
+cal_func(data_new$at_duration, data_new$perceived_lethality)                   # NO
+cal_func(data_new$at_duration, data_new$realize_not_dead)                      # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$nssi_times)                            # NO
-cal_func(data_new$yrs_since_1st_at, data_new$nssi_onset)                            # NO
-cal_func(data_new$yrs_since_1st_at, data_new$nssi_duration)                         # * .34+
-cal_func(data_new$yrs_since_1st_at, data_new$nssi_freq)                             # NO
+cal_func(data_new$at_duration, data_new$nssi_times)                            # NO
+cal_func(data_new$at_duration, data_new$nssi_onset)                            # NO
+cal_func(data_new$at_duration, data_new$nssi_duration)                         # * .34+
+cal_func(data_new$at_duration, data_new$nssi_freq)                             # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$X2.4_Aborted_Num_Times_FINAL)          # <.06 .13+
-cal_func(data_new$yrs_since_1st_at, data_new$aborted_onset)                         # NO
-cal_func(data_new$yrs_since_1st_at, data_new$aborted_duration)                      # NO
-cal_func(data_new$yrs_since_1st_at, data_new$aborted_freq)                          # NO
+cal_func(data_new$at_duration, data_new$X2.4_Aborted_Num_Times_FINAL)          # <.06 .13+
+cal_func(data_new$at_duration, data_new$aborted_onset)                         # NO
+cal_func(data_new$at_duration, data_new$aborted_duration)                      # NO
+cal_func(data_new$at_duration, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$yrs_since_1st_at, data_new$firstID_to_firstAction)                # NO
+cal_func(data_new$at_duration, data_new$firstID_to_firstAction)                # NO
 ```
 # 1st ID to 1st AT 
 ```{r}
@@ -2595,7 +2660,7 @@ cal_func(data_new$dpr_f, data_new$firstID_to_firstAction)                       
 cal_func(data_new$whether_planned_f, data_new$firstID_to_firstAction)                    # NO
 cal_func(data_new$whether_mulled_f, data_new$firstID_to_firstAction)                     # NO
 
-cal_func(data_new$firstID_to_firstAction, data_new$thoughts_score_2)                     # * .16- HABITUATION?
+cal_func(data_new$firstID_to_firstAction, data_new$thoughts_amt)                     # * .16- HABITUATION?
 cal_func(data_new$firstID_to_firstAction, data_new$thoughts_want)                        # NO
 cal_func(data_new$firstID_to_firstAction, data_new$thoughts_not_want)                    # NO
 cal_func(data_new$firstID_to_firstAction, data_new$thoughts_score)                       # NO
@@ -2624,11 +2689,11 @@ cal_func(data_new$firstID_to_firstAction, data_new$X12.15_How_sure_want_to_die) 
 cal_func(data_new$firstID_to_firstAction, data_new$NumPrep_Total)                         # NO
 cal_func(data_new$firstID_to_firstAction, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$firstID_to_firstAction, data_new$onset_age)                             # NO
-cal_func(data_new$firstID_to_firstAction, data_new$mean_ideation)                         # NO
-cal_func(data_new$firstID_to_firstAction, data_new$duration_ideation)                     # *** .31+
-cal_func(data_new$firstID_to_firstAction, data_new$range_ideation)                        # NO
-cal_func(data_new$firstID_to_firstAction, data_new$sd_ideation)                           # NO
+cal_func(data_new$firstID_to_firstAction, data_new$lifetimeSI_onset)                             # NO
+cal_func(data_new$firstID_to_firstAction, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$firstID_to_firstAction, data_new$lifetimeSI_duration)                     # *** .31+
+cal_func(data_new$firstID_to_firstAction, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$firstID_to_firstAction, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$firstID_to_firstAction, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$firstID_to_firstAction, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2681,7 +2746,7 @@ cal_func(data_new$group, data_new$sis_15)                                 # NO
 cal_func(data_new$dpr_f, data_new$sis_15)                                 # NO
 cal_func(data_new$sis_15, data_new$Q_BDI_Total)                           # NO
 
-cal_func(data_new$sis_15, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_15, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_15, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_15, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_15, data_new$thoughts_score)                        # NO
@@ -2717,11 +2782,11 @@ cal_func(data_new$sis_15, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_15, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_15, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_15, data_new$onset_age)                             # ** .28+ (df=23)
-cal_func(data_new$sis_15, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_15, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_15, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_15, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_15, data_new$lifetimeSI_onset)                             # ** .28+ (df=23)
+cal_func(data_new$sis_15, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_15, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_15, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_15, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_15, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_15, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2765,7 +2830,7 @@ cal_func(data_new$sis_8, data_new$Q_BHS_Feelings_about_future)           # NO
 cal_func(data_new$sis_8, data_new$Q_BHS_Loss_of_motivation)              # NO
 cal_func(data_new$sis_8, data_new$Q_BHS_Future_Expectations)             # NO
 
-cal_func(data_new$sis_8, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_8, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_8, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_8, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_8, data_new$thoughts_score)                        # NO
@@ -2803,11 +2868,11 @@ cal_func(data_new$sis_8, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_8, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_8, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_8, data_new$onset_age)                             # *** .42+ (df=27)
-cal_func(data_new$sis_8, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_8, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_8, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_8, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_8, data_new$lifetimeSI_onset)                             # *** .42+ (df=27)
+cal_func(data_new$sis_8, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_8, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_8, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_8, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_8, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_8, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2844,7 +2909,7 @@ cal_func(data_new$sis_8, data_new$aborted_onset)                         # NO
 cal_func(data_new$sis_8, data_new$aborted_duration)                      # NO
 cal_func(data_new$sis_8, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$sis_8, data_new$yrs_since_1st_at)                      # NO
+cal_func(data_new$sis_8, data_new$at_duration)                      # NO
 cal_func(data_new$sis_8, data_new$firstID_to_firstAction)                # NO
 ```
 
@@ -2860,7 +2925,7 @@ cal_func(data_new$sis_7, data_new$Q_BHS_Feelings_about_future)           # NO
 cal_func(data_new$sis_7, data_new$Q_BHS_Loss_of_motivation)              # NO
 cal_func(data_new$sis_7, data_new$Q_BHS_Future_Expectations)             # NO
 
-cal_func(data_new$sis_7, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_7, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_7, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_7, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_7, data_new$thoughts_score)                        # NO
@@ -2899,11 +2964,11 @@ cal_func(data_new$sis_7, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_7, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_7, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_7, data_new$onset_age)                             # *** .38+ (df=27)
-cal_func(data_new$sis_7, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_7, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_7, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_7, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_7, data_new$lifetimeSI_onset)                             # *** .38+ (df=27)
+cal_func(data_new$sis_7, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_7, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_7, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_7, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_7, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_7, data_new$Q_UPPS_Perseverance)                   # NO
@@ -2940,7 +3005,7 @@ cal_func(data_new$sis_7, data_new$aborted_onset)                         # * .19
 cal_func(data_new$sis_7, data_new$aborted_duration)                      # NO
 cal_func(data_new$sis_7, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$sis_7, data_new$yrs_since_1st_at)                      # NO
+cal_func(data_new$sis_7, data_new$at_duration)                      # NO
 cal_func(data_new$sis_7, data_new$firstID_to_firstAction)                # NO
 ```
 
@@ -2956,7 +3021,7 @@ cal_func(data_new$sis_3, data_new$Q_BHS_Feelings_about_future)           # NO
 cal_func(data_new$sis_3, data_new$Q_BHS_Loss_of_motivation)              # NO
 cal_func(data_new$sis_3, data_new$Q_BHS_Future_Expectations)             # NO
 
-cal_func(data_new$sis_3, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_3, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_3, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_3, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_3, data_new$thoughts_score)                        # * .16-
@@ -2997,11 +3062,11 @@ cal_func(data_new$sis_3, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_3, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_3, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_3, data_new$onset_age)                             # ** .23+ (df=27)
-cal_func(data_new$sis_3, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_3, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_3, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_3, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_3, data_new$lifetimeSI_onset)                             # ** .23+ (df=27)
+cal_func(data_new$sis_3, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_3, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_3, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_3, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_3, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_3, data_new$Q_UPPS_Perseverance)                   # NO
@@ -3038,7 +3103,7 @@ cal_func(data_new$sis_3, data_new$aborted_onset)                         # NO
 cal_func(data_new$sis_3, data_new$aborted_duration)                      # NO
 cal_func(data_new$sis_3, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$sis_3, data_new$yrs_since_1st_at)                      # NO
+cal_func(data_new$sis_3, data_new$at_duration)                      # NO
 cal_func(data_new$sis_3, data_new$firstID_to_firstAction)                # NO
 ```
 
@@ -3054,7 +3119,7 @@ cal_func(data_new$sis_2, data_new$Q_BHS_Feelings_about_future)           # NO
 cal_func(data_new$sis_2, data_new$Q_BHS_Loss_of_motivation)              # NO
 cal_func(data_new$sis_2, data_new$Q_BHS_Future_Expectations)             # NO
 
-cal_func(data_new$sis_2, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_2, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_2, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_2, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_2, data_new$thoughts_score)                        # NO
@@ -3095,11 +3160,11 @@ cal_func(data_new$sis_2, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_2, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_2, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_2, data_new$onset_age)                             # ** .26+ (df=27)
-cal_func(data_new$sis_2, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_2, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_2, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_2, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_2, data_new$lifetimeSI_onset)                             # ** .26+ (df=27)
+cal_func(data_new$sis_2, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_2, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_2, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_2, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_2, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_2, data_new$Q_UPPS_Perseverance)                   # NO
@@ -3136,7 +3201,7 @@ cal_func(data_new$sis_2, data_new$aborted_onset)                         # NO
 cal_func(data_new$sis_2, data_new$aborted_duration)                      # NO
 cal_func(data_new$sis_2, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$sis_2, data_new$yrs_since_1st_at)                      # NO
+cal_func(data_new$sis_2, data_new$at_duration)                      # NO
 cal_func(data_new$sis_2, data_new$firstID_to_firstAction)                # NO
 ```
 ## SIS 1-item
@@ -3151,7 +3216,7 @@ cal_func(data_new$sis_1, data_new$Q_BHS_Feelings_about_future)           # NO
 cal_func(data_new$sis_1, data_new$Q_BHS_Loss_of_motivation)              # NO
 cal_func(data_new$sis_1, data_new$Q_BHS_Future_Expectations)             # NO
 
-cal_func(data_new$sis_1, data_new$thoughts_score_2)                      # NO
+cal_func(data_new$sis_1, data_new$thoughts_amt)                      # NO
 cal_func(data_new$sis_1, data_new$thoughts_want)                         # NO
 cal_func(data_new$sis_1, data_new$thoughts_not_want)                     # NO
 cal_func(data_new$sis_1, data_new$thoughts_score)                        # NO
@@ -3193,11 +3258,11 @@ cal_func(data_new$sis_1, data_new$X12.18_Injuries_LethalityScale)        # NO
 cal_func(data_new$sis_1, data_new$realize_not_dead)                      # NO
 cal_func(data_new$sis_1, data_new$X2.6_Num_AT)                           # NO
 
-cal_func(data_new$sis_1, data_new$onset_age)                             # ** .23+ (df=27)
-cal_func(data_new$sis_1, data_new$mean_ideation)                         # NO
-cal_func(data_new$sis_1, data_new$duration_ideation)                     # NO
-cal_func(data_new$sis_1, data_new$range_ideation)                        # NO
-cal_func(data_new$sis_1, data_new$sd_ideation)                           # NO
+cal_func(data_new$sis_1, data_new$lifetimeSI_onset)                             # ** .23+ (df=27)
+cal_func(data_new$sis_1, data_new$lifetimeSI_mean)                         # NO
+cal_func(data_new$sis_1, data_new$lifetimeSI_duration)                     # NO
+cal_func(data_new$sis_1, data_new$lifetimeSI_range)                        # NO
+cal_func(data_new$sis_1, data_new$lifetimeSI_sd)                           # NO
 
 cal_func(data_new$sis_1, data_new$Q_UPPS_NegUrgency)                     # NO
 cal_func(data_new$sis_1, data_new$Q_UPPS_Perseverance)                   # NO
@@ -3234,6 +3299,6 @@ cal_func(data_new$sis_1, data_new$aborted_onset)                         # NO
 cal_func(data_new$sis_1, data_new$aborted_duration)                      # NO
 cal_func(data_new$sis_1, data_new$aborted_freq)                          # NO
 
-cal_func(data_new$sis_1, data_new$yrs_since_1st_at)                      # NO
+cal_func(data_new$sis_1, data_new$at_duration)                      # NO
 cal_func(data_new$sis_1, data_new$firstID_to_firstAction)                # NO
 ```

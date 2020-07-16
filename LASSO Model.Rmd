@@ -1,0 +1,289 @@
+---
+title: "Variable Selection: LASSO"
+date: "Last updated on `r Sys.Date()`"
+author: "Irene"
+output:
+  html_document: 
+    # code_folding: show
+    df_print: kable
+    highlight: tango
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: yes
+---
+
+```{r setup, include=FALSE}
+# Set default behavior for all code chunks:
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  message = FALSE, 
+  warning = FALSE, 
+  fig.width = 16/2, 
+  fig.height = 9/2)
+library(tidyverse)
+library(skimr)
+library(janitor)
+library(broom)
+library(scales)
+library(modelr)
+library(glmnet)
+library(Metrics)
+
+# Set seed value of random number generator:
+set.seed(76)
+
+# Input: A LASSO model object
+# Output: A tidy data frame of the beta-hat coefficients for each lambda value
+get_LASSO_coefficients <- function(LASSO_fit) {
+  beta_hats <- LASSO_fit %>%
+    tidy(return_zeros = TRUE) %>%
+    select(term, estimate, lambda) %>%
+    arrange(desc(lambda))
+  return(beta_hats)
+}
+
+data <- read.csv(file = "./Data/SecondStep_most_up_to_date.csv") 
+```
+
+
+***
+
+
+
+# Preprocessing data
+
+```{r}
+# here we only use numerical predictive variables
+data <- data %>%
+  filter(group == "at") %>%
+  select(Subject, Age, Q_BDI_Total, Q_BHS_Total, thoughts_amt, thoughts_want, thoughts_not_want, thoughts_score, 
+    TotalpthwyMean,
+    NumPrep_Total, ThoughtsStart_bin, Mull_bin, Decision_bin, FstMethod_bin, SureMethod_bin, FstPlace_bin, 
+    SurePlace_bin, think_mull_decide, first_sure_method, first_sure_place, decide_method_place, all_bins, X12.15_How_sure_want_to_die, sis_15,
+    perceived_lethality,X12.18_Injuries_LethalityScale, realize_not_dead, X2.6_Num_AT, 
+    lifetimeSI_onset, lifetimeSI_mean, lifetimeSI_range, lifetimeSI_sd, lifetimeSI_duration, 
+    nssi_onset, nssi_times, nssi_duration, nssi_freq, 
+    aborted_onset, aborted_duration, X2.4_Aborted_Num_Times_FINAL, aborted_freq, 
+    at_duration, FirstID_to_FirstAction, 
+    Q_UPPS_NegUrgency,Q_UPPS_PosUrgency, Q_UPPS_Premeditation, Q_UPPS_Perseverance, Q_UPPS_SensationSeeking, 
+    Q_BIS_Total, Q_BIS_1_Motor, Q_BIS_1_Self_Control, Q_BIS_1_Preseverance, Q_BIS_1_Attention,
+    Q_BIS_1_Cognitive_Complexity, Q_BIS_1_Cogntive_Instability, 
+    Q_BIS_2_Attentional_Impulsiveness, Q_BIS_2_Motor_Impulsiveness, Q_BIS_2_Nonplanning_Impulsiveness,
+    IST_FreeBlockMean_pCorrs, IST_CostBlockMean_pCorrs, CPTGNG_dprime_All, CPTGNG_commission_errors, 
+    CPTGNG_omission_errors, MDQ_k_Final, SSRT_sossrtInt) %>%
+  mutate(actual_lethality = X12.18_Injuries_LethalityScale) %>%
+  select(-X12.18_Injuries_LethalityScale)
+```
+
+
+***
+# 1. Create training and testing datasets
+```{r}
+# now n = 28, variables = 88, few missing values
+# actual lethality is left skewed and to prevent getting negative results, here used a log transformation of outcome variable
+# qplot(actual_lethality, data = data, binwidth = .5)
+
+# Create training set
+train_data <- data %>%
+  sample_frac(0.5)
+
+# Create test set
+test_data <- data %>%
+  anti_join(train_data, by = "Subject")
+
+
+
+train_data <- data %>% 
+  mutate(log_actual_lethality = log(actual_lethality+1))
+
+# now train_data: *66, test_data: 28*64
+```
+
+## Deal with Missing Data (replace with variable mean)
+```{r}
+#skim(train_data)
+#skim(test_data)
+
+train_data <- train_data %>%
+  mutate(thoughts_amt = ifelse(is.na(thoughts_amt), mean(thoughts_amt, na.rm = TRUE), thoughts_amt),
+         Decision_bin = ifelse(is.na(Decision_bin), mean(Decision_bin, na.rm = TRUE), Decision_bin),
+         think_mull_decide = ifelse(is.na(think_mull_decide), mean(think_mull_decide, na.rm = TRUE), think_mull_decide),
+         decide_method_place = ifelse(is.na(decide_method_place), mean(decide_method_place, na.rm = TRUE), decide_method_place),
+         all_bins = ifelse(is.na(all_bins), mean(all_bins, na.rm = TRUE), all_bins),
+         sis_15 = ifelse(is.na(sis_15), mean(sis_15, na.rm = TRUE), sis_15),
+         lifetimeSI_duration = ifelse(is.na(lifetimeSI_duration), mean(lifetimeSI_duration, na.rm = TRUE), lifetimeSI_duration),
+         lifetimeSI_onset = ifelse(is.na(lifetimeSI_onset), mean(lifetimeSI_onset, na.rm = TRUE), lifetimeSI_onset),
+         lifetimeSI_sd = ifelse(is.na(lifetimeSI_sd), mean(lifetimeSI_sd, na.rm = TRUE), lifetimeSI_sd),
+         lifetimeSI_range = ifelse(is.na(lifetimeSI_range), mean(lifetimeSI_range, na.rm = TRUE), lifetimeSI_range),
+         lifetimeSI_mean = ifelse(is.na(lifetimeSI_mean), mean(lifetimeSI_mean, na.rm = TRUE), lifetimeSI_mean),
+         nssi_onset = ifelse(is.na(nssi_onset), mean(nssi_onset, na.rm = TRUE), nssi_onset),
+         nssi_times = ifelse(is.na(nssi_times), mean(nssi_times, na.rm = TRUE), nssi_times),
+         nssi_duration = ifelse(is.na(nssi_duration), mean(nssi_duration, na.rm = TRUE), nssi_duration),
+         nssi_freq = ifelse(is.na(nssi_freq), mean(nssi_freq, na.rm = TRUE), nssi_freq),
+         aborted_onset = ifelse(is.na(aborted_onset), mean(aborted_onset, na.rm = TRUE), aborted_onset),
+         aborted_duration = ifelse(is.na(aborted_duration), mean(aborted_duration, na.rm = TRUE), aborted_duration),
+         nssi_duration = ifelse(is.na(nssi_duration), mean(nssi_duration, na.rm = TRUE), nssi_duration),
+         aborted_freq = ifelse(is.na(aborted_freq), mean(aborted_freq, na.rm = TRUE), aborted_freq),
+         FirstID_to_FirstAction = ifelse(is.na(FirstID_to_FirstAction), mean(FirstID_to_FirstAction, na.rm = TRUE), FirstID_to_FirstAction))
+
+test_data <- test_data %>%
+      mutate(thoughts_amt = ifelse(is.na(thoughts_amt), mean(thoughts_amt, na.rm = TRUE), thoughts_amt),
+         Decision_bin = ifelse(is.na(Decision_bin), mean(Decision_bin, na.rm = TRUE), Decision_bin),
+         think_mull_decide = ifelse(is.na(think_mull_decide), mean(think_mull_decide, na.rm = TRUE), think_mull_decide),
+         decide_method_place = ifelse(is.na(decide_method_place), mean(decide_method_place, na.rm = TRUE), decide_method_place),
+         all_bins = ifelse(is.na(all_bins), mean(all_bins, na.rm = TRUE), all_bins),
+         sis_15 = ifelse(is.na(sis_15), mean(sis_15, na.rm = TRUE), sis_15),
+         lifetimeSI_duration = ifelse(is.na(lifetimeSI_duration), mean(lifetimeSI_duration, na.rm = TRUE), lifetimeSI_duration),
+         lifetimeSI_onset = ifelse(is.na(lifetimeSI_onset), mean(lifetimeSI_onset, na.rm = TRUE), lifetimeSI_onset),
+         lifetimeSI_sd = ifelse(is.na(lifetimeSI_sd), mean(lifetimeSI_sd, na.rm = TRUE), lifetimeSI_sd),
+         lifetimeSI_range = ifelse(is.na(lifetimeSI_range), mean(lifetimeSI_range, na.rm = TRUE), lifetimeSI_range),
+         lifetimeSI_mean = ifelse(is.na(lifetimeSI_mean), mean(lifetimeSI_mean, na.rm = TRUE), lifetimeSI_mean),
+         nssi_onset = ifelse(is.na(nssi_onset), mean(nssi_onset, na.rm = TRUE), nssi_onset),
+         nssi_times = ifelse(is.na(nssi_times), mean(nssi_times, na.rm = TRUE), nssi_times),
+         nssi_duration = ifelse(is.na(nssi_duration), mean(nssi_duration, na.rm = TRUE), nssi_duration),
+         nssi_freq = ifelse(is.na(nssi_freq), mean(nssi_freq, na.rm = TRUE), nssi_freq),
+         aborted_onset = ifelse(is.na(aborted_onset), mean(aborted_onset, na.rm = TRUE), aborted_onset),
+         aborted_duration = ifelse(is.na(aborted_duration), mean(aborted_duration, na.rm = TRUE), aborted_duration),
+         nssi_duration = ifelse(is.na(nssi_duration), mean(nssi_duration, na.rm = TRUE), nssi_duration),
+         aborted_freq = ifelse(is.na(aborted_freq), mean(aborted_freq, na.rm = TRUE), aborted_freq),
+         FirstID_to_FirstAction = ifelse(is.na(FirstID_to_FirstAction), mean(FirstID_to_FirstAction, na.rm = TRUE), FirstID_to_FirstAction))
+```
+
+
+***
+
+
+# 2. Formula
+```{r}
+model_formula <- "actual_lethality ~ NumPrep_Total + X12.15_How_sure_want_to_die + Q_BIS_1_Self_Control" %>% 
+  as.formula()
+
+
+y_train <- train_data$actual_lethality
+
+x_matrix_train <- train_data %>%
+  model_matrix(model_formula, data = .) %>%
+  select(-`(Intercept)`) %>%
+  as.matrix()
+
+x_matrix_test <- test_data %>%
+  model_matrix(model_formula, data = .) %>%
+  select(-`(Intercept)`) %>%
+  as.matrix()
+
+```
+
+
+***
+
+# 3. For given search grid of lambdas, plot LASSO trajectory.
+```{r}
+#Note:
+# - While this plot is quick to create, IMO it's not as informative
+# - The x-axis is not lambda in log-scale, rather log(lambda)
+# - The numbers correspond to columns in x_matrix_train
+lambda_inputs <- 10^seq(from = -5, to = 3, length = 100)
+LASSO_fit_train <- glmnet(
+  x = x_matrix_train, 
+  y = y_train, 
+  alpha = 1, 
+  lambda = lambda_inputs
+)
+plot(LASSO_fit_train, xvar = "lambda", label = TRUE)
+```
+
+
+***
+
+
+# 4. Search grid of lambdas
+```{r}
+LASSO_CV <- cv.glmnet(
+  x = x_matrix_train,
+  y = y_train,
+  alpha = 1,
+  lambda = lambda_inputs,
+  nfolds = 10,
+  type.measure = "mse"
+)
+LASSO_CV %>%
+  broom::tidy() %>%
+  rename(mse = estimate) %>%
+  arrange(mse)
+
+# find lambda star
+lambda_star <- LASSO_CV$lambda.min
+lambda_star
+```
+
+
+***
+
+
+
+# 5. Visualize cross-validation results
+
+```{r}
+CV_plot <- LASSO_CV %>%
+  broom::tidy() %>%
+  rename(mse = estimate) %>%
+  arrange(mse) %>%
+  # plot:
+  ggplot(aes(x = lambda)) +
+  geom_point(aes(y = mse)) +
+  scale_x_log10() +
+  labs(x = "lambda (log10-scale)", y = "Estimated MSE") +
+  ggtitle("Cross Validation Results")
+CV_plot +
+  geom_vline(xintercept = lambda_star, linetype = "dashed", col = "blue")
+```
+
+## Cross Validation
+
+```{r}
+
+train_data <- train_data[sample(nrow(train_data), 14, replace = FALSE,), ]
+
+# matrix of all predictor variables
+x_matrix_train <- train_data %>%
+  modelr::model_matrix(model_formula, data = .) %>%
+  select(-`(Intercept)`) %>%
+  as.matrix()
+
+x_matrix_test <- test_data %>%
+  # Create temporary outcome variance:
+  mutate(log_actual_lethality = 1) %>%
+  modelr::model_matrix(model_formula, data = .) %>%
+  select(-`(Intercept)`) %>%
+  as.matrix()
+
+
+# define search grid
+lambda_search_grid <- 10^seq(from = -5, to = 5, length = 100)
+
+# cross validation
+LASSO_CV <- cv.glmnet(
+  x = x_matrix_train,
+  y = train_data$log_actual_lethality,
+  alpha = 1,
+  lambda = lambda_search_grid,
+  nfolds = 4,
+  type.measure = "mse"
+)
+LASSO_CV %>%
+  broom::tidy() %>%
+  rename(mse = estimate) %>%
+  arrange(mse)
+
+# find lambda star
+lambda_star <- LASSO_CV$lambda.min
+lambda_star
+```
+
+
+
+
+
