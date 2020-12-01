@@ -1,0 +1,294 @@
+---
+title: "Group Differences"
+date: "Last updated on `r Sys.Date()`"
+author: "Irene"
+output:
+  html_document: 
+    # code_folding: show
+    df_print: kable
+    highlight: tango
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: yes
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(DescTools)
+library(stats)
+library(car)
+data <- read.csv(file = "./Data/SecondStep_most_up_to_date.csv") 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+d_abint <- data %>%
+  filter(group == "ab/int")
+#%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+d_at <- data %>%
+  filter(group == "at")
+#%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+```
+
+ #1:5x,1.5,2:5x,2.5, = 12    3:7x, 4:7x, 4.5:2x = 16
+
+d_at_l <- d_at %>%
+  filter(X12.18_Injuries_LethalityScale >= 3) %>%
+  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+
+d_at_nl <- d_at %>%
+  filter(X12.18_Injuries_LethalityScale < 3) %>%
+  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+
+d_at_groups <- rbind(d_at_l, d_at_nl) 
+d_at_groups <- d_at_groups %>%
+  mutate(at_groups = ifelse(at_lethality == 3.625, "at_l", "at-nl"))
+
+
+```{r}
+descriptives <- function(col){
+  print(mean(col, na.rm = TRUE))
+  print(sd(col, na.rm = TRUE))
+}
+
+# use of SD assumes distribution is normal, so let's test if they're normal
+qplot(d_abint$Age)
+describe(d_abint$Age)
+descriptives(d_abint$Age)
+shapiro.test(d_abint$Age) # <.001 the distribution is not normal
+
+qplot(d_at$Age)
+describe(d_at$Age)
+descriptives(d_at$Age)
+shapiro.test(d_at$Age) # <.001 the distribution is not normal
+
+# use of classical t-test assumes equal variance, so let's test if they have equal variance using levene's test
+# Levene's test with one independent variable
+leveneTest(Age ~ group, data = data) 
+# F > .05, no evidence the variabilities are different for two groups
+
+# they are not normal, so we will use classical t-test with pooled variance
+t.test(Age~group,data = data, var.equal = TRUE)
+
+
+# Same for percentage of female sex
+data_sex_numeric <- data %>%
+  mutate(sex_num = ifelse(sex == "F", 1, 0))
+leveneTest(sex_num ~ group, data = data_sex_numeric) # F> .05
+t.test(sex_num~group,data = data_sex_numeric, var.equal = TRUE)
+
+
+```
+
+
+all_des <- function(data){
+  descriptives(data$Q_UPPS_NegUrgency)
+  descriptives(data$Q_UPPS_PosUrgency)
+  descriptives(data$Q_UPPS_Premeditation)
+  descriptives(data$Q_UPPS_Perseverance)
+  descriptives(data$Q_UPPS_SensationSeeking)
+  
+  descriptives(data$Q_BIS_1_Attention)
+  descriptives(data$Q_BIS_1_Motor)
+  descriptives(data$Q_BIS_1_Self_Control)
+  descriptives(data$Q_BIS_1_Cognitive_Complexity)
+  descriptives(data$Q_BIS_1_Preseverance)
+  descriptives(data$Q_BIS_1_Cogntive_Instability)
+  descriptives(data$Q_BIS_2_Attentional_Impulsiveness)
+  descriptives(data$Q_BIS_2_Motor_Impulsiveness)
+  descriptives(data$Q_BIS_2_Nonplanning_Impulsiveness)
+  descriptives(data$Q_BIS_Total)
+  
+  descriptives(data$IST_FreeBlockMean_pCorrs)
+  descriptives(data$IST_CostBlockMean_pCorrs)
+  descriptives(data$CPTGNG_dprime_All)
+  descriptives(data$CPTGNG_commission_errors)
+  descriptives(data$CPTGNG_omission_errors)
+  descriptives(data$MDQ_k_Final)
+  descriptives(data$SSRT_sossrtInt)
+  
+  descriptives(data$thoughts_want)
+  descriptives(data$thoughts_not_want)
+  descriptives(data$thoughts_amt)
+  descriptives(data$thoughts_score)
+  descriptives(data$ThoughtsStart_bin)
+  descriptives(data$Mull_bin)
+  descriptives(data$FstMethod_bin)
+  descriptives(data$FstPlace_bin)
+  descriptives(data$SureMethod_bin)
+  descriptives(data$SurePlace_bin)
+  descriptives(data$Decision_bin)
+  descriptives(data$NumPrep_Total)
+  descriptives(data$X8.3_Mulled_for_this_attempt)
+  descriptives(data$X1.2_Ever_made_a_plan)
+  descriptives(data$X2.6_Confirm_suicide_intent)
+  descriptives(data$X12.15_How_sure_want_to_die)
+  descriptives(data$sis_15)
+  descriptives(data$sis_7)
+  descriptives(data$perceived_lethality)
+  descriptives(data$X12.18_Injuries_LethalityScale)
+  descriptives(data$realize_not_dead)
+  
+  descriptives(data$lifetimeSI_mean)
+  descriptives(data$lifetimeSI_sd)
+  descriptives(data$lifetimeSI_range)
+  descriptives(data$lifetimeSI_onset)
+  descriptives(data$lifetimeSI_duration)
+  
+  descriptives(data$X2.4_Aborted_Num_Times_FINAL)
+  descriptives(data$aborted_onset)
+  descriptives(data$aborted_duration)
+  descriptives(data$aborted_freq)
+  
+  descriptives(data$nssi_times)
+  descriptives(data$nssi_onset)
+  descriptives(data$nssi_duration)
+  descriptives(data$nssi_freq)
+  
+  descriptives(data$X2.6_Num_AT)
+  descriptives(data$FirstID_to_FirstAction)
+}
+descriptives(d_ab$Q_BIS_1_Attention)
+```
+# Archived
+```{r}
+var_icareabout <- c("Q_UPPS_NegUrgency", "Q_UPPS_PosUrgency", "Q_UPPS_Premeditation", "Q_UPPS_Perseverance", "Q_UPPS_SensationSeeking", "Q_BIS_1_Attention", "Q_BIS_1_Motor", "Q_BIS_1_Self_Control", "Q_BIS_1_Cognitive_Complexity", "Q_BIS_1_Preseverance", "Q_BIS_1_Cogntive_Instability", "Q_BIS_2_Attentional_Impulsiveness", "Q_BIS_2_Motor_Impulsiveness", "Q_BIS_2_Nonplanning_Impulsiveness", "Q_BIS_Total", "IST_FreeBlockMean_pCorrs", "IST_CostBlockMean_pCorrs", "CPTGNG_dprime_All", "CPTGNG_commission_errors, CPTGNG_omission_errors", "MDQ_k_Final", "SSRT_sossrtInt", "thoughts_want", "thoughts_not_want", "thoughts_amt", "thoughts_score", "ThoughtsStart_bin", "Mull_bin", "FstMethod_bin", "FstPlace_bin", "SureMethod_bin", "SurePlace_bin", "Decision_bin", "NumPrep_Total", "X8.3_Mulled_for_this_attempt", "X1.2_Ever_made_a_plan", "X2.6_Confirm_suicide_intent", "X12.15_How_sure_want_to_die", "sis_15", "sis_7", "perceived_lethality", "X12.18_Injuries_LethalityScale", "realize_not_dead", "lifetimeSI_mean", "lifetimeSI_sd", "lifetimeSI_range", "lifetimeSI_onset", "lifetimeSI_duration", "X2.4_Aborted_Num_Times_FINAL", "aborted_onset", "aborted_duration", "aborted_freq", "nssi_times", "nssi_onset", "nssi_duration", "nssi_freq", "X2.6_Num_AT", "FirstID_to_FirstAction")
+```
+# T test
+```{r}
+t.test(Q_BIS_1_Attention~group, data = data)
+
+t.test(MDQ_k_Final~group, data = data)
+t.test(thoughts_not_want~group, data = data)
+t.test(thoughts_score~group, data = data)
+t.test(Mull_bin~group, data = data)
+t.test(SurePlace_bin~group, data = data)
+t.test(NumPrep_Total~group, data = data)
+t.test(perceived_lethality~group, data = data)
+t.test(X12.18_Injuries_LethalityScale~group, data = data)
+
+t.test(lifetimeSI_sd~group, data = data)
+t.test(lifetimeSI_range~group, data = data)
+```
+
+# ANOVA & Post hoc
+```{r Compare3G}
+data_4g <- rbind(d_ab, d_at, d_at_l, d_at_nl)
+data_4g <- data_4g %>%
+  mutate(fourGroup = ifelse(at_lethality == 1, "ab/int",
+                            ifelse(at_lethality == 2.75, "at",
+                                   ifelse(at_lethality == 3.625, "at_l", "at-nl"))))
+data_3g_noAT <- data_4g %>%
+  filter(fourGroup != "at")
+
+summary(aov(Q_UPPS_NegUrgency~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_UPPS_NegUrgency)))                  # NO
+summary(aov(Q_UPPS_PosUrgency~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_UPPS_PosUrgency)))                  # NO
+summary(aov(Q_UPPS_Premeditation~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_UPPS_Premeditation)))            # NO
+summary(aov(Q_UPPS_Perseverance~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_UPPS_Perseverance)))              # NO
+summary(aov(Q_UPPS_SensationSeeking~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_UPPS_SensationSeeking)))      # NO
+
+summary(aov(Q_BIS_1_Attention~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Attention)))
+summary(aov(Q_BIS_1_Motor~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Motor)))
+summary(aov(Q_BIS_1_Self_Control~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Self_Control)))
+summary(aov(Q_BIS_1_Cognitive_Complexity~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Cognitive_Complexity)))
+summary(aov(Q_BIS_1_Preseverance~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Preseverance)))
+summary(aov(Q_BIS_1_Cogntive_Instability~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_1_Cogntive_Instability)))
+summary(aov(Q_BIS_2_Attentional_Impulsiveness~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_2_Attentional_Impulsiveness)))
+summary(aov(Q_BIS_2_Motor_Impulsiveness~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_2_Motor_Impulsiveness)))
+summary(aov(Q_BIS_2_Nonplanning_Impulsiveness~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_2_Nonplanning_Impulsiveness)))
+summary(aov(Q_BIS_Total~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Q_BIS_Total)))
+summary(aov(IST_FreeBlockMean_pCorrs~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$IST_FreeBlockMean_pCorrs)))
+summary(aov(IST_CostBlockMean_pCorrs~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$IST_CostBlockMean_pCorrs)))
+summary(aov(CPTGNG_dprime_All~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$CPTGNG_dprime_All)))
+summary(aov(CPTGNG_commission_errors~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$CPTGNG_commission_errors)))
+summary(aov(CPTGNG_omission_errors~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$CPTGNG_omission_errors)))
+
+summary(aov(MDQ_k_Final~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$MDQ_k_Final)))                                        # * for at-L/ab (Tukey); * for both (LSD)
+PostHocTest(aov(MDQ_k_Final~fourGroup, data = data_3g_noAT), method = "lsd")
+model <- aov(MDQ_k_Final~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$MDQ_k_Final))
+TukeyHSD(model, ordered = TRUE)
+
+summary(aov(SSRT_sossrtInt~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$SSRT_sossrtInt)))
+summary(aov(thoughts_want~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_want)))
+
+summary(aov(thoughts_not_want~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_not_want)))                            # * for at-L/ab (Tukey/HSD); ** for at-L/ab (LSD)
+PostHocTest(aov(thoughts_not_want~fourGroup, data = data_3g_noAT), method = "lsd")
+m2 <- aov(thoughts_not_want~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_not_want))
+TukeyHSD(m2, ordered = TRUE)
+
+summary(aov(thoughts_amt~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_amt)))
+
+summary(aov(thoughts_score~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_score)))                                  # ** for at-L/ab (Tukey); ** for at-L/ab & * for at-NL/ab (LSD)
+PostHocTest(aov(thoughts_score~fourGroup, data = data_3g_noAT), method = "lsd")
+m3 <- aov(thoughts_score~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$thoughts_score))
+TukeyHSD(m3, ordered = TRUE)
+
+summary(aov(ThoughtsStart_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$ThoughtsStart_bin))) 
+summary(aov(Mull_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Mull_bin)))                                              # ** for ab/L & ab/NL (Tukdy); *** for ab/L & ** for ab/NL (LSD)
+PostHocTest(aov(Mull_bin~fourGroup, data = data_3g_noAT), method = "lsd")
+m4 <- aov(Mull_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Mull_bin))
+TukeyHSD(m4, ordered = TRUE)
+
+
+summary(aov(FstMethod_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$FstMethod_bin)))
+summary(aov(FstPlace_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$FstPlace_bin)))
+summary(aov(SureMethod_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$SureMethod_bin)))
+summary(aov(SurePlace_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$SurePlace_bin)))                                    # * for ab/NL (Tukey); * for ab/NL & ab/L (LSD)
+PostHocTest(aov(SurePlace_bin~fourGroup, data = data_3g_noAT), method = "lsd")
+m5 <- aov(SurePlace_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$SurePlace_bin))
+TukeyHSD(m5, ordered = TRUE)
+
+summary(aov(Decision_bin~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$Decision_bin)))
+summary(aov(NumPrep_Total~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$NumPrep_Total)))  # * for ab/L (Tukey); ** ab/L (LSD)
+PostHocTest(aov(NumPrep_Total~fourGroup, data = data_3g_noAT), method = "lsd")
+m6 <- aov(NumPrep_Total~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$NumPrep_Total))
+TukeyHSD(m6, ordered = TRUE)
+
+summary(aov(X8.3_Mulled_for_this_attempt~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X8.3_Mulled_for_this_attempt)))
+summary(aov(X1.2_Ever_made_a_plan~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X1.2_Ever_made_a_plan)))
+summary(aov(X2.6_Confirm_suicide_intent~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X2.6_Confirm_suicide_intent)))
+summary(aov(X12.15_How_sure_want_to_die~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X12.15_How_sure_want_to_die)))
+
+summary(aov(sis_15~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$sis_15)))
+summary(aov(sis_7~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$sis_7)))
+
+summary(aov(perceived_lethality~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$perceived_lethality)))                         # * for ab/L (Tukey); ** ab/L, * for ab/NL (LSD)
+PostHocTest(aov(perceived_lethality~fourGroup, data = data_3g_noAT), method = "lsd")
+m7 <- aov(perceived_lethality~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$perceived_lethality))
+TukeyHSD(m7, ordered = TRUE)
+
+summary(aov(X12.18_Injuries_LethalityScale~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X12.18_Injuries_LethalityScale)))   # *** for L/NL & L/ab (Tukey & LSD)
+PostHocTest(aov(X12.18_Injuries_LethalityScale~fourGroup, data = data_3g_noAT), method = "lsd")
+m8 <- aov(X12.18_Injuries_LethalityScale~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X12.18_Injuries_LethalityScale))
+TukeyHSD(m8, ordered = TRUE)
+
+summary(aov(realize_not_dead~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$realize_not_dead)))
+
+summary(aov(lifetimeSI_mean~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_mean)))
+
+summary(aov(lifetimeSI_sd~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_sd)))                                     # ** Tukey: * ab/NL; LSD: ** ab/NL, * ab/L
+PostHocTest(aov(lifetimeSI_sd~fourGroup, data = data_3g_noAT), method = "lsd")
+m9 <- aov(lifetimeSI_sd~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_sd))
+TukeyHSD(m9, ordered = TRUE)
+
+summary(aov(lifetimeSI_range~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_range)))                               # ** Tukey: * for ab/L & ab/NL; LSD: ** for both
+PostHocTest(aov(lifetimeSI_range~fourGroup, data = data_3g_noAT), method = "lsd")
+m10 <- aov(lifetimeSI_range~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_range))
+TukeyHSD(m10, ordered = TRUE)
+
+summary(aov(lifetimeSI_onset~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_onset)))
+summary(aov(lifetimeSI_duration~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$lifetimeSI_duration)))
+
+summary(aov(X2.4_Aborted_Num_Times_FINAL~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X2.4_Aborted_Num_Times_FINAL)))
+summary(aov(aborted_onset~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$aborted_onset)))
+summary(aov(aborted_duration~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$aborted_duration)))
+summary(aov(aborted_freq~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$aborted_freq)))
+
+summary(aov(nssi_times~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$nssi_times)))
+summary(aov(nssi_onset~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$nssi_onset)))
+summary(aov(nssi_duration~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$nssi_duration)))
+summary(aov(nssi_freq~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$nssi_freq)))
+
+summary(aov(X2.6_Num_AT~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$X2.6_Num_AT)))
+summary(aov(FirstID_to_FirstAction~fourGroup, data = data_3g_noAT, na.exclude(data_3g_noAT$FirstID_to_FirstAction)))
+```

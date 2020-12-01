@@ -86,20 +86,23 @@ data <- data %>%
 # actual lethality is left skewed and to prevent getting negative results, here used a log transformation of outcome variable
 # qplot(actual_lethality, data = data, binwidth = .5)
 
-# Create training set
+# Create training sets
 train_data <- data %>%
   sample_frac(0.5)
 
-# Create test set
+train_predictors <- train_data %>%
+  select(-actual_lethality)
+
+train_outcome <- as.vector(train_data$actual_lethality)
+
+# Create test sets
 test_data <- data %>%
   anti_join(train_data, by = "Subject")
 
+test_predictors <- test_data %>%
+  select(-actual_lethality)
 
-
-train_data <- data %>% 
-  mutate(log_actual_lethality = log(actual_lethality+1))
-
-# now train_data: *66, test_data: 28*64
+test_outcome <- test_data$actual_lethality
 ```
 
 ## Deal with Missing Data (replace with variable mean)
@@ -154,6 +157,29 @@ test_data <- test_data %>%
 
 
 ***
+
+```{r ENR}
+# Ridge
+alpha0.fit <- cv.glmnet(train_predictors, train_outcome, type.measure = "mse", alpha = 0, family = "gaussian")
+# using optimal lambda to predict
+alpha0.predicted <- predict(alpha0.fit, s = alpha0.fit$lambda.1se, newx = test_predictors)
+mean((test_outcome - alpha0.predicted)^2)
+
+as.numeric(train_outcome)
+
+test_predictors <- sapply(test_predictors, as.double)
+# LASSO
+alpha1.fit <- cv.glmnet(train_predictors, train_outcome, type.measure = "mse", alpha = 1, family = "gaussian")
+# using optimal lambda to predict
+alpha1.predicted <- predict(alpha1.fit, s = alpha1.fit$lambda.1se, newx = test_predictors)
+mean((test_outcome - alpha1.predicted)^2)
+
+# Elastic net regression
+alpha0.5.fit <- cv.glmnet(train_predictors, train_outcome, type.measure = "mse", alpha = 0.5, family = "gaussian")
+# using optimal lambda to predict
+alpha0.5.predicted <- predict(alpha0.5.fit, s = alpha0.5.fit$lambda.1se, newx = test_predictors)
+mean((test_outcome - alpha0.5.predicted)^2)
+```
 
 
 # 2. Formula
