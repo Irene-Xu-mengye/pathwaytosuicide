@@ -19,15 +19,18 @@ library(tidyverse)
 library(DescTools)
 library(stats)
 library(car)
-data <- read.csv(file = "./Data/SecondStep_most_up_to_date.csv") 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
+data <- read.csv(file = "./Data/SecondStep_Nov_30.csv") %>%
+  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds))
+
+# For sp st fall 2020
+  
 d_abint <- data %>%
-  filter(group == "ab/int")
-#%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+  filter(group == "ab/int")      #%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE)) Not included for now
+
 d_at <- data %>%
-  filter(group == "at")
-#%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+  filter(group == "at")          #%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
 ```
 
  #1:5x,1.5,2:5x,2.5, = 12    3:7x, 4:7x, 4.5:2x = 16
@@ -58,7 +61,7 @@ descriptives(d_abint$Age)
 shapiro.test(d_abint$Age) # <.001 the distribution is not normal
 
 qplot(d_at$Age)
-describe(d_at$Age)
+sd(d_abint$Age)
 descriptives(d_at$Age)
 shapiro.test(d_at$Age) # <.001 the distribution is not normal
 
@@ -76,8 +79,157 @@ data_sex_numeric <- data %>%
   mutate(sex_num = ifelse(sex == "F", 1, 0))
 leveneTest(sex_num ~ group, data = data_sex_numeric) # F> .05
 t.test(sex_num~group,data = data_sex_numeric, var.equal = TRUE)
+d_abint %>%
+  filter(race == "African American") #23
+```
 
 
+```{r Usebin}
+leveneTest(ThoughtsStart_bin ~ group, data = data) # F > .05
+leveneTest(Mull_bin ~ group, data = data)          # F > 
+leveneTest(Decision_bin ~ group, data = data)      #   >
+leveneTest(FirstMethod_bin ~ group, data = data)   #   >
+leveneTest(SureMethod_bin ~ group, data = data)    #   >
+leveneTest(FirstPlace_bin ~ group, data = data)    #   >
+leveneTest(SurePlace_bin ~ group, data = data)     #   >
+
+t.test(ThoughtsStart_bin ~ group,data = data, var.equal = TRUE)
+sd(d_at$ThoughtsStart_bin, na.rm = TRUE)
+sd(d_abint$ThoughtsStart_bin, na.rm = TRUE)
+
+t.test(Mull_bin ~ group,data = data, var.equal = TRUE)  #***
+sd(d_at$Mull_bin, na.rm = TRUE)
+sd(d_abint$Mull_bin, na.rm = TRUE)
+
+t.test(Decision_bin ~ group,data = data, var.equal = TRUE)
+sd(d_at$Decision_bin, na.rm = TRUE)
+sd(d_abint$Decision_bin, na.rm = TRUE)
+
+t.test(FirstMethod_bin ~ group, data = data, var.equal = TRUE) # p<.07
+sd(d_at$FirstMethod_bin, na.rm = TRUE)
+sd(d_abint$FirstMethod_bin, na.rm = TRUE)
+
+t.test(SureMethod_bin ~ group, data = data, var.equal = TRUE) # p< .09
+sd(d_at$SureMethod_bin, na.rm = TRUE)
+sd(d_abint$ThoughtsStart_bin, na.rm = TRUE)
+
+t.test(FirstPlace_bin ~ group, data = data, var.equal = TRUE)
+sd(d_at$FirstPlace_bin, na.rm = TRUE)
+sd(d_abint$FirstPlace_bin, na.rm = TRUE)
+
+t.test(SurePlace_bin ~ group, data = data, var.equal = TRUE) # *
+sd(d_at$SurePlace_bin, na.rm = TRUE)
+sd(d_abint$SurePlace_bin, na.rm = TRUE)
+```
+
+```{r Useoriginal}
+leveneTest(ThoughtsStart_Seconds ~ group, data = data) # F > .05
+leveneTest(MullingStarts_Seconds ~ group, data = data) # F > 
+leveneTest(Decision_Seconds ~ group, data = data)      #   >
+leveneTest(FirstMethod_Seconds ~ group, data = data)   #   >
+leveneTest(SureMethod_Seconds ~ group, data = data)    #   >
+leveneTest(FirstPlace_Seconds ~ group, data = data)    #   >
+leveneTest(SurePlace_Seconds ~ group, data = data)     #   >
+
+t.test(ThoughtsStart_Seconds ~ group, data = data, var.equal = TRUE)
+sd(d_at$ThoughtsStart_Seconds, na.rm = TRUE)
+sd(d_abint$ThoughtsStart_Seconds, na.rm = TRUE)
+
+t.test(MullingStarts_Seconds ~ group,data = data, var.equal = TRUE) # p< .08
+sd(d_at$MullingStarts_Seconds, na.rm = TRUE)
+sd(d_abint$MullingStarts_Seconds, na.rm = TRUE)
+
+t.test(Decision_Seconds ~ group, data = data, var.equal = TRUE)   # p<.07
+sd(d_at$Decision_Seconds, na.rm = TRUE)
+sd(d_abint$Decision_Seconds, na.rm = TRUE)
+
+t.test(FirstMethod_Seconds ~ group, data = data, var.equal = TRUE)
+sd(d_at$FirstMethod_Seconds, na.rm = TRUE)
+sd(d_abint$FirstMethod_Seconds, na.rm = TRUE)
+
+t.test(SureMethod_Seconds ~ group, data = data, var.equal = TRUE)
+sd(d_at$SureMethod_Seconds, na.rm = TRUE)
+sd(d_abint$SureMethod_Seconds, na.rm = TRUE)
+
+t.test(FirstPlace_Seconds ~ group, data = data, var.equal = TRUE)
+sd(d_at$FirstPlace_Seconds, na.rm = TRUE)
+sd(d_abint$FirstPlace_Seconds, na.rm = TRUE)
+
+t.test(SurePlace_Seconds ~ group, data = data, var.equal = TRUE)
+sd(d_at$SurePlace_Seconds, na.rm = TRUE)
+sd(d_abint$SurePlace_Seconds, na.rm = TRUE)
+```
+
+```{r Uselog}
+leveneTest(log(ThoughtsStart_Seconds) ~ group, data = data) # F > .05
+leveneTest(log(MullingStarts_Seconds) ~ group, data = data) #   ***
+leveneTest(log(Decision_Seconds) ~ group, data = data)      #   >
+leveneTest(log(FirstMethod_Seconds) ~ group, data = data)   #   >
+leveneTest(log(SureMethod_Seconds) ~ group, data = data)    #   >
+leveneTest(log(FirstPlace_Seconds) ~ group, data = data)    #   >
+leveneTest(log(SurePlace_Seconds) ~ group, data = data)     #   >
+
+t.test(log(ThoughtsStart_Seconds) ~ group, data = data, var.equal = TRUE)
+sd(log(d_at$ThoughtsStart_Seconds), na.rm = TRUE)
+sd(log(d_abint$ThoughtsStart_Seconds), na.rm = TRUE)
+
+t.test(log(MullingStarts_Seconds) ~ group, data = data, var.equal = FALSE) # ***
+sd(log(d_at$MullingStarts_Seconds), na.rm = TRUE)
+sd(log(d_abint$MullingStarts_Seconds), na.rm = TRUE)
+   
+t.test(log(Decision_Seconds) ~ group, data = data, var.equal = TRUE)
+sd(log(d_at$Decision_Seconds), na.rm = TRUE)
+sd(log(d_abint$Decision_Seconds), na.rm = TRUE)
+
+t.test(log(FirstMethod_Seconds) ~ group, data = data, var.equal = TRUE)  # p< .07
+sd(log(d_at$FirstMethod_Seconds), na.rm = TRUE)
+sd(log(d_abint$FirstMethod_Seconds), na.rm = TRUE)
+
+t.test(log(SureMethod_Seconds) ~ group, data = data, var.equal = TRUE)
+sd(log(d_at$SureMethod_Seconds), na.rm = TRUE)
+sd(log(d_abint$SureMethod_Seconds), na.rm = TRUE)
+
+t.test(log(FirstPlace_Seconds) ~ group, data = data, var.equal = TRUE)
+sd(log(d_at$FirstPlace_Seconds), na.rm = TRUE)
+sd(log(d_abint$FirstPlace_Seconds), na.rm = TRUE)
+
+t.test(log(SurePlace_Seconds) ~ group, data = data, var.equal = TRUE) # *
+sd(log(d_at$SurePlace_Seconds), na.rm = TRUE)
+sd(log(d_abint$SurePlace_Seconds), na.rm = TRUE)
+```
+
+
+```{r thoughts}
+
+leveneTest(thoughts_want ~ group, data = data)         # >
+leveneTest(thoughts_not_want ~ group, data = data)     # >  
+leveneTest(thoughts_amt ~ group, data = data)          # > 
+leveneTest(thoughts_net ~ group, data = data)          # > 
+
+t.test(thoughts_want ~ group,data = data, var.equal = TRUE)
+sd(d_at$thoughts_want, na.rm = TRUE)
+sd(d_abint$thoughts_want, na.rm = TRUE)
+
+t.test(thoughts_not_want ~ group,data = data, var.equal = TRUE)  # **
+sd(d_at$thoughts_not_want, na.rm = TRUE)
+sd(d_abint$thoughts_not_want, na.rm = TRUE)
+
+t.test(thoughts_amt ~ group,data = data, var.equal = TRUE)
+sd(d_at$thoughts_amt, na.rm = TRUE)
+sd(d_abint$thoughts_amt, na.rm = TRUE)
+
+t.test(thoughts_net ~ group, data = data, var.equal = TRUE)  # ***
+sd(d_at$thoughts_net, na.rm = TRUE)
+sd(d_abint$thoughts_net, na.rm = TRUE)
+
+```
+
+```{r prep}
+leveneTest(NumPrep_Total ~ group, data = data)          #   *
+
+t.test(NumPrep_Total ~ group,data = data, var.equal = FALSE) # **
+sd(d_at$NumPrep_Total, na.rm = TRUE)
+sd(d_abint$NumPrep_Total, na.rm = TRUE)
 ```
 
 
