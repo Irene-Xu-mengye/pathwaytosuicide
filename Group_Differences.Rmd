@@ -19,6 +19,8 @@ library(tidyverse)
 library(DescTools)
 library(stats)
 library(car)
+library(ggthemes)
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 data <- read.csv(file = "./Data/SecondStep_Nov_30.csv") %>%
@@ -46,7 +48,23 @@ d_at_nl <- d_at %>%
 d_at_groups <- rbind(d_at_l, d_at_nl) 
 d_at_groups <- d_at_groups %>%
   mutate(at_groups = ifelse(at_lethality == 3.625, "at_l", "at-nl"))
+  
+ggplot(data, aes(x = ThoughtsStart_bin)) +
+  geom_histogram(color="#e9ecef", alpha=0.6, position = "dodge", binwidth = 1.5)+
+  scale_x_reverse(breaks = num, labels = lab)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(title="Thoughts Started", x ="", y = "") +
+  facet_wrap(vars(group))
 
+
+TS_plot +facet_wrap(~group)
+
+gathered_data <- gather(data, 'ThoughtsStart_bin', 'Mull_bin', 'Decision_bin', 'FirstMethod_bin', 'SureMethod_bin', 'FirstPlace_bin', 'SurePlace_bin', key = 'type_of_event', value = 'bin_num')
+
+p<- ggplot(gathered_data, aes(x = bin_num,fill = group)) +
+  geom_histogram(position = "dodge") +
+  facet_wrap(~type_of_event, ncol = 3, scales = "free")
+ggplotly(p)
 
 ```{r}
 descriptives <- function(col){
@@ -93,33 +111,40 @@ leveneTest(SureMethod_bin ~ group, data = data)    #   >
 leveneTest(FirstPlace_bin ~ group, data = data)    #   >
 leveneTest(SurePlace_bin ~ group, data = data)     #   >
 
-t.test(ThoughtsStart_bin ~ group,data = data, var.equal = TRUE)
+t.test(ThoughtsStart_bin ~ group,data = data, var.equal = TRUE) 
 sd(d_at$ThoughtsStart_bin, na.rm = TRUE)
 sd(d_abint$ThoughtsStart_bin, na.rm = TRUE)
+cohensD(ThoughtsStart_bin ~ group, data)
 
 t.test(Mull_bin ~ group,data = data, var.equal = TRUE)  #***
 sd(d_at$Mull_bin, na.rm = TRUE)
 sd(d_abint$Mull_bin, na.rm = TRUE)
+CohenD(Mull_bin ~ group,data = data)
 
 t.test(Decision_bin ~ group,data = data, var.equal = TRUE)
 sd(d_at$Decision_bin, na.rm = TRUE)
 sd(d_abint$Decision_bin, na.rm = TRUE)
+CohenD(Decision_bin ~ group,data = data)
 
-t.test(FirstMethod_bin ~ group, data = data, var.equal = TRUE) # p<.07
+t.test(FirstMethod_bin ~ group, data = data, var.equal = TRUE)
 sd(d_at$FirstMethod_bin, na.rm = TRUE)
 sd(d_abint$FirstMethod_bin, na.rm = TRUE)
+CohenD(FirstMethod_bin ~ group,data = data)
 
-t.test(SureMethod_bin ~ group, data = data, var.equal = TRUE) # p< .09
+t.test(SureMethod_bin ~ group, data = data, var.equal = TRUE)
 sd(d_at$SureMethod_bin, na.rm = TRUE)
-sd(d_abint$ThoughtsStart_bin, na.rm = TRUE)
+sd(d_abint$SureMethod_bin, na.rm = TRUE)
+CohenD(SureMethod_bin ~ group,data = data)
 
 t.test(FirstPlace_bin ~ group, data = data, var.equal = TRUE)
 sd(d_at$FirstPlace_bin, na.rm = TRUE)
 sd(d_abint$FirstPlace_bin, na.rm = TRUE)
+CohenD(FirstPlace_bin ~ group,data = data)
 
 t.test(SurePlace_bin ~ group, data = data, var.equal = TRUE) # *
 sd(d_at$SurePlace_bin, na.rm = TRUE)
 sd(d_abint$SurePlace_bin, na.rm = TRUE)
+CohenD(SurePlace_bin ~ group,data = data)
 ```
 
 ```{r Useoriginal}
@@ -222,6 +247,53 @@ t.test(thoughts_net ~ group, data = data, var.equal = TRUE)  # ***
 sd(d_at$thoughts_net, na.rm = TRUE)
 sd(d_abint$thoughts_net, na.rm = TRUE)
 
+
+p1 <- ggplot(data, aes(x = thoughts_want, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +  
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  theme(plot.title = element_text(vjust = -15, hjust =0.5),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(vjust =9))+
+  labs(title="Pushing Thoughts", x ="Amount of Thoughts", y = "") +
+  scale_y_continuous(limits = c(0,8), breaks = c(0,1,2,3,4,5,6,7,8), labels = c('0','1','2','3','4','5','6','7','8'))  +
+  scale_x_continuous(limits = c(0,22), breaks = c(0,2,4,6,8,10,12,14,16,18,20,22), labels = c('0','2','4','6','8','10','12','14','16','18','20','22')) 
+
+p2 <- ggplot(data, aes(x = thoughts_not_want, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +  
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  theme(plot.title = element_text(vjust = -15, hjust =0.5),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(vjust =9))+
+  labs(title="Protective Thoughts", x ="Amount of Thoughts", y = "") +
+  scale_y_continuous(limits = c(0,8), breaks = c(0,1,2,3,4,5,6,7,8), labels = c('0','1','2','3','4','5','6','7','8')) +
+  scale_x_continuous(limits = c(0,22), breaks = c(0,2,4,6,8,10,12,14,16,18,20,22), labels = c('0','2','4','6','8','10','12','14','16','18','20','22')) 
+
+p3 <- ggplot(data, aes(x = thoughts_amt, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +  
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  theme(plot.title = element_text(vjust = -15, hjust =0.1),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(vjust =9))+
+  labs(title="Total Thoughts", x ="Amount of Thoughts", y = "") +
+  scale_y_continuous(limits = c(0,8), breaks = c(0,1,2,3,4,5,6,7,8), labels = c('0','1','2','3','4','5','6','7','8'))   +
+  scale_x_continuous(limits = c(0,23), breaks = c(0,2,4,6,8,10,12,14,16,18,20,22), labels = c('0','2','4','6','8','10','12','14','16','18','20','22')) 
+
+p4 <- ggplot(data, aes(x = thoughts_net, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +  
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  theme(plot.title = element_text(vjust = -15, hjust =0.3),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(vjust =9),
+    legend.position = c(0.9, 0.8))+
+  labs(title="Net (pushing) Thoughts", x ="Amount of Thoughts", y = "") +
+  scale_y_continuous(limits = c(0,8), breaks = c(0,1,2,3,4,5,6,7,8), labels = c('0','1','2','3','4','5','6','7','8'))   +
+  scale_x_continuous(limits = c(-22,10), breaks = c(-21,-19,-17,-15,-13,-11,-9,-7,-5,-3,-1,1,3,5,7,9), labels = c('-21','-19','-17','-15','-13','-11','-9','-7','-5','-3','-1','1','3','5','7','9')) 
+
+
 ```
 
 ```{r prep}
@@ -230,6 +302,121 @@ leveneTest(NumPrep_Total ~ group, data = data)          #   *
 t.test(NumPrep_Total ~ group,data = data, var.equal = FALSE) # **
 sd(d_at$NumPrep_Total, na.rm = TRUE)
 sd(d_abint$NumPrep_Total, na.rm = TRUE)
+
+ggplot(data, aes(x = NumPrep_Total, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +  
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  theme(plot.title = element_text(vjust = -10, hjust =0.5),
+    panel.background = element_rect(fill = "white"),
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_text(vjust =9),
+    legend.position = c(0.9, 0.8))+
+  labs(title="Preparatory Actions", x ="", y = "") +
+  scale_x_continuous(limits = c(-0.5,12), breaks = c(0,1,2,3,4,5,6,7,8,9,10,11), labels = c('0','1','2','3','4','5','6','7','8','9','10','11'))   +
+  scale_y_continuous(limits = c(0,9), breaks = c(0,1,2,3,4,5,6,7,8,9), labels = c('0','1','2','3','4','5','6','7','8','9')) 
+```
+
+```{r labels}
+num <- c(1:18)
+lab <- c("1: <1 Min","2: 5 Min","3: 15 Min","4: 30 Min","5: 1 Hr","6: 2 Hrs","7: 3 Hrs","8: 6 Hrs","9: 12 Hrs","10: 1 Day","11: 3 Days","12: 1 Wk","13: 2 Wks","14: 1 Mnth","15: 6 Mnth","16: 1 Yr","17: 5Yrs", "18: > 5 Yrs")
+
+lab_brief <- c("<1 Min","5 Min","15 Min","30 Min","1 Hr","2 Hrs","3 Hrs","6 Hrs","12 Hrs","1 Day","3 Days","1 Wk","2 Wks","1 Mnth","6 Mnth","1 Yr","5Yrs", ">5 Yrs")
+
+lab_2 <- c("<1 Min (1)","5 Min (2)","15 Min (3)","30 Min (4)","1 Hr (5)","2 Hrs (6)","3 Hrs (7)","6 Hrs (8)","12 Hrs (9)","1 Day (10)","3 Days (11)","1 Wk (12)","2 Wks (13)","1 Mnth (14)","6 Mnth (15)","1 Yr (16)","5Yrs (17)", ">5 Yrs (18)")
+```
+
+```{r Histrograms}
+# 0-7
+TS_plot <- ggplot(data, aes(x = ThoughtsStart_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank())+
+  labs(title="Ideation Started", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10')) 
+
+# 0-15
+Mull_plot <- ggplot(data, aes(x = Mull_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5),breaks = num, labels = lab_2) +
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+      axis.ticks.x = element_blank(),
+      panel.background = element_rect(fill = "white"),
+      axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4))+
+  labs(title = "Mulling Started", x ="", y = "") +
+  scale_y_continuous(limits = c(0,15), breaks = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), labels = c('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15')) 
+
+# 0-10
+Decision_plot <- ggplot(data, aes(x = Decision_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank())+
+  labs(title = "Decided to Attempt", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10'))
+
+# 0-5
+FM_plot <- ggplot(data, aes(x = FirstMethod_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank())+
+  labs(title = "Started to Think about Method(s)", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10'))
+
+# 0-8
+SM_plot <- ggplot(data, aes(x = SureMethod_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank())+
+  labs(title = "Decided on Method", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10'))
+
+# 0-5
+FP_plot <- ggplot(data, aes(x = FirstPlace_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind(name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank())+
+  labs(title = "Started to Think about Place", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10'))
+
+# 0-8
+SP_plot <- ggplot(data, aes(x = SurePlace_bin, fill = group)) +
+  geom_histogram(alpha = 0.6, position = "dodge", binwidth = 1) +   
+  scale_fill_colorblind( name = "Group", labels = c("AB / INT", "AT")) +
+  scale_x_reverse(limits = c(18.5,-0.5), breaks = num, labels = lab_2)+
+  theme(plot.title = element_text(vjust = -15, hjust =0.4),
+    panel.background = element_rect(fill = "white"),
+    axis.text.x = element_text(angle = 40, hjust = 1, vjust = 1.4),
+    axis.ticks.x = element_blank()) +
+  labs(title = "Decided on Place", x ="", y = "") +
+  scale_y_continuous(limits = c(0,10), breaks = c(0,1,2,3,4,5,6,7,8,9,10), labels = c('0','1','2','3','4','5','6','7','8','9','10'))
+
+TS_plot 
+Mull_plot
+Decision_plot
+FM_plot
+SM_plot
+FP_plot
+SP_plot
 ```
 
 
