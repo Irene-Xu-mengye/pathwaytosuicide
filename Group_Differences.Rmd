@@ -23,16 +23,19 @@ library(ggthemes)
 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
+```
+# For sp st fall 2020
+```{r}
 data <- read.csv(file = "./Data/SecondStep_Nov_30.csv") %>%
   mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds))
+```
 
-# For sp st fall 2020
-  
+```{r}
 d_abint <- data %>%
-  filter(group == "ab/int")      #%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE)) Not included for now
+  filter(group == "ab/int")
 
 d_at <- data %>%
-  filter(group == "at")          #%>%  mutate(at_lethality = mean(X12.18_Injuries_LethalityScale, na.rm = TRUE))
+  filter(group == "at")
 ```
 
  #1:5x,1.5,2:5x,2.5, = 12    3:7x, 4:7x, 4.5:2x = 16
@@ -56,7 +59,6 @@ ggplot(data, aes(x = ThoughtsStart_bin)) +
   labs(title="Thoughts Started", x ="", y = "") +
   facet_wrap(vars(group))
 
-
 TS_plot +facet_wrap(~group)
 
 gathered_data <- gather(data, 'ThoughtsStart_bin', 'Mull_bin', 'Decision_bin', 'FirstMethod_bin', 'SureMethod_bin', 'FirstPlace_bin', 'SurePlace_bin', key = 'type_of_event', value = 'bin_num')
@@ -66,6 +68,7 @@ p<- ggplot(gathered_data, aes(x = bin_num,fill = group)) +
   facet_wrap(~type_of_event, ncol = 3, scales = "free")
 ggplotly(p)
 
+## Demographics 
 ```{r}
 descriptives <- function(col){
   print(mean(col, na.rm = TRUE))
@@ -91,7 +94,6 @@ leveneTest(Age ~ group, data = data)
 # they are not normal, so we will use classical t-test with pooled variance
 t.test(Age~group,data = data, var.equal = TRUE)
 
-
 # Same for percentage of female sex
 data_sex_numeric <- data %>%
   mutate(sex_num = ifelse(sex == "F", 1, 0))
@@ -101,7 +103,7 @@ d_abint %>%
   filter(race == "African American") #23
 ```
 
-
+## Time (3 methods)
 ```{r Usebin}
 leveneTest(ThoughtsStart_bin ~ group, data = data) # F > .05
 leveneTest(Mull_bin ~ group, data = data)          # F > 
@@ -223,9 +225,8 @@ sd(log(d_at$SurePlace_Seconds), na.rm = TRUE)
 sd(log(d_abint$SurePlace_Seconds), na.rm = TRUE)
 ```
 
-
+## Thoughts + Prep
 ```{r thoughts}
-
 leveneTest(thoughts_want ~ group, data = data)         # >
 leveneTest(thoughts_not_want ~ group, data = data)     # >  
 leveneTest(thoughts_amt ~ group, data = data)          # > 
@@ -325,6 +326,7 @@ lab_brief <- c("<1 Min","5 Min","15 Min","30 Min","1 Hr","2 Hrs","3 Hrs","6 Hrs"
 lab_2 <- c("<1 Min (1)","5 Min (2)","15 Min (3)","30 Min (4)","1 Hr (5)","2 Hrs (6)","3 Hrs (7)","6 Hrs (8)","12 Hrs (9)","1 Day (10)","3 Days (11)","1 Wk (12)","2 Wks (13)","1 Mnth (14)","6 Mnth (15)","1 Yr (16)","5Yrs (17)", ">5 Yrs (18)")
 ```
 
+## Histrograms of time, thoughts, and prep
 ```{r Histrograms}
 # 0-7
 TS_plot <- ggplot(data, aes(x = ThoughtsStart_bin, fill = group)) +
@@ -419,76 +421,38 @@ FP_plot
 SP_plot
 ```
 
+## Use a clean version of data only containing intent and lethality
+```{r}
+data <- read.csv(file = "./Data/SecondStep_Jan_31.csv")
 
-all_des <- function(data){
-  descriptives(data$Q_UPPS_NegUrgency)
-  descriptives(data$Q_UPPS_PosUrgency)
-  descriptives(data$Q_UPPS_Premeditation)
-  descriptives(data$Q_UPPS_Perseverance)
-  descriptives(data$Q_UPPS_SensationSeeking)
-  
-  descriptives(data$Q_BIS_1_Attention)
-  descriptives(data$Q_BIS_1_Motor)
-  descriptives(data$Q_BIS_1_Self_Control)
-  descriptives(data$Q_BIS_1_Cognitive_Complexity)
-  descriptives(data$Q_BIS_1_Preseverance)
-  descriptives(data$Q_BIS_1_Cogntive_Instability)
-  descriptives(data$Q_BIS_2_Attentional_Impulsiveness)
-  descriptives(data$Q_BIS_2_Motor_Impulsiveness)
-  descriptives(data$Q_BIS_2_Nonplanning_Impulsiveness)
-  descriptives(data$Q_BIS_Total)
-  
-  descriptives(data$IST_FreeBlockMean_pCorrs)
-  descriptives(data$IST_CostBlockMean_pCorrs)
-  descriptives(data$CPTGNG_dprime_All)
-  descriptives(data$CPTGNG_commission_errors)
-  descriptives(data$CPTGNG_omission_errors)
-  descriptives(data$MDQ_k_Final)
-  descriptives(data$SSRT_sossrtInt)
-  
-  descriptives(data$thoughts_want)
-  descriptives(data$thoughts_not_want)
-  descriptives(data$thoughts_amt)
-  descriptives(data$thoughts_score)
-  descriptives(data$ThoughtsStart_bin)
-  descriptives(data$Mull_bin)
-  descriptives(data$FstMethod_bin)
-  descriptives(data$FstPlace_bin)
-  descriptives(data$SureMethod_bin)
-  descriptives(data$SurePlace_bin)
-  descriptives(data$Decision_bin)
-  descriptives(data$NumPrep_Total)
-  descriptives(data$X8.3_Mulled_for_this_attempt)
-  descriptives(data$X1.2_Ever_made_a_plan)
-  descriptives(data$X2.6_Confirm_suicide_intent)
-  descriptives(data$X12.15_How_sure_want_to_die)
-  descriptives(data$sis_15)
-  descriptives(data$sis_7)
-  descriptives(data$perceived_lethality)
-  descriptives(data$X12.18_Injuries_LethalityScale)
-  descriptives(data$realize_not_dead)
-  
-  descriptives(data$lifetimeSI_mean)
-  descriptives(data$lifetimeSI_sd)
-  descriptives(data$lifetimeSI_range)
-  descriptives(data$lifetimeSI_onset)
-  descriptives(data$lifetimeSI_duration)
-  
-  descriptives(data$X2.4_Aborted_Num_Times_FINAL)
-  descriptives(data$aborted_onset)
-  descriptives(data$aborted_duration)
-  descriptives(data$aborted_freq)
-  
-  descriptives(data$nssi_times)
-  descriptives(data$nssi_onset)
-  descriptives(data$nssi_duration)
-  descriptives(data$nssi_freq)
-  
-  descriptives(data$X2.6_Num_AT)
-  descriptives(data$FirstID_to_FirstAction)
-}
-descriptives(d_ab$Q_BIS_1_Attention)
+d_abint <- data %>%
+  filter(group == "ab/int")
+# Actual injury: all 1
+# N = 7 for continuous intent and perceived lethality
+
+d_at <- data %>%
+  filter(group == "at")
+
+leveneTest(X12.15_How_sure_want_to_die ~ group, data = data)          #   F > .05
+leveneTest(perceived_lethality ~ group, data = data)                  #   F > .05
+# equal variance, but small sample size, so use Hedge's g
+t.test(X12.15_How_sure_want_to_die ~ group,data = data, var.equal = TRUE) # p < .10    
+sd(d_at$X12.15_How_sure_want_to_die, na.rm = TRUE)       # SD = .76, M = 4.45
+sd(d_abint$X12.15_How_sure_want_to_die, na.rm = TRUE)    # SD =1.15, M = 3.79
+
+t.test(perceived_lethality ~ group,data = data, var.equal = TRUE)     # ** 
+sd(d_at$perceived_lethality, na.rm = TRUE)               # M = 3.96, SD = 0.84
+sd(d_abint$perceived_lethality, na.rm = TRUE)            # M = 2.86, SD = 1.21
+
+descriptives(d_at$suicide_intent_f)
+descriptives(d_at$X12.18_Injuries_LethalityScale)
+descriptives(d_at$sis_objective)
+descriptives(d_at$sis_subjective)
+descriptives(d_at$sis_15)
 ```
+
+
+
 # Archived
 ```{r}
 var_icareabout <- c("Q_UPPS_NegUrgency", "Q_UPPS_PosUrgency", "Q_UPPS_Premeditation", "Q_UPPS_Perseverance", "Q_UPPS_SensationSeeking", "Q_BIS_1_Attention", "Q_BIS_1_Motor", "Q_BIS_1_Self_Control", "Q_BIS_1_Cognitive_Complexity", "Q_BIS_1_Preseverance", "Q_BIS_1_Cogntive_Instability", "Q_BIS_2_Attentional_Impulsiveness", "Q_BIS_2_Motor_Impulsiveness", "Q_BIS_2_Nonplanning_Impulsiveness", "Q_BIS_Total", "IST_FreeBlockMean_pCorrs", "IST_CostBlockMean_pCorrs", "CPTGNG_dprime_All", "CPTGNG_commission_errors, CPTGNG_omission_errors", "MDQ_k_Final", "SSRT_sossrtInt", "thoughts_want", "thoughts_not_want", "thoughts_amt", "thoughts_score", "ThoughtsStart_bin", "Mull_bin", "FstMethod_bin", "FstPlace_bin", "SureMethod_bin", "SurePlace_bin", "Decision_bin", "NumPrep_Total", "X8.3_Mulled_for_this_attempt", "X1.2_Ever_made_a_plan", "X2.6_Confirm_suicide_intent", "X12.15_How_sure_want_to_die", "sis_15", "sis_7", "perceived_lethality", "X12.18_Injuries_LethalityScale", "realize_not_dead", "lifetimeSI_mean", "lifetimeSI_sd", "lifetimeSI_range", "lifetimeSI_onset", "lifetimeSI_duration", "X2.4_Aborted_Num_Times_FINAL", "aborted_onset", "aborted_duration", "aborted_freq", "nssi_times", "nssi_onset", "nssi_duration", "nssi_freq", "X2.6_Num_AT", "FirstID_to_FirstAction")
