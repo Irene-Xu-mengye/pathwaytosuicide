@@ -20,14 +20,65 @@ library(DescTools)
 library(stats)
 library(car)
 library(ggthemes)
-
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-
 ```
+
+## Mar 14 actual lethality based on BLS
+```{r}
+data_actual_lethality <- read.csv(file = "./Data/SecondStep_Mar_14.csv") %>%
+  filter(group == 'at')
+mean(data_actual_lethality$X12.18_Injuries_LethalityScale)
+sd(data_actual_lethality$X12.18_Injuries_LethalityScale)
+qplot(X12.18_Injuries_LethalityScale, data = data_actual_lethality)
+describe(data_actual_lethality$X12.18_Injuries_LethalityScale) # Gmd Gini mean difference: like sd but doesn't assume centrality so differences are treated equally rather than relative to the mean. seems more valid but not popular in psych lit
+```
+## Mar 14 correlate time log and time bins (except for under 1 minute)
+
+```{r}
+cal_func <- function(x, y) {
+  m1 <- lm(y ~ x, data)
+  summary(m1)
+}
+
+d_atleast_1min <- data %>% 
+  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds <= 60, NA, MullingStarts_Seconds),
+         ThoughtsStart_Seconds = ifelse(ThoughtsStart_Seconds <= 60, NA, ThoughtsStart_Seconds),
+         Decision_Seconds = ifelse(Decision_Seconds <= 60, NA, Decision_Seconds),
+         FirstMethod_Seconds = ifelse(FirstMethod_Seconds <= 60, NA, FirstMethod_Seconds),
+         SureMethod_Seconds = ifelse(SureMethod_Seconds <= 60, NA, SureMethod_Seconds),
+         FirstPlace_Seconds = ifelse(FirstPlace_Seconds <= 60, NA, FirstPlace_Seconds),
+         SurePlace_Seconds = ifelse(SurePlace_Seconds <= 60, NA, SurePlace_Seconds),
+         
+         Mull_log = log(MullingStarts_Seconds),
+         ThoughtsStart_log = log(ThoughtsStart_Seconds),
+         Decision_log = log(Decision_Seconds),
+         FirstMethod_log = log(FirstMethod_Seconds),
+         SureMethod_log = log(SureMethod_Seconds),
+         FirstPlace_log = log(FirstPlace_Seconds),
+         SurePlace_log = log(SurePlace_Seconds)) 
+
+qplot(Mull_log, Mull_bin, data = d_atleast_1min)
+cor.test(d_atleast_1min$Mull_log, d_atleast_1min$Mull_bin)                    # .99
+cor.test(d_atleast_1min$ThoughtsStart_log, d_atleast_1min$ThoughtsStart_bin)  # .99
+cor.test(d_atleast_1min$Decision_log, d_atleast_1min$Decision_bin)            # .99
+cor.test(d_atleast_1min$FirstMethod_log, d_atleast_1min$FirstMethod_bin)      # .99
+cor.test(d_atleast_1min$SureMethod_log, d_atleast_1min$SureMethod_bin)        # .99
+cor.test(d_atleast_1min$FirstPlace_log, d_atleast_1min$FirstPlace_bin)        # .99
+cor.test(d_atleast_1min$SurePlace_log, d_atleast_1min$SurePlace_bin)          # .99
+```
+
+
+
 # For sp st fall 2020
 ```{r}
 data <- read.csv(file = "./Data/SecondStep_Nov_30.csv") %>%
-  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds))
+  mutate(MullingStarts_Seconds = ifelse(MullingStarts_Seconds == 0, 0.01, MullingStarts_Seconds),
+         ThoughtsStart_Seconds = ifelse(ThoughtsStart_Seconds == 0, 0.01, ThoughtsStart_Seconds),
+         Decision_Seconds = ifelse(Decision_Seconds == 0, 0.01, Decision_Seconds),
+         FirstMethod_Seconds = ifelse(FirstMethod_Seconds == 0, 0.01, FirstMethod_Seconds),
+         SureMethod_Seconds = ifelse(SureMethod_Seconds == 0, 0.01, SureMethod_Seconds),
+         FirstPlace_Seconds = ifelse(FirstPlace_Seconds == 0, 0.01, FirstPlace_Seconds),
+         SurePlace_Seconds = ifelse(SurePlace_Seconds == 0, 0.01, SurePlace_Seconds))
 ```
 
 ```{r}

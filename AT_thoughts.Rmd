@@ -1,0 +1,241 @@
+---
+title: "Thoughts of ATs"
+author: "Irene"
+date: "Last updated on `r Sys.Date()`"
+output:
+  html_document: 
+    # code_folding: show
+    df_print: kable
+    highlight: tango
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: yes
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(gridExtra)
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+df <- read.csv(file = "./Data/SecondStep_Mar_29.csv") %>%
+  filter(group == 'at') %>%
+  select(Subject, Age, group, race, sex,
+         ThoughtsStart_bin, Mull_bin, Decision_bin, FirstMethod_bin, SureMethod_bin, FirstPlace_bin, SurePlace_bin,
+         TS_bin_label, Mull_bin_label, Decision_bin_label, FM_bin_label, SM_bin_label, FP_bin_label, SP_bin_label,
+         thoughts_about_future, thoughts_family_friends, family_friends_makes_you, meaning_death, meaning_death_makes_you, thoughts_pain, thoughts_pain_makes_you, thoughts_reactions, reactions_makes_you, thoughts_responsibilities, responsibilities_makes_you, thoughts_die_by_suicide, 
+         thoughts_want, thoughts_not_want, thoughts_net, thoughts_amt,
+         NumPrep_Total, perceived_lethality, realize_not_dead, X12.18_Injuries_LethalityScale) %>% 
+  mutate(ff_score = ifelse(family_friends_makes_you == 1, thoughts_family_friends, thoughts_family_friends * -1),
+         meaning_score = ifelse(meaning_death_makes_you == 1, meaning_death, meaning_death * -1),
+         pain_score = ifelse(thoughts_pain_makes_you == 1, thoughts_pain, thoughts_pain *-1),
+         reactions_score = ifelse(reactions_makes_you == 1, thoughts_reactions, thoughts_reactions *-1),
+         responsibilities_score = ifelse(responsibilities_makes_you == 1, thoughts_responsibilities, thoughts_responsibilities * -1))
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+p_want <- ggplot(df, aes(x = thoughts_want)) +
+  geom_bar()
+p_not_want <- ggplot(df, aes(x = thoughts_not_want)) +
+  geom_bar()
+p_amt <- ggplot(df, aes(x = thoughts_amt)) +
+  geom_bar()
+p_net <- ggplot(df, aes(x = thoughts_net)) +
+  geom_bar()
+
+p_ff <- ggplot(df, aes(x = thoughts_family_friends)) +
+  geom_bar()
+p_meaning <- ggplot(df, aes(x = meaning_death)) +
+  geom_bar()
+p_pain <- ggplot(df, aes(x = thoughts_pain)) +
+  geom_bar()
+p_reactions <- ggplot(df, aes(x = thoughts_reactions)) +
+  geom_bar()
+p_resp <- ggplot(df, aes(x = thoughts_responsibilities)) +
+  geom_bar()
+
+p_ff_c <- ggplot(df, aes(x = ff_score)) +
+  geom_bar() +
+  scale_x_continuous("family friends (weighted)")
+p_meaning_c <- ggplot(df, aes(x = meaning_score)) +
+  geom_bar() +
+  scale_x_continuous("meaning of death (weighted)")
+p_pain_c <- ggplot(df, aes(x = pain_score)) +
+  geom_bar() +
+  scale_x_continuous("pain blood violence (weighted)")
+p_reactions_c <- ggplot(df, aes(x = reactions_score)) +
+  geom_bar() +
+  scale_x_continuous("reactions (weighted)")
+p_resp_c <- ggplot(df, aes(x = responsibilities_score)) +
+  geom_bar() +
+  scale_x_continuous("responsibilities (weighted)")
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+want_perceived <- ggplot(df, aes(x = thoughts_want, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+not_want_perceived <- ggplot(df, aes(x = thoughts_not_want, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+amt_perceived <- ggplot(df, aes(x = thoughts_amt, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+net_perceived <- ggplot(df, aes(x = thoughts_net, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+
+want_actual <- ggplot(df, aes(x = thoughts_want, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+not_want_actual <- ggplot(df, aes(x = thoughts_not_want, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+amt_actual <- ggplot(df, aes(x = thoughts_amt, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+net_actual <- ggplot(df, aes(x = thoughts_net, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+ff_perceived <- ggplot(df, aes(x = thoughts_family_friends, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+meaning_perceived <- ggplot(df, aes(x = meaning_death, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+pain_perceived <- ggplot(df, aes(x = thoughts_pain, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+reactions_perceived <- ggplot(df, aes(x = thoughts_reactions, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+resp_perceived <- ggplot(df, aes(x = thoughts_responsibilities, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+
+ff_actual <- ggplot(df, aes(x = thoughts_family_friends, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+meaning_actual <- ggplot(df, aes(x = meaning_death, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+pain_actual <- ggplot(df, aes(x = thoughts_pain, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+reactions_actual <- ggplot(df, aes(x = thoughts_reactions, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+resp_actual <- ggplot(df, aes(x = thoughts_responsibilities, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter")
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+ff_c_perceived <- ggplot(df, aes(x = ff_score, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("family friends (weighted)")
+meaning_c_perceived <- ggplot(df, aes(x = meaning_score, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("meaning of death (weighted)")
+pain_c_perceived <- ggplot(df, aes(x = pain_score, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("pain blood violence (weighted)")
+reactions_c_perceived <- ggplot(df, aes(x = reactions_score, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("reactions (weighted)")
+resp_c_perceived <- ggplot(df, aes(x = responsibilities_score, y = perceived_lethality)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("responsibilities (weighted)")
+
+ff_c_actual <- ggplot(df, aes(x = ff_score, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("family friends (weighted)")
+meaning_c_actual <- ggplot(df, aes(x = meaning_score, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("meaning of death (weighted)")
+pain_c_actual <- ggplot(df, aes(x = pain_score, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("pain blood violence (weighted)")
+reactions_c_actual <- ggplot(df, aes(x = reactions_score, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("reactions (weighted)")
+resp_c_actual <- ggplot(df, aes(x = responsibilities_score, y = X12.18_Injuries_LethalityScale)) +
+  geom_point(size = 3, alpha = 0.5, color = "blue", position = "jitter") +
+  scale_x_continuous("responsibilities (weighted)")
+```
+
+```{r message=FALSE, warning=FALSE}
+p_want
+p_not_want
+p_amt
+p_net
+
+grid.arrange(p_ff, p_ff_c, ncol=2)
+grid.arrange(p_meaning, p_meaning_c, ncol=2)
+grid.arrange(p_pain, p_pain_c, ncol=2)
+grid.arrange(p_reactions, p_reactions_c, ncol=2)
+grid.arrange(p_resp, p_resp_c, ncol=2)
+```
+
+```{r message=FALSE, warning=FALSE}
+grid.arrange(want_perceived, want_actual, ncol=2)
+grid.arrange(not_want_perceived, not_want_actual, ncol=2)
+grid.arrange(amt_perceived, amt_actual, ncol=2)
+grid.arrange(net_perceived, net_actual, ncol=2)
+```
+
+```{r message=FALSE, warning=FALSE}
+grid.arrange(ff_perceived, ff_c_perceived, ncol=2)
+grid.arrange(ff_actual, ff_actual, ncol=2)
+
+grid.arrange(meaning_perceived, meaning_c_perceived, ncol=2)
+grid.arrange(meaning_actual, meaning_c_actual, ncol=2)
+
+grid.arrange(pain_perceived, pain_c_perceived, ncol=2)
+grid.arrange(pain_actual, pain_actual, ncol=2)
+
+grid.arrange(reactions_perceived, reactions_c_perceived, ncol=2)
+grid.arrange(reactions_actual, reactions_c_actual, ncol=2)
+
+grid.arrange(resp_perceived, resp_c_perceived, ncol=2)
+grid.arrange(resp_actual, resp_c_actual, ncol=2)
+```
+
+```{r include = FALSE, eval=FALSE}
+p_ff
+p_meaning
+p_pain
+p_reactions
+p_resp
+
+p_ff_c
+p_meaning_c
+p_pain_c
+p_reactions_c
+p_resp_c
+
+want_perceived
+not_want_perceived
+amt_perceived
+net_perceived
+
+want_actual
+not_want_actual
+amt_actual
+net_actual
+
+ff_perceived
+meaning_perceived
+pain_perceived
+reactions_perceived
+resp_perceived
+
+ff_actual
+meaning_actual
+pain_actual
+reactions_actual
+resp_actual
+
+ff_c_perceived
+meaning_c_perceived
+pain_c_perceived
+reactions_c_perceived
+resp_c_perceived
+
+ff_c_actual
+meaning_c_actual
+pain_c_actual
+reactions_c_actual
+resp_c_actual
+```
+

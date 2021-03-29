@@ -646,12 +646,13 @@ data <- data %>%
          at_duration = X2.6_RecentorSingle_AT_age - X2.6_First_AT_age,
          FirstID_to_FirstAction = first_action_age - X2.9.1_Age_FirstTime_Should_Kill
          ) %>%
-  select(-X2.5_Interrupted_NumTimes_Notes,-X5.1_FirstTime_ThoughtofMethod,-X5.2_First_Thoughtof_Method_for_this_attempt,-X5.3_Time_SureofMethod,-First_think_of_method_1_for_this_attempt,-First_think_of_method_1_for_this_attempt_Unit,-Interrupt.Abort_FirstTime_ThoughtofAnyMethodEver....,-Sure_of_Method,-Sure_of_Method_Unit,-X6.2_when_first_thoughtof_place,-X6.2_when_first_thoughtof_place_Unit,-X6.3_First_thinkof_place_for_this_attempt,-X6.4_First_time_sure_place_for_this_attempt,-X6.3_First_thinkof_place_for_this_attempt_Unit,-FirstTime_sureof_place_for_This_Attempt,-FirstTime_sureof_place_for_This_Attempt_Unit,-X6.7_Suicide_Intent_When,-X6.8_Travel_HowLong,-X7_Time,-X7.2_When_decided_the_time,-X7.3_How_sure_about_planned_time,-X8.1_Think_about_for_this_attempt,-Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling,-Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit,-Start_thinking_about_this_attempt,-Start_thinking_about_this_attempt_Time_Unit,-Start_thinking_about_this_attempt_Time_Unit,-X8.4_Start_mulling_for_this_attempt,-most_recent_mulling_to_interview,-most_recent_mulling_to_interview_Unit,-X8.8_When_Decision,-X12.16_Realized_Not_Dead,-X12.17_Method_Perceived_Lethality,-X2.2_NSSI_NumTimes_FINAL,-Dep_2_weeks) 
+  select(-X2.5_Interrupted_NumTimes_Notes,-X5.1_FirstTime_ThoughtofMethod,-X5.2_First_Thoughtof_Method_for_this_attempt,-X5.3_Time_SureofMethod,-First_think_of_method_1_for_this_attempt,-First_think_of_method_1_for_this_attempt_Unit,-Interrupt.Abort_FirstTime_ThoughtofAnyMethodEver....,-Sure_of_Method,-Sure_of_Method_Unit,-X6.2_when_first_thoughtof_place,-X6.2_when_first_thoughtof_place_Unit,-X6.3_First_thinkof_place_for_this_attempt,-X6.4_First_time_sure_place_for_this_attempt,-X6.3_First_thinkof_place_for_this_attempt_Unit,-FirstTime_sureof_place_for_This_Attempt,-FirstTime_sureof_place_for_This_Attempt_Unit,-X6.7_Suicide_Intent_When,-X6.8_Travel_HowLong,-X7_Time,-X7.2_When_decided_the_time,-X7.3_How_sure_about_planned_time,-X8.1_Think_about_for_this_attempt,-Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling,-Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit,-Start_thinking_about_this_attempt,-Start_thinking_about_this_attempt_Time_Unit,-Start_thinking_about_this_attempt_Time_Unit,-X8.4_Start_mulling_for_this_attempt,-most_recent_mulling_to_interview,-most_recent_mulling_to_interview_Unit,-X8.8_When_Decision,-X12.16_Realized_Not_Dead,-X12.17_Method_Perceived_Lethality,-X2.2_NSSI_NumTimes_FINAL,-Dep_2_weeks,-X12.18_Injuries_method) 
 
 write_csv(data, "./Data/SecondStep_most_up_to_date.csv") 
 ```
 
 ```{r JAN2021}
+# with Randy
 # intent, lethality only - Jan.31.2021
 data_intent_lethality <- data %>%
   select(Subject, group, Age, sex, 
@@ -659,10 +660,12 @@ data_intent_lethality <- data %>%
          suicide_intent_f, 
          X12.15_How_sure_want_to_die, perceived_lethality, X12.18_Injuries_LethalityScale)
 
+## do not re-run
 write_csv(data_intent_lethality, "./Data/SecondStep_JAN_31.csv")
 ```
 
 ```{r FALL2020}
+# before meeting with alex
 # time, thoughts, prep only - Nov.30.2020
 data_group_comparison <- data %>%
   select(Subject,  group,Age, sex, race, 
@@ -671,8 +674,25 @@ data_group_comparison <- data %>%
          ThoughtsStart_Seconds, MullingStarts_Seconds, Decision_Seconds, FirstMethod_Seconds, SureMethod_Seconds, FirstPlace_Seconds, SurePlace_Seconds, 
          thoughts_amt, thoughts_want, thoughts_not_want, thoughts_net, NumPrep_Total)
 
+## do not re-run
 write_csv(data_group_comparison, "./Data/SecondStep_Nov_30.csv") 
 ```
+
+```{r SPRING2021}
+# after meeting with alex
+# coded actual lethality with Beck Lethality Scale
+# for at only
+data_actual_lethality <- data %>%
+  select(Subject, group, Age, sex, race, X12.18_Injuries_LethalityScale)
+
+write_csv(data_actual_lethality, "./Data/SecondStep_Mar_14.csv") 
+```
+
+```{r}
+# include the specific thoughts
+write_csv(data, "./Data/SecondStep_Mar_29.csv") 
+```
+
 
 ```{r}
 data_corr <- data_new %>%
