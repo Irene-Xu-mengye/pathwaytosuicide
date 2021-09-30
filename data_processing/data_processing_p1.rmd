@@ -1,0 +1,162 @@
+---
+title: "Data Processing (Part 1)"
+author: "Irene Xu"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(hrbrthemes)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../Data/FirstStep_most_up_to_date.csv")
+```
+
+```{r select-var}
+df.short <- alldata %>%
+  filter(x_axis_Num == 1) 
+
+df.selected <- df.short %>%
+  select(Subject, Age, Group,
+         `12.1_Thoughts_About_Future`,
+         
+         thoughts_family_friends,
+         family_friends_makes_you,
+         
+         meaning_death,
+         meaning_death_makes_you,
+         
+         thoughts_pain,
+         thoughts_pain_makes_you,
+         
+         thoughts_reactions,
+         reactions_makes_you,
+         
+         thoughts_responsibilities,
+         responsibilities_makes_you,
+         
+         thoughts_die_by_suicide,
+         
+         `1.2_Ever_made_a_plan`,
+         `2.2_Ever_NSSI`,
+         
+         `2.4_Had_Aborted_Attempt`,
+         `2.4_Aborted_Num_Times_FINAL`,
+         `2.4_Aborted_First_Age`,
+         `2.4_Aborted_FirstTime_to_Interview_TimeUnit...167`,
+         `2.4_Aborted_FirstTime_to_Interview_TimeUnit...168`,
+         `2.4_Aborted_Recent_ageFinal`,
+         
+         `2.5_Interrupted`,
+         `2.5_Interrupted_Age_First`,
+         `2.5_Interrupted_NumTimes`,
+         
+         `2.6_Attempt`,
+         `2.6_Num_AT`,
+         `2.6_First_AT_age`,
+         
+         FirstTime_Thoughtof_Method_Age,
+         First_think_of_method_1_for_this_attempt,
+         First_think_of_method_1_for_this_attempt_Unit,
+         
+         Sure_of_Method,
+         Sure_of_Method_Unit,
+         
+         `6.3_First_thinkof_place_for_this_attempt`,
+         `6.3_First_thinkof_place_for_this_attempt_Unit`,
+         
+         FirstTime_sureof_place_for_This_Attempt,
+         FirstTime_sureof_place_for_This_Attempt_Unit,
+         
+         Start_thinking_about_this_attempt_Time,
+         Start_thinking_about_this_attempt_Time_Unit,
+         
+         `8.3_Mulled_for_this_attempt`,
+         Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling,
+         Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit,
+         
+         Decision_time,
+         Decision_time_Unit,
+         
+         NumPrep, 
+         Research_1_YES_2_NO_3_InPast_4_YES_but_not_on_Method, 
+         `5.9_Obtain_Method_Sure_useforsuicide`, 
+         `11.3_Decide_before_or_after`, 
+         
+         `12.15_How_sure_want_to_die`
+         )
+```
+
+```{r rename-var}
+df.selected <- rename(df.selected, subject = Subject) 
+df.selected <- rename(df.selected, age = Age) 
+df.selected <- rename(df.selected, group = Group)
+
+df.selected <- rename(df.selected, thoughts_future = `12.1_Thoughts_About_Future`) 
+df.selected <- rename(df.selected, thoughts_ff = thoughts_family_friends) 
+df.selected <- rename(df.selected, ff_makes_you = family_friends_makes_you)
+df.selected <- rename(df.selected, mean_death_makes_you = meaning_death_makes_you)
+df.selected <- rename(df.selected, pbv_makes_you = thoughts_pain_makes_you)
+df.selected <- rename(df.selected, thoughts_resp = thoughts_responsibilities)
+df.selected <- rename(df.selected, resp_makes_you = responsibilities_makes_you)
+
+df.selected <- rename(df.selected, planned = `1.2_Ever_made_a_plan`)
+df.selected <- rename(df.selected, ever_nssi = `2.2_Ever_NSSI`)
+
+df.selected <- rename(df.selected, ever_aborted = `2.4_Had_Aborted_Attempt`)
+df.selected <- rename(df.selected, aborted_num = `2.4_Aborted_Num_Times_FINAL`)
+df.selected <- rename(df.selected, aborted_first_age = `2.4_Aborted_First_Age`)
+df.selected <- rename(df.selected, aborted_first_time = `2.4_Aborted_FirstTime_to_Interview_TimeUnit...167`)
+df.selected <- rename(df.selected, aborted_first_timeunit = `2.4_Aborted_FirstTime_to_Interview_TimeUnit...168`)
+df.selected <- rename(df.selected, aborted_recent_age = `2.4_Aborted_Recent_ageFinal`)
+
+df.selected <- rename(df.selected, ever_int = `2.5_Interrupted`)
+df.selected <- rename(df.selected, int_first_age = `2.5_Interrupted_Age_First`)
+df.selected <- rename(df.selected, int_num = `2.5_Interrupted_NumTimes`)
+
+df.selected <- rename(df.selected, ever_at = `2.6_Attempt`)
+df.selected <- rename(df.selected, at_num = `2.6_Num_AT`)
+df.selected <- rename(df.selected, at_first_age = `2.6_First_AT_age`)
+
+df.selected <- rename(df.selected, method_first_age = FirstTime_Thoughtof_Method_Age)
+df.selected <- rename(df.selected, method_start_time = First_think_of_method_1_for_this_attempt)
+df.selected <- rename(df.selected, method_start_timeunit = First_think_of_method_1_for_this_attempt_Unit)
+
+df.selected <- rename(df.selected, method_sure_time = Sure_of_Method)
+df.selected <- rename(df.selected, method_sure_timeunit = Sure_of_Method_Unit)
+
+df.selected <- rename(df.selected, place_start_time = `6.3_First_thinkof_place_for_this_attempt`)
+df.selected <- rename(df.selected, place_start_timeunit = `6.3_First_thinkof_place_for_this_attempt_Unit`)
+
+df.selected <- rename(df.selected, place_sure_time = FirstTime_sureof_place_for_This_Attempt)
+df.selected <- rename(df.selected, place_sure_timeunit = FirstTime_sureof_place_for_This_Attempt_Unit)
+
+df.selected <- rename(df.selected, think_start_time = Start_thinking_about_this_attempt_Time)
+df.selected <- rename(df.selected, think_start_timeunit = Start_thinking_about_this_attempt_Time_Unit)
+
+df.selected <- rename(df.selected, mulled = `8.3_Mulled_for_this_attempt`)
+df.selected <- rename(df.selected, mull_start_time = Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling)
+df.selected <- rename(df.selected, mull_start_timeunit = Mulled_for_how_long_beforeAttempt_OR_atTheMostRecentMulling_Unit)
+
+df.selected <- rename(df.selected, decision_time = Decision_time)
+df.selected <- rename(df.selected, decision_timeunit = Decision_time_Unit)
+
+df.selected <- rename(df.selected, researched_method = Research_1_YES_2_NO_3_InPast_4_YES_but_not_on_Method)
+df.selected <- rename(df.selected, obtained_method = `5.9_Obtain_Method_Sure_useforsuicide`)
+
+df.selected <- rename(df.selected, substance = `11.3_Decide_before_or_after`)
+df.selected <- rename(df.selected, desire_to_die = `12.15_How_sure_want_to_die`)
+```
+
+```{r}
+write_csv(df.selected, "../Data/Selected_var.csv")
+```
+
