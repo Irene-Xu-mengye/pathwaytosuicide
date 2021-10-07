@@ -1,0 +1,53 @@
+subject,age,group,ever_nssi,ever_aborted,aborted_num,aborted_first_age,aborted_first_time,aborted_first_timeunit,aborted_recent_age,ever_int,int_first_age,int_num,ever_at,at_num,at_first_age,method_first_age,mulled,desire_to_die,thoughts_amt,thoughts_net,thoughts_want,thoughts_not_want,think_bin,mull_bin,dec_bin,firstmethod_bin,suremethod_bin,firstplace_bin,sureplace_bin,think_label,mull_label,dec_label,fm_label,sm_label,fp_label,sp_label,prep_total,sex,race,education,student
+1,18,Aborted/Interrupted Attempters,1,1,2,17,1,years,18,1,18,1,2,NA,NA,18,2,NA,9,-6,4,4,11,NA,1,12,NA,NA,NA,3 Days,NA,<1 Min,1 Wk,NA,NA,NA,0,Male,Mixed,High school graduate,Not a student
+2,18,Attempters,1,1,1,17.5,0.5,years,NA,2,NA,NA,1,1,18,16,2,3.5,14,5,8,3,3,1,3,3,3,3,3,15 Min,<1 Min,15 Min,15 Min,15 Min,15 Min,15 Min,2,Female,Caucasian,College graduate,Not a student
+4,18,Attempters,1,1,1,17,1,years,NA,1,NA,1,NA,1,18,18,1,4,16,7,11,2,17,12,4,15,5,5,4,5 Yrs,1 Wk,30 Min,6 Months,1 Hr,1 Hr,30 Min,1,Female,Caucasian,NA,Student
+5,33,Aborted/Interrupted Attempters,1,1,2.5,33,7,days,NA,NA,NA,NA,2,NA,NA,33,1,4.5,13,-7,6,6,14,12,10,10,NA,NA,NA,1 Month,1 Wk,1 Day,1 Day,NA,NA,NA,0,Female,Caucasian,Professional degree,Not a student
+6,23,Aborted/Interrupted Attempters,1,1,3,12,11,years,23,1,12,1,2,NA,NA,19,1,NA,14,-13,0,11,3,3,NA,3,NA,1,NA,15 Min,15 Min,NA,15 Min,NA,<1 Min,NA,1,Female,Asian,College graduate,Not a student
+7,20,Aborted/Interrupted Attempters,1,1,2,17,3,years,19,2,NA,NA,2,NA,NA,NA,1,NA,17,-11,2,13,16,4,3,NA,NA,NA,NA,1 Yr,30 Min,15 Min,NA,NA,NA,NA,0,Female,Caucasian,1-3 years of college,Not a student
+9,30,Attempters,1,1,1.5,25,5,years,25,2,NA,NA,1,2.5,5,15,2,4,9,-7,5,5,17,1,2,2,18,2,2,5 Yrs,<1 Min,5 Min,5 Min,>5 Yrs,5 Min,5 Min,0,Female,Caucasian,NA,Not a student
+10,22,Attempters,1,1,3.5,19,3,years,22,1,NA,2,1,2,19,14.5,1,5,7,0,2,2,15,13,6,6,6,6,6,6 Months,2 Wks,2 Hrs,2 Hrs,2 Hrs,2 Hrs,2 Hrs,1,Male,Caucasian,College graduate,Not a student
+11,21,Aborted/Interrupted Attempters,2,1,2,21,13,days,21,2,NA,NA,2,NA,NA,16,1,5,14,-5,7,8,14,8,NA,11,11,11,11,1 Month,6 Hrs,NA,3 Days,3 Days,3 Days,3 Days,1,Female,Caucasian,1-3 years of college,Student
+12,27,Attempters,1,1,10,13,14,years,27,2,NA,NA,1,5,16,16,1,5,17,-6,14,10,5,5,1,5,1,5,1,1 Hr,1 Hr,<1 Min,1 Hr,<1 Min,1 Hr,<1 Min,0,Female,Caucasian,College graduate,Not a student
+13,19,Attempters,1,1,5,18,1,years,19,2,NA,1,1,3.5,19,19,2,5,5,0,0,0,8,1,1,1,1,1,1,6 Hrs,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,3,Female,Asian,1-3 years of college,Student
+14,18,Attempters,1,1,1.5,11,7,years,16.5,2,NA,NA,1,1,18,12,2,5,5,0,0,0,1,1,1,2,1,1,1,<1 Min,<1 Min,<1 Min,5 Min,<1 Min,<1 Min,<1 Min,0,Male,Caucasian,High school graduate,Not a student
+15,30,Attempters,1,1,18,19,11,years,30,1,NA,10-May,1,3.5,19,19,1,5,13,-3,4,0,15,1,11,11,11,16,11,6 Months,<1 Min,3 Days,3 Days,3 Days,1 Yr,3 Days,9,Male,African American,College graduate,Not a student
+16,33,Aborted/Interrupted Attempters,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,10,-7,0,7,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,Male,Caucasian,1-3 years of college,Not a student
+19,21,Aborted/Interrupted Attempters,2,1,2,21,0,years,21,1,NA,1,2,NA,NA,21,1,4,22,-11,5,16,15,13,13,13,13,12,12,6 Months,2 Wks,2 Wks,2 Wks,2 Wks,1 Wk,1 Wk,4,Female,Caucasian,1-3 years of college,Student
+21,25,Aborted/Interrupted Attempters,1,1,3.5,13.5,11.5,years,21,2,NA,NA,2,NA,NA,14,2,NA,8,-4,0,4,1,NA,1,1,1,1,NA,<1 Min,NA,<1 Min,<1 Min,<1 Min,<1 Min,NA,1,Female,Caucasian,Professional degree,Student
+22,27,Aborted/Interrupted Attempters,1,1,2,14,13,years,27,2,NA,NA,2,NA,NA,NA,1,NA,18,-16,4,16,14,13,NA,14,NA,NA,NA,1 Month,2 Wks,NA,1 Month,NA,NA,NA,2,Female,Caucasian,College graduate,Not a student
+24,25,Aborted/Interrupted Attempters,1,1,2.5,24,1,years,25,2,NA,NA,2,NA,NA,23,1,NA,13,-5,6,5,17,14,NA,12,12,NA,NA,5 Yrs,1 Month,NA,1 Wk,1 Wk,NA,NA,2,Female,Caucasian,Professional degree,Not a student
+25,27,Aborted/Interrupted Attempters,1,1,2,26,1,years,27,2,NA,NA,2,NA,NA,26,1,NA,17.5,-8.5,12,10,11,11,NA,11,NA,NA,NA,3 Days,3 Days,NA,3 Days,NA,NA,NA,2,Female,Caucasian,1-3 years of college,Student
+27,19,Attempters,1,2,0,NA,NA,NA,NA,2,NA,NA,1,1,19,16,2,3,10,-2,7,4,3,1,1,1,1,2,2,15 Min,<1 Min,<1 Min,<1 Min,<1 Min,5 Min,5 Min,2,Female,Caucasian,1-3 years of college,Student
+28,21,Attempters,1,1,1,21,0,years,NA,2,NA,NA,1,2,17.5,15.5,1,5,10,-1,5,2,15,14,1,14,12,14,1,6 Months,1 Month,<1 Min,1 Month,1 Wk,1 Month,<1 Min,3,Female,Asian,Less than high school,Not a student
+29,34,Aborted/Interrupted Attempters,2,1,2,12,22,years,30.5,2,NA,NA,2,NA,NA,NA,1,NA,21,-10,8,15,15,6,2,3,NA,3,NA,6 Months,2 Hrs,5 Min,15 Min,NA,15 Min,NA,0,Male,Caucasian,Professional degree,Not a student
+30,20,Aborted/Interrupted Attempters,1,1,1,20,5,days,NA,2,NA,NA,2,NA,NA,20,1,NA,14,-6,8,6,16,14,NA,14,14,NA,14,1 Yr,1 Month,NA,1 Month,1 Month,NA,1 Month,1,Male,Caucasian,1-3 years of college,Student
+31,18,Aborted/Interrupted Attempters,1,1,3.5,14,4,years,18,1,18,1,2,NA,NA,16,1,5,11,-7,4,7,11,11,7,11,10,NA,10,3 Days,3 Days,3 Hrs,3 Days,1 Day,NA,1 Day,2,Female,Caucasian,1-3 years of college,Student
+33,38,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,1,38,38,2,5,15,-12,0,12,9,1,9,15,15,9,9,12 Hrs,<1 Min,12 Hrs,6 Months,6 Months,12 Hrs,12 Hrs,3,Male,Caucasian,1-3 years of college,Not a student
+37,23,Aborted/Interrupted Attempters,1,1,2.5,14.5,8.5,years,23,2,NA,NA,2,NA,NA,23,2,NA,16,-15,9,13,15,NA,1,3,NA,NA,NA,6 Months,NA,<1 Min,15 Min,NA,NA,NA,1,Female,Caucasian,College graduate,Not a student
+38,20,Aborted/Interrupted Attempters,2,1,3,10,10,years,20,1,NA,2,2,NA,NA,15,2,NA,9,-5,5,5,17,NA,NA,9,9,9,NA,5 Yrs,NA,NA,12 Hrs,12 Hrs,12 Hrs,NA,1,Female,Caucasian,1-3 years of college,Student
+39,21,Aborted/Interrupted Attempters,2,1,2.5,20,1,years,21,2,NA,NA,2,NA,NA,21,1,NA,19,-10,12,8,17,11,NA,14,NA,14,NA,5 Yrs,3 Days,NA,1 Month,NA,1 Month,NA,2,Male,Mixed,1-3 years of college,Student
+41,19,Attempters,2,1,1,19,3,days,NA,2,NA,NA,1,1,19,19,2,4,18,-10,8,8,14,1,2,14,1,14,1,1 Month,<1 Min,5 Min,1 Month,<1 Min,1 Month,<1 Min,1,Female,Mixed,1-3 years of college,Student
+42,22,Aborted/Interrupted Attempters,2,1,1,15,7,years,NA,2,NA,NA,2,NA,NA,22,NA,NA,17,-14,4,9,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,0,Male,Mixed,1-3 years of college,Student
+43,46,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,2,41,41,2,3,12,9,9,0,1,1,1,1,1,1,1,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,1,Female,Caucasian,College graduate,Not a student
+44,24,Attempters,1,1,0,17,7,years,24,2,NA,NA,1,5,17,7,1,4,20,-13,13,14,8,2,8,8,8,8,8,6 Hrs,5 Min,6 Hrs,6 Hrs,6 Hrs,6 Hrs,6 Hrs,2,Female,Caucasian,1-3 years of college,Not a student
+45,20,Attempters,1,1,2,16,4,years,19.5,1,17,1,1,3.5,17,17,1,4,15,-4,8,4,9,8,1,9,9,9,9,12 Hrs,6 Hrs,<1 Min,12 Hrs,12 Hrs,12 Hrs,12 Hrs,2,Female,Caucasian,1-3 years of college,Student
+46,37,Attempters,2,1,1,31,6,years,NA,1,NA,NA,1,1,37,31,1,5,17,-4,12,8,13,6,10,10,10,10,10,2 Wks,2 Hrs,1 Day,1 Day,1 Day,1 Day,1 Day,9,Male,Caucasian,College graduate,Not a student
+48,20,Attempters,1,2,0,NA,NA,NA,NA,2,NA,NA,1,5,18,17,1,5,19,-17,3,17,14,5,2,5,5,5,5,1 Month,1 Hr,5 Min,1 Hr,1 Hr,1 Hr,1 Hr,4,Female,Caucasian,1-3 years of college,Student
+49,20,Aborted/Interrupted Attempters,1,1,50,14,6,years,20,2,NA,NA,2,NA,NA,10,1,2,11,-5,2,2,11,10,5,11,11,11,11,3 Days,1 Day,1 Hr,3 Days,3 Days,3 Days,3 Days,0,Female,Caucasian,1-3 years of college,Student
+50,31,Attempters,1,1,1,31,5,days,NA,2,NA,NA,1,1,31,31,1,3,5,0,0,0,4,3,1,1,1,1,1,30 Min,15 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,0,Female,Caucasian,Professional degree,Not a student
+52,43,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,1,43,43,2,3,5,0,0,0,1,1,1,1,1,1,1,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,<1 Min,0,Male,Caucasian,1-3 years of college,Not a student
+55,28,Aborted/Interrupted Attempters,2,NA,2,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,28,1,3,22,-21,17,21,14,5,2,5,5,14,5,1 Month,1 Hr,5 Min,1 Hr,1 Hr,1 Month,1 Hr,1,Male,Mixed,Professional degree,Student
+56,20,Aborted/Interrupted Attempters,1,1,2,20,14,days,NA,2,NA,NA,2,NA,NA,20,2,3,14,0,6,4,13,NA,12,12,NA,12,NA,2 Wks,NA,1 Wk,1 Wk,NA,1 Wk,NA,1,Male,Caucasian,1-3 years of college,Student
+57,46,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,1,46,46,1,5,17,-15,0,10,14,11,10,11,11,11,11,1 Month,3 Days,1 Day,3 Days,3 Days,3 Days,3 Days,11,Male,Caucasian,1-3 years of college,Not a student
+59,24,Attempters,2,2,0,NA,NA,NA,NA,2,24,1,1,2,10,24,1,5,18,0,16,8,3,3,1,3,3,3,3,15 Min,15 Min,<1 Min,15 Min,15 Min,15 Min,15 Min,0,Female,Asian,Professional degree,Student
+60,46,Aborted/Interrupted Attempters,2,1,3,44,2,years,46,2,NA,NA,2,NA,NA,46,1,NA,9.5,-4,0,4,11,11,NA,6,NA,6,NA,3 Days,3 Days,NA,2 Hrs,NA,2 Hrs,NA,2,Male,Caucasian,College graduate,Not a student
+61,21,Attempters,1,1,5,15,6,years,21,1,17,2,1,37.5,13,16,2,5,11,-8,4,4,17,1,2,2,2,2,2,5 Yrs,<1 Min,5 Min,5 Min,5 Min,5 Min,5 Min,0,Male,Caucasian,1-3 years of college,Student
+62,25,Attempters,2,1,1,25,0,years,NA,2,NA,NA,1,2,25,25,2,5,10,3,5,0,15,1,8,8,15,8,15,6 Months,<1 Min,6 Hrs,6 Hrs,6 Months,6 Hrs,6 Months,2,Male,Caucasian,College graduate,Not a student
+63,18,Attempters,1,2,0,NA,NA,NA,NA,2,NA,NA,1,1,18,18,1,5,9,2,4,0,15,12,2,9,9,9,9,6 Months,1 Wk,5 Min,12 Hrs,12 Hrs,12 Hrs,12 Hrs,3,Male,Caucasian,Less than high school,Student
+64,26,Attempters,1,1,0,26,0,years,NA,2,NA,NA,1,1,25,25,1,5,10,0,6,2,15,3,3,3,3,3,3,6 Months,15 Min,15 Min,15 Min,15 Min,15 Min,15 Min,2,Female,Caucasian,College graduate,Student
+65,18,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,1,18,15.5,1,4,18,2,12,7,15,2,4,4,4,15,15,6 Months,5 Min,30 Min,30 Min,30 Min,6 Months,6 Months,3,Female,Caucasian,1-3 years of college,Student
+66,42,Attempters,2,2,0,NA,NA,NA,NA,2,NA,NA,1,1,42,24,2,5,17,-11,2,8,6,1,6,6,6,6,6,2 Hrs,<1 Min,2 Hrs,2 Hrs,2 Hrs,2 Hrs,2 Hrs,8,Male,Caucasian,Professional degree,Not a student
+68,23,Attempters,2,1,2,19,4,years,23,2,NA,NA,1,1,23,23,2,5,8,0,2,2,17,1,NA,14,13,9,9,5 Yrs,<1 Min,NA,1 Month,2 Wks,12 Hrs,12 Hrs,4,Male,Caucasian,1-3 years of college,Student
+103,28,Attempters,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,15,-14,4,8,13,13,4,13,13,4,4,2 Wks,2 Wks,30 Min,2 Wks,2 Wks,30 Min,30 Min,2,Female,Caucasian,NA,Not a student
+105,32,Attempters,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,14,-13,4,4,12,NA,8,12,12,12,12,1 Wk,NA,6 Hrs,1 Wk,1 Wk,1 Wk,1 Wk,9,Female,Caucasian,NA,Not a student

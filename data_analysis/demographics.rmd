@@ -1,0 +1,120 @@
+---
+title: "Demographics"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to create tables that show the demographic breakdown of the sample.
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(hrbrthemes)
+library(gtsummary)
+library(gt)
+source("helper_functions/effect_size_calculator.R")
+source("helper_functions/apa_table_formatter.R")
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/psai_processed_100421.csv")
+```
+
+# Select variables for the table
+```{r}
+demographics <- alldata %>%
+  select(group, age, sex, race, education, student)
+```
+
+# Create and save the table
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+
+demographics$education <- factor(demographics$education, levels = c("Less than high school", "High school graduate", "1-3 years of college", "College graduate", "Professional degree"))
+demographics$student <- factor(demographics$student, levels = c("Student", "Not a student"))
+
+t1 <- demographics %>% 
+  tbl_summary(
+    by = group,    
+    statistic = all_continuous() ~ "{mean} ({sd})",
+    digits = all_continuous() ~ 2,
+    label = list(
+      age ~ "Age",
+      sex ~ "Sex",
+      race ~ "Race",
+      education ~ "Educational Attainment",
+      student ~ "Whether a student"),
+    missing_text = "(Missing)") %>%
+  modify_header(
+    list(
+      label ~ "",
+      stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+      stat_2 ~ '**Actual**, N = {n}'
+      )) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  bold_labels() %>%
+  add_p() %>%
+  as_gt() %>%
+  gt::opt_align_table_header(align = "left") %>%
+  apa_table_formatter("Demographic Information", 50)
+
+gt::gtsave(t1, "table1_demographics.png", "../tables/")
+```
+
+# Other things to consider
+1. add a distribution of age  
+* For age, the ab/int group are more skewed to the younger side
+* The majority of the sample falls between 18-25
+```{r}
+ggplot(demographics, aes(x = age, color = group, fill = group)) + 
+  geom_density(alpha = 0.5)
+```
+
+```{r}
+demographics <- demographics %>%
+  mutate(
+    age_group = 
+      ifelse(age <= 25, "18-25",
+      ifelse(age > 35, "> 35", "26-35")))
+
+demographics$age_group <- factor(demographics$age_group, levels = c("18-25", "26-35", "> 35"))
+demographics %>% 
+  tbl_summary(
+    by = group,    
+    statistic = all_continuous() ~ "{mean} ({sd})",
+    digits = all_continuous() ~ 2,
+    label = list(
+      age ~ "Age",
+      sex ~ "Sex",
+      race ~ "Race",
+      education ~ "Educational Attainment",
+      student ~ "Whether a student"),
+    missing_text = "(Missing)") %>%
+  modify_header(
+    list(
+      label ~ "",
+      stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+      stat_2 ~ '**Actual**, N = {n}'
+      )) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Types of Attempts Made**") %>%
+  bold_labels() %>%
+  add_p() %>%
+  as_gt() %>%
+  gt::opt_align_table_header(align = "left") %>%
+  tab_header(title = "Table 1. Demographic Information")
+```
+
+2. add percentage made an aborted, ever nssi

@@ -1,7 +1,7 @@
 ---
-title: "Data Processing (Part 1)"
+title: "Data Processing (part 1)"
 author: "Irene Xu"
-date: "`r Sys.Date()`"
+date: "Last updated: `r Sys.Date()`"
 output:
   html_document:
     theme: yeti
@@ -12,12 +12,20 @@ output:
       collapsed: true
       smooth_scroll: true
 ---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to select the variables that will be used for the analysis.
+
+<br/>
+<br/>
 ```{r setup, include = FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(hrbrthemes)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-alldata <- read_csv("../Data/FirstStep_most_up_to_date.csv")
+alldata <- read_csv("../data/FirstStep_most_up_to_date.csv")
 ```
 
 ```{r select-var}
@@ -157,6 +165,6 @@ df.selected <- rename(df.selected, desire_to_die = `12.15_How_sure_want_to_die`)
 ```
 
 ```{r}
-write_csv(df.selected, "../Data/Selected_var.csv")
+write_csv(df.selected, "../data/Selected_var.csv")
 ```
 

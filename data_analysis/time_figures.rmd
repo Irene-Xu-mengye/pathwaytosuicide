@@ -1,0 +1,110 @@
+---
+title: "Time Figures"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to create figures that visualize the distribution of the 7 time variables.
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gridExtra)
+library(papaja)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/psai_processed_100421.csv")
+```
+
+# 1. Select time variables  
+```{r}
+time <- alldata %>%
+  select(group,
+         think_bin, think_label, mull_bin, mull_label, dec_bin, dec_label,
+         firstmethod_bin, fm_label, firstplace_bin, fp_label,
+         suremethod_bin, sm_label, sureplace_bin, sp_label)
+```
+
+# 2. Order bins  
+```{r}
+order_bin_label <- function(df, var, newvarname) {
+  df$var = unlist(df[, var])
+  df$var <- factor(df$var,
+                     levels = c("<1 Min", "5 Min", "15 Min", "30 Min", 
+                                   "1 Hr", "2 Hrs", "3 Hrs", "6 Hrs", "12 Hrs", 
+                                   "1 Day", "3 Days",
+                                   "1 Wk", "2 Wks", 
+                                   "1 Month", "6 Months",
+                                   "1 Yr", "5 Yrs", ">5 Yrs"))
+
+  df[, newvarname] <- df$var
+  df <- as.data.frame(df) %>%
+    select(-var)
+  return(df)
+}
+time <- order_bin_label(time, 'think_label', "think_f")
+time <- order_bin_label(time, 'mull_label', "mull_f")
+time <- order_bin_label(time, 'dec_label', "dec_f")
+time <- order_bin_label(time, 'fm_label', "fm_f")
+time <- order_bin_label(time, 'sm_label', "sm_f")
+time <- order_bin_label(time, 'fp_label', "fp_f")
+time <- order_bin_label(time, 'sp_label', "sp_f")
+```
+ 
+# 3. Create function to plot the distributions of bins
+```{r plot-bin-fun}
+plotbin <- function(data, x.var,  v.title = "", legend.pos = "none", y.max = 10, t.margin = 0, r.margin = 0) {
+  data$x.var <- unlist(data[, x.var])
+  ggplot(data, aes(x = x.var,  fill = group)) +
+    geom_histogram(stat="count", binwidth = 0.2, 
+                   position = position_dodge2(preserve = "single", padding = 0.1)) +
+    theme_apa() + 
+    scale_fill_manual(name = "Type of the Most Recent Attempt                ",
+                      labels = c("Aborted/Interrupted", "Actual"),
+                      values = c("skyblue4", "darkgoldenrod2")) +
+    theme(plot.margin = unit(c(t.margin, r.margin, 0, 0),"cm"),
+          axis.text.x = element_text(angle = 40, vjust = 1.2, hjust = 1, size = 10),
+          legend.position = legend.pos,  
+          plot.title = element_text(vjust = -10, hjust = 0.3),
+          legend.text = element_text(size = 11),
+          text = element_text(family = "Times New Roman", face = "bold")) + 
+    labs(title = v.title, x = "", y = "")  +
+    scale_x_discrete(limits = c("<1 Min", "5 Min", "15 Min", "30 Min", 
+                                   "1 Hr", "2 Hrs", "3 Hrs", "6 Hrs", "12 Hrs", 
+                                   "1 Day", "3 Days",
+                                   "1 Wk", "2 Wks", 
+                                   "1 Month", "6 Months",
+                                   "1 Yr", "5 Yrs", ">5 Yrs")) +
+    scale_y_continuous(limits = c(0, y.max), 
+                       breaks = 0:y.max,
+                       expand = c(0.01, 0)) +
+    geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
+}
+```
+
+# 4. Plot the distributions of time
+```{r time-plots, fig.width=15, fig.height=13}
+p1 <- plotbin(time, 'think_f', "Started to Consider Attempting", "none", 10, 0.5, 0)
+p2 <- plotbin(time, 'mull_f', "Started to Mull", "none", 14, 0.5, 0)
+p3 <- plotbin(time, 'dec_f', "Decided to Attempt", "none", 10, 0.5, 0.5)
+
+p4 <- plotbin(time, 'fm_f', "Started to Consider Method", "none")
+p5 <- plotbin(time, 'sm_f', "Decided on Method", "right")
+p6 <- plotbin(time, 'fp_f', "Started to Consider Place")
+p7 <- plotbin(time, 'sp_f', "Decided on Place")
+
+lay <- rbind(c(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3),
+             c(4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, NA),
+             c(6, 6, 6, 6, 7, 7, 7, 7, NA, NA, NA, NA))
+time_plots <- grid.arrange(p1, p2, p3, p4, p5, p6, p7, layout_matrix = lay)
+
+ggsave("../figures/time_plots_apa.png", time_plots)
+```
+

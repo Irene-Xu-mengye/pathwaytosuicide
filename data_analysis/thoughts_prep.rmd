@@ -1,0 +1,95 @@
+---
+title: "Thoughts Variables + Prep"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to create a table that compares the thoughts each group had.
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gtsummary)
+library(gt)
+library(esc)
+source("helper_functions/effect_size_calculator.R")
+source("helper_functions/apa_table_formatter.R")
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/psai_processed_100421.csv")
+```
+
+# Select thoughts+prep variables
+```{r}
+thoughts_all <- alldata %>%
+  select(subject, age, group, sex, education,
+         thoughts_amt, thoughts_want, thoughts_not_want, thoughts_net, prep_total)
+```
+
+# Select variables for the table
+```{r}
+thoughts <- thoughts_all %>%
+  select(group, thoughts_amt, thoughts_want, thoughts_not_want, thoughts_net, prep_total)
+```
+
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+t4 <- thoughts %>% 
+  tbl_summary(
+      by = group,     
+      type = everything() ~ "continuous",
+      statistic = all_continuous() ~ "{mean} ({sd})",
+      digits = all_continuous() ~ 2,
+      missing_text = "(Missing)",
+      label = list(
+           thoughts_amt ~ "Amount of All Thoughts",
+           thoughts_want ~ "Amount of Thoughts that Made One More Inclined to Attempt",
+           thoughts_not_want ~ "Amount of Thoughts that Made One Less Inclined to Attempt",
+           thoughts_net ~ "Counterbalanced Amount of Thoughts (More Inclined minus Less Inclined)",
+           prep_total ~ "Number of Preparatory Actions")) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  bold_labels() %>% 
+  add_stat(fns = all_continuous() ~ hedges_g)  %>%
+  modify_fmt_fun(update = add_stat_1 ~ function(x) style_number(x, digits = 2)) %>%
+  add_p(all_continuous() ~ "t.test",
+        pvalue_fun = ~style_pvalue(.x, digits = 2)) %>%
+  bold_p(t = 0.05) %>%
+  modify_header(
+      list(
+          label ~ "",
+          stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+          stat_2 ~ '**Actual**, N = {n}',
+          add_stat_1 ~ "**Hedges' *g***",
+          p.value ~ "***p* value**")) %>%
+  as_gt() %>%
+  apa_table_formatter("Amount of Thoughts that Influenced the Tendency to Attempt and Preparatory Actions", 90)
+
+gtsave(t4, "table4_thoughts_prep.png", "../tables/")
+```
+
+# Do we want to do a regression taking all bins into accounts? A stepwise?
+
+```{r eval=FALSE}
+es <- hedges_g(time_bin, "think_bin", "group")
+
+time_logistic <- time %>%
+  mutate(group_log = ifelse(group == "Attempters", 1, 0))
+
+lr1 <- glm(group_log ~ think_bin + mull_bin + dec_bin, data = time_logistic, family = binomial)
+summary(lr1)
+tbl_regression(lr1, exponentiate = TRUE)
+```
+

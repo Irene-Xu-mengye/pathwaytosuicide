@@ -1,0 +1,357 @@
+---
+title: "Data Processing (part 2)"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to    
+(1) create thoughts and time related variables and preparatory actions used for the analysis,      
+(2) add demographics variables  
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(hrbrthemes)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/Selected_var.csv")
+```
+
+# Step 1. Calculate total thoughts
+## 1.1. replace all missing thoughts values with 0
+```{r thought-amt-1}
+alldata <- alldata %>%
+  mutate(
+    thoughts_ff = ifelse(is.na(thoughts_ff), 0, thoughts_ff),
+    meaning_death = ifelse(is.na(meaning_death), 0, meaning_death),
+    thoughts_pain = ifelse(is.na(thoughts_pain), 0 , thoughts_pain),
+    thoughts_reactions = ifelse(is.na(thoughts_reactions), 0, thoughts_reactions),
+    thoughts_resp = ifelse(is.na(thoughts_resp), 0, thoughts_resp))
+```
+
+## 1.2. Calculate total thought amount
+```{r thought-amt-2}    
+alldata <- alldata %>%
+  mutate(
+    thoughts_amt = ifelse(!is.na(thoughts_future), 
+                   ifelse(thoughts_future == 1, 
+                          1 + thoughts_ff 
+                            + meaning_death 
+                            + thoughts_pain 
+                            + thoughts_reactions  
+                            + thoughts_resp, 
+                          0 + thoughts_ff 
+                            + meaning_death 
+                            + thoughts_pain 
+                            + thoughts_reactions 
+                            + thoughts_resp),
+                          thoughts_ff 
+                            + meaning_death 
+                            + thoughts_pain 
+                            + thoughts_reactions 
+                            + thoughts_resp)
+    )
+```
+
+***
+# Step 2. Calculate net, pushing and protective thoughts
+## 2.1. Calculate net thoughts
+```{r thought-net}
+alldata <- alldata %>%
+  mutate(
+    ff_1 = ifelse(ff_makes_you == 1, thoughts_ff, thoughts_ff * -1),
+    meaning_1 = ifelse(mean_death_makes_you == 1, meaning_death, meaning_death * -1),
+    pbv_1 = ifelse(pbv_makes_you == 1, thoughts_pain, thoughts_pain *-1),
+    reactions_1 = ifelse(reactions_makes_you == 1, thoughts_reactions, thoughts_reactions *-1),
+    resp_1 = ifelse(resp_makes_you == 1, thoughts_resp, thoughts_resp * -1),
+         
+    ff_1 = ifelse(is.na(ff_1), 0, ff_1), 
+    meaning_1 = ifelse(is.na(meaning_1), 0, meaning_1),
+    pbv_1 = ifelse(is.na(pbv_1), 0, pbv_1),
+    reactions_1 = ifelse(is.na(reactions_1), 0, reactions_1),
+    resp_1 = ifelse(is.na(resp_1), 0, resp_1),
+    
+    thoughts_net = ff_1 + 
+                   meaning_1 + 
+                   pbv_1 + 
+                   reactions_1 + 
+                   resp_1,
+    )
+```
+
+## 2.2. Calaulate the pushing thought amount
+```{r thought-pushing}
+alldata <- alldata %>%
+  mutate(
+    ff_want = 
+      ifelse(!is.na(ff_makes_you), 
+      ifelse(ff_makes_you %in% c(1,3), thoughts_ff, 0), 0),
+    meaning_want = 
+      ifelse(!is.na(mean_death_makes_you), 
+      ifelse(mean_death_makes_you %in% c(1,3), meaning_death, 0), 0),
+    pbv_want = 
+      ifelse(!is.na(pbv_makes_you), 
+      ifelse(pbv_makes_you %in% c(1,3), thoughts_pain, 0), 0),
+    reactions_want = 
+      ifelse(!is.na(reactions_makes_you), 
+      ifelse(reactions_makes_you %in% c(1,3), thoughts_reactions, 0), 0),
+    resp_want = 
+      ifelse(!is.na(resp_makes_you),
+      ifelse(resp_makes_you %in% c(1,3), thoughts_resp, 0), 0),
+
+        thoughts_want = ff_want + 
+                    meaning_want + 
+                    pbv_want + 
+                    reactions_want + 
+                    resp_want)
+```
+
+## 2.3. Calaulate the protective thought amount
+```{r thought-protective}
+alldata <- alldata %>%
+  mutate(
+    ff_not_want = 
+      ifelse(!is.na(ff_makes_you), 
+      ifelse(ff_makes_you %in% c(2,3), thoughts_ff, 0), 0),
+    meaning_not_want = 
+      ifelse(!is.na(mean_death_makes_you), 
+      ifelse(mean_death_makes_you %in% c(2,3), meaning_death, 0), 0),
+    pbv_not_want = 
+      ifelse(!is.na(pbv_makes_you), 
+      ifelse(pbv_makes_you %in% c(2,3), thoughts_pain, 0), 0),
+    reactions_not_want = 
+      ifelse(!is.na(reactions_makes_you), 
+      ifelse(reactions_makes_you %in% c(2,3), thoughts_reactions, 0), 0),
+    resp_not_want = 
+      ifelse(!is.na(resp_makes_you),
+      ifelse(resp_makes_you %in% c(2,3), thoughts_resp, 0), 0),
+    
+    thoughts_not_want = ff_not_want + 
+                        meaning_not_want + 
+                        pbv_not_want + 
+                        reactions_not_want + 
+                        resp_not_want
+    )
+```
+
+## 2.4 Remove variables no longer useful
+```{r select-var}
+# Remove value holders
+alldata <- alldata %>%
+  select(-ff_want, -meaning_want, -pbv_want, -reactions_want, -resp_want, 
+         -ff_not_want, -meaning_not_want, -pbv_not_want, -reactions_not_want, -resp_not_want,
+         -ff_1, -meaning_1, -pbv_1, -reactions_1, -resp_1)
+
+# Remove original thought variables
+alldata <- alldata %>%
+  select(-thoughts_future, -thoughts_ff, -thoughts_pain, -pbv_makes_you, -thoughts_reactions, -thoughts_resp, -meaning_death, -mean_death_makes_you, -ff_makes_you, -reactions_makes_you, -resp_makes_you)
+```
+
+# Step 3. Calculate time in trajectory
+## 3.1. Convert all units into seconds
+```{r convert-time-units}
+convert_unit <- function(df, timevar, unitvar, newvarname) {
+  df$timevar <- unlist(df[, timevar])
+  df$unitvar <- unlist(df[, unitvar])
+  df <- df %>%
+    mutate(
+      newvar = 
+        ifelse(unitvar == "minutes", timevar * 60,
+        ifelse(unitvar == "hours", timevar * 3600,
+        ifelse(unitvar == "days", timevar * 86400, 
+        ifelse(unitvar == "weeks", timevar * 604800,
+        ifelse(unitvar == "months", timevar * 2592000,
+        ifelse(unitvar == "years", timevar * 31536000, timevar))))))
+    )
+  df[, newvarname] <- df$newvar
+  df <- as.data.frame(df) %>%
+    select(-timevar, -unitvar, -newvar)
+}
+
+alldata <- convert_unit(alldata, 'think_start_time', 'think_start_timeunit', 'think_sec')
+alldata <- convert_unit(alldata, 'mull_start_time', 'mull_start_timeunit', 'mullStart_sec')
+alldata <- convert_unit(alldata, 'decision_time', 'decision_timeunit', 'decision_sec')
+alldata <- convert_unit(alldata, 'method_start_time', 'method_start_timeunit', 'firstmethod_sec')
+alldata <- convert_unit(alldata, 'method_sure_time', 'method_sure_timeunit', 'suremethod_sec')
+alldata <- convert_unit(alldata, 'place_start_time', 'place_start_timeunit', 'firstplace_sec')
+alldata <- convert_unit(alldata, 'place_sure_time', 'place_sure_timeunit', 'sureplace_sec')
+```
+
+## 3.2. Bin the time
+```{r bin-time}
+minute <- 60
+hour <- 60*60
+day <- 24*hour
+week <- 7*day
+month <- 30*day
+year <- 365*day
+
+bin_time <- function(df, sec, newvarname) {
+  df$sec <- unlist(df[, sec])
+  df <- df %>%
+    mutate(
+      newvar =     
+        ifelse(sec <= minute, 1,
+        ifelse(sec <= minute*5, 2,
+        ifelse(sec <= minute*15, 3,
+        ifelse(sec <= minute*30, 4,
+        ifelse(sec <= hour, 5, 
+        ifelse(sec <= hour*2, 6,
+        ifelse(sec <= hour*3, 7,
+        ifelse(sec <= hour*6, 8,
+        ifelse(sec <= hour*12, 9, 
+        ifelse(sec <= day, 10,
+        ifelse(sec <= day*3, 11, 
+        ifelse(sec <= week, 12,
+        ifelse(sec <= week*2, 13,
+        ifelse(sec <= month, 14,
+        ifelse(sec <= month*6, 15,
+        ifelse(sec <= year, 16, 
+        ifelse(sec <= year*5, 17, 18))))))))))))))))),
+    )
+  df[, newvarname] <- df$newvar
+  df <- as.data.frame(df) %>%
+    select(-sec, -newvar)
+}
+alldata <- bin_time(alldata, 'think_sec', 'think_bin')
+alldata <- bin_time(alldata, 'mullStart_sec', 'mull_bin')
+alldata <- bin_time(alldata, 'decision_sec', 'dec_bin')
+alldata <- bin_time(alldata, 'firstmethod_sec', 'firstmethod_bin')
+alldata <- bin_time(alldata, 'suremethod_sec', 'suremethod_bin')
+alldata <- bin_time(alldata, 'firstplace_sec', 'firstplace_bin')
+alldata <- bin_time(alldata, 'sureplace_sec', 'sureplace_bin')
+
+alldata <- alldata %>%
+  select(-think_sec, -mullStart_sec, -decision_sec, -firstmethod_sec, -suremethod_sec, -firstplace_sec, -sureplace_sec)
+```
+
+## 3.3. Add labels to bins
+```{r bin-label}
+bin_label <- function(df, bin, newvarname) {
+  df$bin <- unlist(df[, bin])
+  df <- df %>% 
+    mutate(
+      newvar = 
+        ifelse(bin == 1, "<1 Min",
+        ifelse(bin == 2, "5 Min",
+        ifelse(bin == 3, "15 Min",
+        ifelse(bin == 4, "30 Min",
+        ifelse(bin == 5, "1 Hr",
+        ifelse(bin == 6, "2 Hrs",
+        ifelse(bin == 7, "3 Hrs",
+        ifelse(bin == 8, "6 Hrs",
+        ifelse(bin == 9, "12 Hrs",
+        ifelse(bin == 10, "1 Day",
+        ifelse(bin == 11, "3 Days",
+        ifelse(bin == 12, "1 Wk", 
+        ifelse(bin == 13, "2 Wks",
+        ifelse(bin == 14, "1 Month",
+        ifelse(bin == 15, "6 Months",
+        ifelse(bin == 16, "1 Yr",
+        ifelse(bin == 17, "5 Yrs", 
+        ifelse(bin == 18, ">5 Yrs", NA))))))))))))))))))
+    )
+  df[, newvarname] <- df$newvar
+  df <- as.data.frame(df) %>%
+    select(-bin, -newvar)
+}
+alldata <- bin_label(alldata, 'think_bin', 'think_label')
+alldata <- bin_label(alldata, 'mull_bin', 'mull_label')
+alldata <- bin_label(alldata, 'dec_bin', 'dec_label')
+
+alldata <- bin_label(alldata, 'firstmethod_bin', 'fm_label')
+alldata <- bin_label(alldata, 'suremethod_bin', 'sm_label')
+alldata <- bin_label(alldata, 'firstplace_bin', 'fp_label')
+alldata <- bin_label(alldata, 'sureplace_bin', 'sp_label')
+```
+
+# Step 4. Calaulate prep actions
+```{r all-prep}
+alldata <- alldata %>%
+  mutate(
+    researched_method = ifelse(researched_method == 1, 1, 0), 
+    obtained_method = ifelse(obtained_method == 1, 1, 0), 
+    substance = ifelse(substance != 1, ifelse(substance == "Both", 1, 0), 1),
+         
+    researched_filled = ifelse(is.na(researched_method), 0, researched_method),
+    obtained_filled = ifelse(is.na(obtained_method), 0, obtained_method),
+    substance_filled = ifelse(is.na(substance), 0, substance), 
+    prep_filled = ifelse(is.na(NumPrep), 0, NumPrep),
+         
+    prep_total = researched_filled + obtained_filled + substance_filled + prep_filled
+    )
+```
+
+# Step 5. Add demographics info
+```{r demo}
+at <- c("2","4","9","10","12","13","14","15","27","28","33","35","41","43","44","45","46","48","50","52","57","59","61","62","63","64","65","66","68","103", "105")
+ab <- c("5","6","7","39","11","16","19","21","22","24","25","29","30","31","35","37","38","39","42","49","56","60")
+int <- c("1","55")
+abint <- c("5","6","7","39","11","16","19","21","22","24","25","29","30","31","35","37","38","39","42","49","56","60","1","55")
+female <- c("2","4","5","6","7","8","9","11","12","13","17","19","21","22","23","24","25","27","28","31","34","36","37","38","40","41","43","44","45", "48", "49","50","53","54","58","59","64","65","69","103","105")
+## Note: Subject 35 doesn't remember the details of their aborted attempt over a year ago therefore belong to ID group which is not involved in this study.
+
+asian <- c("6","13","28","59")
+af_am <- c("15")
+caucasian <- c("2","4","5","7","9","10", "11","12","14","16","19","21","22","24","25","27","29","30","31","33","37","38","43","44","45","46","48","49","50","52","56","57","60","61","62","63","64","65","66","68","103","105")
+mix <- c("1","39","41","42","55")
+
+# not used yet, too little data
+hs_grad <- c("1","14")
+less_hs <- c("28","63")
+college_3y <- c("7","11","13","16","17","19","23","25","27","30","31","32","33","34","38","39","41","42","44","45","48","49","52","53","56","57", "58","61","65","68")
+college <- c("2","6","8","10","12","15","22","35","37","43","46","54","60","62","64","67")
+professional <- c("3","5","18","21","24","29","36","40","50","51","55","59","66")
+
+student <- c("4","11","13","17","19","21","25","27","30","31","38","39","41","42","45","48","49","53","55","56","59","61","63","64","65","68")
+
+alldata <- alldata %>%
+  mutate(
+    group = as.factor(ifelse(subject %in% at, "Attempters", ifelse(subject %in% abint, "Aborted/Interrupted Attempters", NA))),
+    sex = as.factor(ifelse(subject %in% female, "Female", "Male")),
+    race = ifelse(subject %in% asian, "Asian",
+           ifelse(subject %in% af_am, "African American",
+           ifelse(subject %in% caucasian, "Caucasian",
+           ifelse(subject %in% mix, "Mixed", NA)))),
+    education = ifelse(subject %in% hs_grad, "High school graduate",
+                ifelse(subject %in% less_hs, "Less than high school",
+                ifelse(subject %in% college_3y, "1-3 years of college",
+                ifelse(subject %in% college, "College graduate",
+                ifelse(subject %in% professional, "Professional degree", NA))))),
+    student = ifelse(subject %in% student, "Student", "Not a student")) 
+
+alldata$education <- factor(alldata$education, levels = c("Less than high school", "High school graduate", "1-3 years of college", "College graduate", "Professional degree"))
+```
+
+# Step 6. Export dataframe
+```{r}
+alldata <- alldata %>%
+  select(-researched_method, -researched_filled,
+         -obtained_method, -obtained_filled,
+         -substance, -substance_filled,
+         -NumPrep, -prep_filled, 
+         -think_start_time, -think_start_timeunit,
+         -mull_start_time, -mull_start_timeunit,
+         -decision_time, -decision_timeunit,
+         -method_start_time, -method_start_timeunit,
+         -method_sure_time, -method_sure_timeunit,
+         -place_start_time, -place_start_timeunit,
+         -place_sure_time, -place_sure_timeunit,
+         -thoughts_die_by_suicide, -planned,
+         )
+write_csv(alldata, "../data/psai_processed_100421.csv")
+```
+

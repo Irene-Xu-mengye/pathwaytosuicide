@@ -1,0 +1,97 @@
+---
+title: "Time Variables"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to create a table that compares the time each group spent on each step.
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gtsummary)
+library(gt)
+source("helper_functions/effect_size_calculator.R")
+source("helper_functions/apa_table_formatter.R")
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/psai_processed_100421.csv")
+```
+
+# Select time variables
+```{r}
+time_all <- alldata %>%
+  select(subject, age, group, sex, education,
+         think_bin, think_label, mull_bin, mull_label, dec_bin, dec_label,
+         firstmethod_bin, fm_label, firstplace_bin, fp_label,
+         suremethod_bin, sm_label, sureplace_bin, sp_label)
+```
+
+# Select variables for the table
+```{r}
+time <- time_all %>%
+  select(group, think_bin, mull_bin, dec_bin, firstmethod_bin, suremethod_bin, firstplace_bin, sureplace_bin)
+```
+
+# Create and save the table
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+t2 <- time %>% 
+  tbl_summary(
+      by = group,    
+      statistic = all_continuous() ~ "{mean} ({sd})",
+      digits = all_continuous() ~ 2,
+      missing_text = "(Missing)",
+      label = list(
+           think_bin ~ "Started to consider attempting",
+           mull_bin ~ "Started to mull",
+           dec_bin ~ "Decided to attempt",
+           firstmethod_bin ~ "Started to consider method",
+           suremethod_bin ~ "Decided on method",
+           firstplace_bin ~ "Started to consider place",
+           sureplace_bin ~ "Decided on place")) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  bold_labels() %>% 
+  add_stat(fns = all_continuous() ~ hedges_g)  %>%
+  modify_fmt_fun(update = add_stat_1 ~ function(x) style_number(x, digits = 2)) %>%
+  add_p(all_continuous() ~ "t.test",
+        pvalue_fun = ~style_pvalue(.x, digits = 2)) %>%
+  bold_p(t = 0.05) %>%
+  modify_header(
+      list(
+          label ~ "",
+          stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+          stat_2 ~ '**Actual**, N = {n}',
+          add_stat_1 ~ "**Hedges' *g***",
+          p.value ~ "***p* value**")) %>%
+  as_gt() %>%
+  apa_table_formatter("Time Elapsed Since Each Event", 60)
+
+gt::gtsave(t2, "table2_time.png", "../tables/")
+```
+
+# Other stuff to consider
+1. Do we want to do a regression taking all bins into accounts? A stepwise regression?
+
+```{r}
+time_logistic <- time %>%
+  mutate(group_log = ifelse(group == "Attempters", 1, 0))
+
+lr1 <- glm(group_log ~ think_bin + mull_bin + dec_bin, data = time_logistic, family = binomial)
+summary(lr1)
+tbl_regression(lr1, exponentiate = TRUE)
+```
+

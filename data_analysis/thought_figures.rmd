@@ -1,0 +1,126 @@
+---
+title: "Figures"
+author: "Irene Xu"
+date: "Last updated: `r Sys.Date()`"
+output:
+  html_document:
+    theme: yeti
+    code_folding: hide
+---
+<br/>
+
+**Study: Suicide Trajectory**    
+
+The goal of this file is to create figures that visualize the distribution of the 4 thought variables.
+
+<br/>
+<br/>
+```{r setup, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gridExtra)
+library(papaja)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+alldata <- read_csv("../data/psai_processed_100421.csv")
+```
+
+# 1. Select thoughts variables  
+```{r}
+thoughts <- alldata %>%
+  select(group, thoughts_amt, thoughts_net, thoughts_want, thoughts_not_want)
+```
+
+# 2. Plot the distributions of thoughts
+## 2.1 Increased desire
+```{r want}
+p8 <- ggplot(thoughts, aes(x = thoughts_want,  fill = group)) +
+  geom_histogram(stat="count", width = 0.7,
+                 position = position_dodge2(preserve = "single", padding = 0.1)) +
+  theme_apa() + 
+  scale_fill_manual(name = "Type of the Most Recent Attempt",
+                    labels = c("Aborted/Interrupted", "Actual"),
+                    values = c("skyblue4", "darkgoldenrod2")) +
+  theme(plot.subtitle = element_text(vjust = -10, hjust = 0.5),
+        legend.position = "none",  
+        legend.text = element_text(size = 11),
+        text = element_text(family = "Times New Roman", face = "bold")) + 
+  labs(subtitle = "Amount of Thoughts that \nIncreased one's Desire to Attempt", 
+       x = "", y = "")  +
+  scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
+  scale_x_continuous(breaks = 0:17) +
+  geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
+```
+
+## 2.2 Decreased Desire
+```{r not_want}
+p9 <- ggplot(thoughts, aes(x = thoughts_not_want,  fill = group)) +
+  geom_histogram(stat="count", width = 0.7,
+                 position = position_dodge2(preserve = "single", padding = 0.1)) +
+  theme_apa() + 
+  scale_fill_manual(name = "Type of the Most Recent Attempt",
+                    labels = c("Aborted/Interrupted", "Actual"),
+                    values = c("skyblue4", "darkgoldenrod2")) +
+  theme(legend.position = "none",  
+        legend.text = element_text(size = 11),
+        text = element_text(family = "Times New Roman", face = "bold")) + 
+  labs(title = "Amount of Thoughts that \nDecreased one's Desire to Attempt", 
+       x = "", y = "")  +
+  scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
+  scale_x_continuous(breaks = 0:21) +
+  geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
+```
+
+## 2.3 Total Amount
+```{r total}
+p10 <- ggplot(thoughts, aes(x = thoughts_amt,  fill = group)) +
+  geom_histogram(stat="count", width = 0.6,
+                 position = position_dodge2(preserve = "single", padding = 0.1)) +
+  theme_apa() + 
+  scale_fill_manual(name = "Type of the Most Recent Attempt",
+                    labels = c("Aborted/Interrupted", "Actual"),
+                    values = c("skyblue4", "darkgoldenrod2")) +
+  theme(legend.position = "right",  
+        legend.text = element_text(size = 11),
+        text = element_text(family = "Times New Roman", face = "bold")) + 
+  labs(title = "\nAmount of All Thoughts", x = "", y = "")  +
+  scale_y_continuous(expand = c(0.008, 0), breaks = 0:4) +
+  scale_x_continuous(breaks = 0:22) +
+  geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
+```
+
+## 2.4 Net Amount
+```{r net}
+p11 <- ggplot(thoughts, aes(x = thoughts_net,  fill = group)) +
+  geom_histogram(stat="count", width = 0.8,
+                 position = position_dodge2(preserve = "single", padding = 0.1)) +
+  theme_apa() + 
+  scale_fill_manual(name = "Type of the Most Recent Attempt                ",
+                    labels = c("Aborted/Interrupted", "Actual"),
+                    values = c("skyblue4", "darkgoldenrod2")) +
+  theme(legend.position = "none", 
+        legend.text = element_text(size = 11),
+        text = element_text(family = "Times New Roman", face = "bold")) + 
+  labs(title = "Counterbalanced Amount of Thoughts", 
+       subtitle = "(Thoughts Increased Desire minus Thoughts Decreased Desire)",
+       x = "", y = "")  +
+  scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
+  scale_x_continuous(breaks = -21:9) +
+  geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
+```
+
+# 3. Plot them all
+```{r thoughts-plots, fig.width=9, fig.height=11}
+lay <- rbind(c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+             c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+             c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+             c(3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+             c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2),
+             c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2),
+             c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2),
+             c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2),
+             c(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, NA),
+             c(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, NA),
+             c(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, NA),
+             c(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, NA))
+thought_plots <- grid.arrange(p8, p9, p10, p11, layout_matrix = lay)
+ggsave("../figures/thoughts_plots_apa.png", thought_plots)
+```
