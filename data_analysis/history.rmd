@@ -1,5 +1,6 @@
 ---
-title: "History of SITB"
+title: "SITB History"
+
 author: "Irene Xu"
 date: "Last updated: `r Sys.Date()`"
 output:
@@ -16,7 +17,7 @@ output:
 
 **Study: Suicide Trajectory**    
 
-The goal of this file is to create a table that compares each group's history of SITB.
+The goal of this file is to create a table that summarises the correlations between time and thoughts.
 
 <br/>
 <br/>
@@ -24,42 +25,174 @@ The goal of this file is to create a table that compares each group's history of
 library(tidyverse)
 library(gtsummary)
 library(gt)
+source("helper_functions/effect_size_calculator.R")
 source("helper_functions/apa_table_formatter.R")
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 alldata <- read_csv("../data/psai_processed_100421.csv")
 ```
 
-```{r eval=FALSE}
+```{r}
 history <- alldata %>%
   select(group, 
+         
          ever_nssi, 
-         ever_aborted, aborted_num, aborted_first_age, aborted_first_time, aborted_first_timeunit, aborted_recent_age)
+         nssi_num,
+         nssi_first_age,
+         
+         ever_aborted, 
+         aborted_num, 
+         aborted_first_age, 
+         
+         ever_int,
+         int_num,
+         int_first_age, 
+         
+         ever_at,
+         at_num,
+         at_first_age, 
+         
+         method_first_age,
+         
+         lifetimeSI_onset,
+         lifetimeSI_mean,
+         lifetimeSI_duration,
+         lifetimeSI_range,
+         lifetimeSI_sd)
 ```
-
 
 ```{r}
-bin_labels = c("<1 Min", "5 Min", "15 Min", "30 Min",
-               "1 Hr", "2 Hrs", "3 Hrs", "6 Hrs", "12 Hrs", 
-               "1 Day", "3 Days",
-               "1 Wk", "2 Wks", 
-               "1 Month", "6 Months",
-               "1 Yr", "5 Yrs", ">5 Yrs")
-
-bin_values = 1:18
-bin_ref <- data.frame(bin_labels, bin_values)
-
-reset_gtsummary_theme()
-theme_gtsummary_compact()
-t3 <- bin_ref %>% 
-  tbl_summary(label = list(
-           bin_labels ~ "Time Intervals",
-           bin_values ~ "Binned Values")) %>%
-  bold_labels() %>% 
-  as_gt() %>%
-  apa_table_formatter("Time Intervals and Corresponding Binned Values", 40)
-
-gt::gtsave(t3, "table3_bin_ref.png", "../tables/")
+history_behavior <- history %>%
+  mutate(ever_nssi_f = ifelse(!is.na(ever_nssi),
+                       ifelse(ever_nssi == 1, 1, 0), NA),
+         ever_aborted = ifelse(!is.na(ever_aborted),
+                          ifelse(ever_aborted == 1, 1, 0), NA),
+         ever_int = ifelse(!is.na(ever_int),
+                     ifelse(ever_int == 1, 1, 0), NA),
+         aborted_past = ifelse(group == "Aborted/Interrupted Attempters", 
+                        ifelse(aborted_num > 1, 1, 0), ever_aborted),
+         int_past = ifelse(group == "Aborted/Interrupted Attempters", 
+                    ifelse(int_num > 1, 1, 0), ever_int),
+         int_num = ifelse(int_num == "10-May", 1, int_num),
+         int_num = as.numeric(int_num),
+         at_num = as.numeric(at_num)) %>%
+  select(group, 
+         ever_nssi_f, 
+         aborted_past, 
+         int_past, 
+         
+         nssi_num,
+         aborted_num, 
+         int_num, 
+         at_num,
+         
+         nssi_first_age,
+         aborted_first_age, 
+         int_first_age,
+         at_first_age)
 ```
 
+```{r}
+history_ideation <- history %>%
+  select(group,
+         lifetimeSI_onset,
+         lifetimeSI_mean,
+         lifetimeSI_sd,
+         lifetimeSI_range,
+         lifetimeSI_duration)
+```
 
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+t1 <- history_behavior %>% 
+  tbl_summary(by = group,    
+              type = list(nssi_num ~ "continuous", 
+                          aborted_num ~ "continuous", 
+                          int_num ~ "continuous", 
+                          at_num ~ "continuous", 
+                          
+                          nssi_first_age ~ "continuous",
+                          int_first_age ~ "continuous",
+                          at_first_age ~ "continuous",
+                          aborted_first_age ~ "continuous"
+                          ),
+              statistic = all_continuous() ~ "{mean} ({sd})",
+              digits = all_continuous() ~ 2,
+              missing_text = "(Missing)", 
+              label = list(ever_nssi_f ~ "Ever Engaged in NSSI",
+                           aborted_past ~ "Had Past Aborted Attempt(s)",
+                           int_past ~ "Had Past Interrupted Attempt(s)",
+                           nssi_num ~ "Number of Past NSSI",
+                           aborted_num ~ "Number of Past Aborted Attempts",
+                           int_num ~ "Number of Past Interrupted Attempts",
+                           at_num ~ "Number of Past Actual Attempts",
+                           nssi_first_age ~ "Age at First NSSI",
+                           aborted_first_age ~ "Age at the First Aborted Attempt",
+                           int_first_age ~ "Age at the First Interrupted Attempt",
+                           at_first_age ~ "Age at the First Actual Attempt"
+                           )) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  bold_labels() %>% 
+  add_stat(fns = all_continuous() ~ hedges_g)  %>%
+  modify_fmt_fun(update = add_stat_1 ~ function(x) style_number(x, digits = 2)) %>%
+  add_p(all_continuous() ~ "t.test",
+        pvalue_fun = ~style_pvalue(.x, digits = 2)) %>%
+  bold_p(t = 0.05) %>%
+  modify_header(
+      list(label ~ "",
+           stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+           stat_2 ~ '**Actual**, N = {n}',
+          add_stat_1 ~ "**Hedges' *g***",
+          p.value ~ "***p* value**")) %>%
+  as_gt() %>%
+  apa_table_formatter("", 65)
+gtsave(t1, "sb_history.png", "../tables/")
+```
 
+```{r}
+history_ideation <- history %>%
+  select(group,
+         lifetimeSI_onset,
+         lifetimeSI_mean,
+         lifetimeSI_sd,
+         lifetimeSI_range,
+         lifetimeSI_duration)
+```
+
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+t2 <- history_ideation %>% 
+  tbl_summary(by = group,    
+              type = list(lifetimeSI_onset ~ "continuous", 
+                          lifetimeSI_mean ~ "continuous", 
+                          lifetimeSI_sd ~ "continuous", 
+                          lifetimeSI_range ~ "continuous", 
+                          lifetimeSI_duration ~ "continuous"
+                          ),
+              statistic = all_continuous() ~ "{mean} ({sd})",
+              digits = all_continuous() ~ 2,
+              missing_text = "(Missing)", 
+              label = list(lifetimeSI_onset ~ "Lifetime SI Onset",
+                           lifetimeSI_mean ~ "Lifetime SI Mean",
+                           lifetimeSI_sd ~ "Lifetime SI Std. Dev.",
+                           lifetimeSI_range ~ "Lifetime SI Range",
+                           lifetimeSI_duration ~ "Lifetime SI Duration"
+                           )) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  bold_labels() %>% 
+  add_stat(fns = all_continuous() ~ hedges_g)  %>%
+  modify_fmt_fun(update = add_stat_1 ~ function(x) style_number(x, digits = 2)) %>%
+  add_p(all_continuous() ~ "t.test",
+        pvalue_fun = ~style_pvalue(.x, digits = 2)) %>%
+  bold_p(t = 0.05) %>%
+  modify_header(
+      list(label ~ "",
+           stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+           stat_2 ~ '**Actual**, N = {n}',
+          add_stat_1 ~ "**Hedges' *g***",
+          p.value ~ "***p* value**")) %>%
+  as_gt() %>%
+  apa_table_formatter("", 60)
+gtsave(t2, "si_history.png", "../tables/")
+```

@@ -28,6 +28,17 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 alldata <- read_csv("../data/FirstStep_most_up_to_date.csv")
 ```
 
+```{r add-lifetimeSI}
+alldata <- alldata %>%
+  group_by(Subject) %>%
+  mutate(lifetimeSI_onset = min(Time_in_age),
+         lifetimeSI_duration = max(Time_prior_to_attempt),
+         lifetimeSI_range = max(Ideation_freq) - min(Ideation_freq),
+         lifetimeSI_mean = mean(Ideation_freq),
+         lifetimeSI_sd = sd(Ideation_freq)) %>%
+  filter(!is.na(Age))
+```
+
 ```{r select-var}
 df.short <- alldata %>%
   filter(x_axis_Num == 1) 
@@ -55,7 +66,9 @@ df.selected <- df.short %>%
          
          `1.2_Ever_made_a_plan`,
          `2.2_Ever_NSSI`,
+         `2.2_NSSI_Age_FirstTime`,
          
+         `2.2_NSSI_NumTimes_FINAL`,
          `2.4_Had_Aborted_Attempt`,
          `2.4_Aborted_Num_Times_FINAL`,
          `2.4_Aborted_First_Age`,
@@ -99,8 +112,13 @@ df.selected <- df.short %>%
          `5.9_Obtain_Method_Sure_useforsuicide`, 
          `11.3_Decide_before_or_after`, 
          
-         `12.15_How_sure_want_to_die`
-         )
+         `12.15_How_sure_want_to_die`, 
+         
+         lifetimeSI_onset,
+         lifetimeSI_duration,
+         lifetimeSI_range,
+         lifetimeSI_mean,
+         lifetimeSI_sd)
 ```
 
 ```{r rename-var}
@@ -118,6 +136,7 @@ df.selected <- rename(df.selected, resp_makes_you = responsibilities_makes_you)
 
 df.selected <- rename(df.selected, planned = `1.2_Ever_made_a_plan`)
 df.selected <- rename(df.selected, ever_nssi = `2.2_Ever_NSSI`)
+df.selected <- rename(df.selected, nssi_first_age =`2.2_NSSI_Age_FirstTime`)
 
 df.selected <- rename(df.selected, ever_aborted = `2.4_Had_Aborted_Attempt`)
 df.selected <- rename(df.selected, aborted_num = `2.4_Aborted_Num_Times_FINAL`)
@@ -162,6 +181,16 @@ df.selected <- rename(df.selected, obtained_method = `5.9_Obtain_Method_Sure_use
 
 df.selected <- rename(df.selected, substance = `11.3_Decide_before_or_after`)
 df.selected <- rename(df.selected, desire_to_die = `12.15_How_sure_want_to_die`)
+
+df.selected <- df.selected %>%
+  mutate(nssi_num = as.double(ifelse(`2.2_NSSI_NumTimes_FINAL` == "25-50", "37.5",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "50-75", "62.5",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "5-10", "7.5",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "1-5", "2.5",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "11-25", "18",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "50-100", "75",
+                              ifelse(`2.2_NSSI_NumTimes_FINAL` == "1", "1", NA))))))))) %>%
+  select(-`2.2_NSSI_NumTimes_FINAL`)
 ```
 
 ```{r}

@@ -39,11 +39,10 @@ p8 <- ggplot(thoughts, aes(x = thoughts_want,  fill = group)) +
   scale_fill_manual(name = "Type of the Most Recent Attempt",
                     labels = c("Aborted/Interrupted", "Actual"),
                     values = c("skyblue4", "darkgoldenrod2")) +
-  theme(plot.subtitle = element_text(vjust = -10, hjust = 0.5),
-        legend.position = "none",  
+  theme(legend.position = "none",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(subtitle = "Amount of Thoughts that \nIncreased one's Desire to Attempt", 
+  labs(subtitle = "b) Amount of Thoughts that \n    Increased one's Desire to Attempt", 
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = 0:17) +
@@ -62,7 +61,7 @@ p9 <- ggplot(thoughts, aes(x = thoughts_not_want,  fill = group)) +
   theme(legend.position = "none",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(title = "Amount of Thoughts that \nDecreased one's Desire to Attempt", 
+  labs(subtitle = "c) Amount of Thoughts that \n    Decreased one's Desire to Attempt", 
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = 0:21) +
@@ -81,7 +80,7 @@ p10 <- ggplot(thoughts, aes(x = thoughts_amt,  fill = group)) +
   theme(legend.position = "right",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(title = "\nAmount of All Thoughts", x = "", y = "")  +
+  labs(title = "\na) Amount of All Thoughts", x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:4) +
   scale_x_continuous(breaks = 0:22) +
   geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
@@ -99,8 +98,7 @@ p11 <- ggplot(thoughts, aes(x = thoughts_net,  fill = group)) +
   theme(legend.position = "none", 
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(title = "Counterbalanced Amount of Thoughts", 
-       subtitle = "(Thoughts Increased Desire minus Thoughts Decreased Desire)",
+  labs(title = "d) Counterbalanced Amount of Thoughts\n    (Thoughts Increased Desire minus Thoughts Decreased Desire)",
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = -21:9) +

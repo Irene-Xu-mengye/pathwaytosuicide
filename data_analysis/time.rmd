@@ -80,7 +80,7 @@ t2 <- time %>%
   as_gt() %>%
   apa_table_formatter("Time Elapsed Since Each Event", 60)
 
-gt::gtsave(t2, "table2_time.png", "../tables/")
+gtsave(t2, "table2_time.png", "../tables/")
 ```
 
 # Other stuff to consider
