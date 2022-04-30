@@ -25,37 +25,56 @@ library(tidyverse)
 library(gtsummary)
 library(gt)
 library(modelsummary)
+library(corrplot)
 source("helper_functions/apa_table_formatter.R")
+source("helper_functions/effect_size_calculator.R")
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 alldata <- read_csv("../data/psai_processed_100421.csv")
 ```
 
 # Select variables for the table
-```{r}
+```{r select-var}
 tt <- alldata %>%
-  select(think_bin, mull_bin, dec_bin, firstmethod_bin, suremethod_bin, firstplace_bin, sureplace_bin,
+  select(think_bin, mull_bin, dec_bin, 
+         firstmethod_bin, suremethod_bin, firstplace_bin, sureplace_bin,
          thoughts_amt, thoughts_want, thoughts_not_want, thoughts_net, 
          prep_total)
 ```
 
+# make 2df, all variables or concise
 ```{r}
-tt <- tt %>%
-  select("1. SI Onset" = think_bin,
-         "2. Start to Mull" = mull_bin,
-         "3. Decide to Attempt" = dec_bin,
-         "4. Start to Consider Method" = firstmethod_bin,
-         "5. Decide on Method" = suremethod_bin,
-         "6. Start to Consider Place" = firstplace_bin,
-         "7. Decide on Place" = sureplace_bin,
-         "8. Thoughts Towards Attempt" = thoughts_want,
-         "9. Thoughts Against Attempt" = thoughts_not_want,
-         "10. All Thoughts" = thoughts_amt,
-         "11. Counterbalanced Thoughts" = thoughts_net,
+tt_all <- tt %>%
+  select("1. Ideation Onset" = think_bin,
+         "2. Mulling Onset" = mull_bin,
+         "3. Attempt Decision" = dec_bin,
+         "4. Method Onset" = firstmethod_bin,
+         "5. Method Decision" = suremethod_bin,
+         "6. Place Onset" = firstplace_bin,
+         "7. Place Decision" = sureplace_bin,
+         "8. Pro-suicide Considerations" = thoughts_want,
+         "9. Anti-suicide Considerations" = thoughts_not_want,
+         "10. Total Considerations" = thoughts_amt,
+         "11. Overall Net Considerations" = thoughts_net,
          "12. Preparatory Actions" = prep_total)
+
+tt_concise <- tt %>%
+  select("Ideation Onset" = think_bin,
+         "Mulling Onset" = mull_bin,
+         "Attempt Decision" = dec_bin,
+         "Method Onset" = firstmethod_bin,
+         "Method Decision" = suremethod_bin,
+         "Place Onset" = firstplace_bin,
+         "Place Decision" = sureplace_bin,
+         "Pro-suicide Considerations" = thoughts_want,
+         "Anti-suicide Considerations" = thoughts_not_want,
+         "Total Considerations" = thoughts_amt,
+         "Overall Net Considerations" = thoughts_net,
+         "Preparatory Actions" = prep_total)
 ```
 
+# make table for all var cor (original version, no **)
 ```{r}
-cor <- datasummary_correlation(tt, output = "gt", align = "lllllllllllll") 
+cor <- datasummary_correlation(tt_all, output = "gt", align = "lllllllllllll") 
 cor <- cor %>% 
   cols_width(everything() ~ px(60)) %>%
   tab_options(table.font.size = 14) %>%
@@ -66,10 +85,10 @@ cor <- cor %>%
          "5. Decide on Method" ~ px(50),
          "6. Start to Consider Place" ~ px(50),
          "7. Decide on Place" ~ px(50),
-         "8. Thoughts Towards Attempt" ~ px(50),
-         "9. Thoughts Against Attempt" ~ px(50),
-         "10. All Thoughts" ~ px(50),
-         "11. Counterbalanced Thoughts" ~ px(50),
+         "8. Pro-suicide Considerations" ~ px(50),
+         "9. Anti-suicide Considerations" ~ px(50),
+         "10. Total Considerations" ~ px(50),
+         "11. Overall Net Considerations" ~ px(50),
          "12. Preparatory Actions" ~ px(50),
          everything() ~ px(190)) %>%
   cols_label("1. SI Onset" = "1",
@@ -79,12 +98,48 @@ cor <- cor %>%
          "5. Decide on Method" = "5",
          "6. Start to Consider Place" = "6",
          "7. Decide on Place" = "7",
-         "8. Thoughts Towards Attempt" = "8",
-         "9. Thoughts Against Attempt" = "9",
-         "10. All Thoughts" = "10",
-         "11. Counterbalanced Thoughts" = "11",
+         "8. Pro-suicide Considerations" = "8",
+         "9. Anti-suicide Considerations" = "9",
+         "10. Total Considerations" = "10",
+         "11. Overall Net Considerations" = "11",
          "12. Preparatory Actions" = "12") %>%
   apa_cor_formatter("", 85)
-gtsave(cor, "cor_matrix.png", "../tables/")
+gtsave(cor, "cor_matrix_all.png", "../tables/")
+```
+
+# make table for all (with **)
+```{r}
+big_matrix <- correlation_matrix(tt_all, use = "lower", replace_diagonal =TRUE, replacement = "-")
+big_matrix <- as.data.frame(big_matrix)
+for (i in 1:12) {
+  names(big_matrix)[i] <- i
+}
+big_matrix$` ` <- rownames(big_matrix)
+
+all_cor <- big_matrix[, c(13,1,2,3,4,5,6,7,8,9,10,11)]
+all_cor_table <- all_cor %>%
+  gt() %>%     
+  apa_cor_formatter("", 100)
+gtsave(all_cor_table, "cor_matrix_all.png", "../tables/")
+```
+
+# Correlation Matrix for all variables with corrplot
+```{r fig.width=3,fig.height=3}
+tt.cor = cor.mtest(tt)
+corrplot(cor(tt, use = "complete.obs"), method = "number", type = "upper", order = "hclust",
+         tl.col = "black", tl.srt = 50)
+```
+
+# Concise table for correlations between time and considerations
+```{r}
+matrix <- correlation_matrix(tt_concise, use = "lower", replace_diagonal =TRUE, replacement = "-")
+concise_matrix <- as.data.frame(matrix[8:12, 1:7])
+concise_matrix$` ` <- rownames(concise_matrix)
+
+concise_cor <- concise_matrix[, c(8,1,2,3,4,5,6,7)]
+concise_cor_table <- concise_cor %>%
+  gt() %>%     
+  apa_cor_formatter("", 100)
+gtsave(concise_cor_table, "cor_matrix_concise.png", "../tables/")
 ```
 

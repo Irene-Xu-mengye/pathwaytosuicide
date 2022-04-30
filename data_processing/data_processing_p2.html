@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Data Processing (part 2)</h1>
 <h4 class="author">Irene Xu</h4>
-<h4 class="date">Last updated: 2021-10-07</h4>
+<h4 class="date">Last updated: 2021-11-18</h4>
 
 </div>
 
@@ -541,11 +541,11 @@ caucasian &lt;- c(&quot;2&quot;,&quot;4&quot;,&quot;5&quot;,&quot;7&quot;,&quot;
 mix &lt;- c(&quot;1&quot;,&quot;39&quot;,&quot;41&quot;,&quot;42&quot;,&quot;55&quot;)
 
 # not used yet, too little data
-hs_grad &lt;- c(&quot;1&quot;,&quot;14&quot;)
+hs_grad &lt;- c(&quot;1&quot;,&quot;4&quot;,&quot;14&quot;)
 less_hs &lt;- c(&quot;28&quot;,&quot;63&quot;)
-college_3y &lt;- c(&quot;7&quot;,&quot;11&quot;,&quot;13&quot;,&quot;16&quot;,&quot;17&quot;,&quot;19&quot;,&quot;23&quot;,&quot;25&quot;,&quot;27&quot;,&quot;30&quot;,&quot;31&quot;,&quot;32&quot;,&quot;33&quot;,&quot;34&quot;,&quot;38&quot;,&quot;39&quot;,&quot;41&quot;,&quot;42&quot;,&quot;44&quot;,&quot;45&quot;,&quot;48&quot;,&quot;49&quot;,&quot;52&quot;,&quot;53&quot;,&quot;56&quot;,&quot;57&quot;, &quot;58&quot;,&quot;61&quot;,&quot;65&quot;,&quot;68&quot;)
+college_3y &lt;- c(&quot;7&quot;,&quot;11&quot;,&quot;13&quot;,&quot;16&quot;,&quot;17&quot;,&quot;19&quot;,&quot;23&quot;,&quot;25&quot;,&quot;27&quot;,&quot;30&quot;,&quot;31&quot;,&quot;32&quot;,&quot;33&quot;,&quot;34&quot;,&quot;38&quot;,&quot;39&quot;,&quot;41&quot;,&quot;42&quot;,&quot;44&quot;,&quot;45&quot;,&quot;48&quot;,&quot;49&quot;,&quot;52&quot;,&quot;53&quot;,&quot;56&quot;,&quot;57&quot;, &quot;58&quot;,&quot;61&quot;,&quot;65&quot;,&quot;68&quot;,&quot;103&quot;)
 college &lt;- c(&quot;2&quot;,&quot;6&quot;,&quot;8&quot;,&quot;10&quot;,&quot;12&quot;,&quot;15&quot;,&quot;22&quot;,&quot;35&quot;,&quot;37&quot;,&quot;43&quot;,&quot;46&quot;,&quot;54&quot;,&quot;60&quot;,&quot;62&quot;,&quot;64&quot;,&quot;67&quot;)
-professional &lt;- c(&quot;3&quot;,&quot;5&quot;,&quot;18&quot;,&quot;21&quot;,&quot;24&quot;,&quot;29&quot;,&quot;36&quot;,&quot;40&quot;,&quot;50&quot;,&quot;51&quot;,&quot;55&quot;,&quot;59&quot;,&quot;66&quot;)
+professional &lt;- c(&quot;3&quot;,&quot;5&quot;,&quot;18&quot;,&quot;21&quot;,&quot;24&quot;,&quot;29&quot;,&quot;36&quot;,&quot;40&quot;,&quot;50&quot;,&quot;51&quot;,&quot;55&quot;,&quot;59&quot;,&quot;66&quot;,&quot;105&quot;)
 
 student &lt;- c(&quot;4&quot;,&quot;11&quot;,&quot;13&quot;,&quot;17&quot;,&quot;19&quot;,&quot;21&quot;,&quot;25&quot;,&quot;27&quot;,&quot;30&quot;,&quot;31&quot;,&quot;38&quot;,&quot;39&quot;,&quot;41&quot;,&quot;42&quot;,&quot;45&quot;,&quot;48&quot;,&quot;49&quot;,&quot;53&quot;,&quot;55&quot;,&quot;56&quot;,&quot;59&quot;,&quot;61&quot;,&quot;63&quot;,&quot;64&quot;,&quot;65&quot;,&quot;68&quot;)
 
@@ -582,6 +582,25 @@ alldata$education &lt;- factor(alldata$education, levels = c(&quot;Less than hig
          -place_sure_time, -place_sure_timeunit,
          -thoughts_die_by_suicide, -planned,
          )
+
+# fix some data that was coded wrong
+alldata &lt;- alldata %&gt;%
+  mutate(ever_nssi = ifelse(subject %in% c(16, 103, 105), 2, ever_nssi),
+         ever_aborted = ifelse(subject %in% c(16, 55, 105), 1, 
+                        ifelse(subject %in% c(103), 2, ever_aborted)),
+         aborted_num = ifelse(subject %in% c(105), 1,
+                       ifelse(subject == 55, 2,
+                       ifelse(subject == 16, 17.5, aborted_num))),
+         aborted_first_age = ifelse(subject == 105, 32,
+                             ifelse(subject == 55, age,
+                             ifelse(subject == 16, 18, aborted_first_age))),
+         aborted_recent_age = ifelse(subject == 16, 31,
+                              ifelse(subject == 55, age, aborted_recent_age)),
+         ever_int = ifelse(subject %in% c(16, 103, 105), 2,
+                    ifelse(subject %in% c(5, 55), 1, ever_int)),
+         ever_at = ifelse(subject %in% c(103, 105), 1, ever_at),
+         at_num = ifelse(subject == 103, 1, ifelse(subject == 105, 2, at_num)),
+         int_num = ifelse(subject %in% c(1, 55), 1, int_num))
 write_csv(alldata, &quot;../data/psai_processed_100421.csv&quot;)</code></pre>
 </div>
 

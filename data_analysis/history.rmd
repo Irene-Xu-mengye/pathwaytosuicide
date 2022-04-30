@@ -31,9 +31,10 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 alldata <- read_csv("../data/psai_processed_100421.csv")
 ```
 
+# History of Behavior and Ideation
 ```{r}
 history <- alldata %>%
-  select(group, 
+  select(subject, group, 
          
          ever_nssi, 
          nssi_num,
@@ -57,9 +58,19 @@ history <- alldata %>%
          lifetimeSI_mean,
          lifetimeSI_duration,
          lifetimeSI_range,
-         lifetimeSI_sd)
+         lifetimeSI_sd
+        ) %>%
+  filter(!subject %in% c(1, 55)) %>%
+  mutate(group = ifelse(group == "Aborted/Interrupted Attempters", "ab", "at"))
 ```
 
+```{r}
+history %>% filter(group == "at") %>% select(subject, at_num) %>% arrange(desc(at_num))
+# 14 out of 30 actual attempters had previous actual attempts
+```
+
+
+# History of Behavior
 ```{r}
 history_behavior <- history %>%
   mutate(ever_nssi_f = ifelse(!is.na(ever_nssi),
@@ -92,16 +103,6 @@ history_behavior <- history %>%
 ```
 
 ```{r}
-history_ideation <- history %>%
-  select(group,
-         lifetimeSI_onset,
-         lifetimeSI_mean,
-         lifetimeSI_sd,
-         lifetimeSI_range,
-         lifetimeSI_duration)
-```
-
-```{r}
 reset_gtsummary_theme()
 theme_gtsummary_compact()
 t1 <- history_behavior %>% 
@@ -131,7 +132,7 @@ t1 <- history_behavior %>%
                            int_first_age ~ "Age at the First Interrupted Attempt",
                            at_first_age ~ "Age at the First Actual Attempt"
                            )) %>%
-  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Recent Attempt**") %>%
+  modify_spanning_header(all_stat_cols() ~ "**Type of the Most Severe Attempt**") %>%
   bold_labels() %>% 
   add_stat(fns = all_continuous() ~ hedges_g)  %>%
   modify_fmt_fun(update = add_stat_1 ~ function(x) style_number(x, digits = 2)) %>%
@@ -148,6 +149,8 @@ t1 <- history_behavior %>%
   apa_table_formatter("", 65)
 gtsave(t1, "sb_history.png", "../tables/")
 ```
+
+# History of Ideation
 
 ```{r}
 history_ideation <- history %>%
@@ -195,4 +198,54 @@ t2 <- history_ideation %>%
   as_gt() %>%
   apa_table_formatter("", 60)
 gtsave(t2, "si_history.png", "../tables/")
+```
+
+
+# Concise History (3 ever, SI onset & mean)
+```{r}
+history_concise <- history %>%
+  mutate(ever_nssi_f = ifelse(!is.na(ever_nssi),
+                       ifelse(ever_nssi == 1, 1, 0), NA),
+         ever_aborted = ifelse(!is.na(ever_aborted),
+                          ifelse(ever_aborted == 1, 1, 0), NA),
+         ever_int = ifelse(!is.na(ever_int),
+                     ifelse(ever_int == 1, 1, 0), NA),
+         aborted_past = ifelse(group == "at", 
+                        ifelse(aborted_num > 1, 1, 0), ever_aborted),
+         int_past = ifelse(subject %in% c(1, 55), 0, ever_int)) %>%
+  select(group, 
+         ever_nssi_f, 
+         aborted_past, 
+         int_past)
+```
+
+```{r}
+source("helper_functions/apa_table_formatter.R")
+reset_gtsummary_theme()
+theme_gtsummary_compact()
+```
+```{r}
+reset_gtsummary_theme()
+theme_gtsummary_journal()
+t2 <- history_concise %>% 
+  tbl_summary(by = group,    
+              statistic = list(all_categorical() ~ "{p}% ({n})"),
+              missing = "no",
+              label = list(ever_nssi_f ~ "Lifetime NSSI",
+                           aborted_past ~ "Lifetime Aborted Attempt",
+                           int_past ~ "Lifetime Interrupted Attempt")
+              ) %>%
+  modify_spanning_header(all_stat_cols() ~ "Type of the Most Severe Attempt") %>%
+  add_p(all_continuous() ~ "t.test",
+        pvalue_fun = ~style_pvalue(.x, digits = 2)) %>%
+  bold_p(t = 0.05) %>%
+  modify_header(
+      list(label ~ "",
+           stat_1 ~ 'Aborted, N = {n} ',
+           stat_2 ~ 'Actual, N = {n}',
+           p.value ~ "*p* value")) %>%
+  as_gt() %>%
+  apa_table_formatter("", 60)
+t2
+gtsave(t2, "table2_history_concise.png", "../tables/")
 ```

@@ -310,11 +310,11 @@ caucasian <- c("2","4","5","7","9","10", "11","12","14","16","19","21","22","24"
 mix <- c("1","39","41","42","55")
 
 # not used yet, too little data
-hs_grad <- c("1","14")
+hs_grad <- c("1","4","14")
 less_hs <- c("28","63")
-college_3y <- c("7","11","13","16","17","19","23","25","27","30","31","32","33","34","38","39","41","42","44","45","48","49","52","53","56","57", "58","61","65","68")
+college_3y <- c("7","11","13","16","17","19","23","25","27","30","31","32","33","34","38","39","41","42","44","45","48","49","52","53","56","57", "58","61","65","68","103")
 college <- c("2","6","8","10","12","15","22","35","37","43","46","54","60","62","64","67")
-professional <- c("3","5","18","21","24","29","36","40","50","51","55","59","66")
+professional <- c("3","5","18","21","24","29","36","40","50","51","55","59","66","105")
 
 student <- c("4","11","13","17","19","21","25","27","30","31","38","39","41","42","45","48","49","53","55","56","59","61","63","64","65","68")
 
@@ -352,6 +352,25 @@ alldata <- alldata %>%
          -place_sure_time, -place_sure_timeunit,
          -thoughts_die_by_suicide, -planned,
          )
+
+# fix some data that was coded wrong
+alldata <- alldata %>%
+  mutate(ever_nssi = ifelse(subject %in% c(16, 103, 105), 2, ever_nssi),
+         ever_aborted = ifelse(subject %in% c(16, 55, 105), 1, 
+                        ifelse(subject %in% c(103), 2, ever_aborted)),
+         aborted_num = ifelse(subject %in% c(105), 1,
+                       ifelse(subject == 55, 2,
+                       ifelse(subject == 16, 17.5, aborted_num))),
+         aborted_first_age = ifelse(subject == 105, 32,
+                             ifelse(subject == 55, age,
+                             ifelse(subject == 16, 18, aborted_first_age))),
+         aborted_recent_age = ifelse(subject == 16, 31,
+                              ifelse(subject == 55, age, aborted_recent_age)),
+         ever_int = ifelse(subject %in% c(16, 103, 105), 2,
+                    ifelse(subject %in% c(5, 55), 1, ever_int)),
+         ever_at = ifelse(subject %in% c(103, 105), 1, ever_at),
+         at_num = ifelse(subject == 103, 1, ifelse(subject == 105, 2, at_num)),
+         int_num = ifelse(subject %in% c(1, 55), 1, int_num))
 write_csv(alldata, "../data/psai_processed_100421.csv")
 ```
 

@@ -20,7 +20,9 @@ library(tidyverse)
 library(gridExtra)
 library(papaja)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-alldata <- read_csv("../data/psai_processed_100421.csv")
+alldata <- read_csv("../data/psai_processed_100421.csv") %>%
+  filter(!subject %in% c(1, 55)) %>%
+  mutate(group = ifelse(group == "Aborted/Interrupted Attempters", "ab", "at"))
 ```
 
 # 1. Select thoughts variables  
@@ -37,12 +39,12 @@ p8 <- ggplot(thoughts, aes(x = thoughts_want,  fill = group)) +
                  position = position_dodge2(preserve = "single", padding = 0.1)) +
   theme_apa() + 
   scale_fill_manual(name = "Type of the Most Recent Attempt",
-                    labels = c("Aborted/Interrupted", "Actual"),
+                    labels = c("Aborted", "Actual"),
                     values = c("skyblue4", "darkgoldenrod2")) +
   theme(legend.position = "none",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(subtitle = "b) Amount of Thoughts that \n    Increased one's Desire to Attempt", 
+  labs(subtitle = "b) Pro-Suicide Thoughts", 
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = 0:17) +
@@ -56,12 +58,12 @@ p9 <- ggplot(thoughts, aes(x = thoughts_not_want,  fill = group)) +
                  position = position_dodge2(preserve = "single", padding = 0.1)) +
   theme_apa() + 
   scale_fill_manual(name = "Type of the Most Recent Attempt",
-                    labels = c("Aborted/Interrupted", "Actual"),
+                    labels = c("Aborted", "Actual"),
                     values = c("skyblue4", "darkgoldenrod2")) +
   theme(legend.position = "none",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(subtitle = "c) Amount of Thoughts that \n    Decreased one's Desire to Attempt", 
+  labs(subtitle = "c) Anti-Suicide Thoughts", 
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = 0:21) +
@@ -75,12 +77,12 @@ p10 <- ggplot(thoughts, aes(x = thoughts_amt,  fill = group)) +
                  position = position_dodge2(preserve = "single", padding = 0.1)) +
   theme_apa() + 
   scale_fill_manual(name = "Type of the Most Recent Attempt",
-                    labels = c("Aborted/Interrupted", "Actual"),
+                    labels = c("Aborted", "Actual"),
                     values = c("skyblue4", "darkgoldenrod2")) +
   theme(legend.position = "right",  
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(title = "\na) Amount of All Thoughts", x = "", y = "")  +
+  labs(title = "\na) All Thoughts", x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:4) +
   scale_x_continuous(breaks = 0:22) +
   geom_hline(yintercept = 2, linetype = "dashed", color = "grey")
@@ -93,12 +95,12 @@ p11 <- ggplot(thoughts, aes(x = thoughts_net,  fill = group)) +
                  position = position_dodge2(preserve = "single", padding = 0.1)) +
   theme_apa() + 
   scale_fill_manual(name = "Type of the Most Recent Attempt                ",
-                    labels = c("Aborted/Interrupted", "Actual"),
+                    labels = c("Aborted", "Actual"),
                     values = c("skyblue4", "darkgoldenrod2")) +
   theme(legend.position = "none", 
         legend.text = element_text(size = 11),
         text = element_text(family = "Times New Roman", face = "bold")) + 
-  labs(title = "d) Counterbalanced Amount of Thoughts\n    (Thoughts Increased Desire minus Thoughts Decreased Desire)",
+  labs(title = "d) Net Pro-Suicide Thoughts (Pro minus Anti)",
        x = "", y = "")  +
   scale_y_continuous(expand = c(0.008, 0), breaks = 0:8) +
   scale_x_continuous(breaks = -21:9) +

@@ -36,25 +36,29 @@ time_all <- alldata %>%
   select(subject, age, group, sex, education,
          think_bin, think_label, mull_bin, mull_label, dec_bin, dec_label,
          firstmethod_bin, fm_label, firstplace_bin, fp_label,
-         suremethod_bin, sm_label, sureplace_bin, sp_label)
+         suremethod_bin, sm_label, sureplace_bin, sp_label) %>%
+  filter(!subject %in% c(1, 55)) %>%
+  mutate(group = ifelse(group == "Aborted/Interrupted Attempters", "ab", "at"))
 ```
 
 # Select variables for the table
 ```{r}
 time <- time_all %>%
-  select(group, think_bin, mull_bin, dec_bin, firstmethod_bin, suremethod_bin, firstplace_bin, sureplace_bin)
+  select(group, think_bin, firstmethod_bin, mull_bin, firstplace_bin, dec_bin, suremethod_bin, sureplace_bin)
 ```
 
 # Create and save the table
 ```{r}
 reset_gtsummary_theme()
 theme_gtsummary_compact()
-t2 <- time %>% 
+t3 <- time %>% 
   tbl_summary(
-      by = group,    
-      statistic = all_continuous() ~ "{mean} ({sd})",
-      digits = all_continuous() ~ 2,
-      missing_text = "(Missing)",
+      by = group, 
+      type = all_continuous() ~ "continuous2",
+      statistic = all_continuous() ~ c("{N_nonmiss}", 
+                                      "{mean} ({sd})"),
+      digits = all_continuous() ~ c(0, 2, 2),
+      missing = "no",
       label = list(
            think_bin ~ "Started to consider attempting",
            mull_bin ~ "Started to mull",
@@ -73,14 +77,14 @@ t2 <- time %>%
   modify_header(
       list(
           label ~ "",
-          stat_1 ~ '**Aborted/Interrupted**, N = {n}',
+          stat_1 ~ '**Aborted**, N = {n}',
           stat_2 ~ '**Actual**, N = {n}',
           add_stat_1 ~ "**Hedges' *g***",
           p.value ~ "***p* value**")) %>%
   as_gt() %>%
   apa_table_formatter("Time Elapsed Since Each Event", 60)
-
-gtsave(t2, "table2_time.png", "../tables/")
+t3
+gtsave(t3, "table3_time.png", "../tables/")
 ```
 
 # Other stuff to consider

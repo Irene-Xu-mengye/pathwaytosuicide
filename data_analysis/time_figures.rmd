@@ -20,7 +20,9 @@ library(tidyverse)
 library(gridExtra)
 library(papaja)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-alldata <- read_csv("../data/psai_processed_100421.csv")
+alldata <- read_csv("../data/psai_processed_100421.csv") %>%
+  filter(!subject %in% c(1, 55)) %>%
+  mutate(group = ifelse(group == "Aborted/Interrupted Attempters", "ab", "at"))
 ```
 
 # 1. Select time variables  
@@ -67,7 +69,7 @@ plotbin <- function(data, x.var,  v.title = "", legend.pos = "none", y.max = 10,
                    position = position_dodge2(preserve = "single", padding = 0.1)) +
     theme_apa() + 
     scale_fill_manual(name = "Type of the Most Recent Attempt                ",
-                      labels = c("Aborted/Interrupted", "Actual"),
+                      labels = c("Aborted", "Actual"),
                       values = c("skyblue4", "darkgoldenrod2")) +
     theme(plot.margin = unit(c(t.margin, r.margin, 0, 0),"cm"),
           axis.text.x = element_text(angle = 40, vjust = 1.2, hjust = 1, size = 10),
@@ -91,14 +93,14 @@ plotbin <- function(data, x.var,  v.title = "", legend.pos = "none", y.max = 10,
 
 # 4. Plot the distributions of time
 ```{r time-plots, fig.width=15, fig.height=13}
-p1 <- plotbin(time, 'think_f', "Started to Consider Attempting", "none", 10, 0.5, 0)
-p2 <- plotbin(time, 'mull_f', "Started to Mull", "none", 14, 0.5, 0)
-p3 <- plotbin(time, 'dec_f', "Decided to Attempt", "none", 10, 0.5, 0.5)
+p1 <- plotbin(time, 'think_f', "Start to Consider Attempting", "none", 10, 0.5, 0)
+p2 <- plotbin(time, 'mull_f', "Start to Mull", "none", 14, 0.5, 0)
+p3 <- plotbin(time, 'dec_f', "Decide to Attempt", "none", 10, 0.5, 0.5)
 
-p4 <- plotbin(time, 'fm_f', "Started to Consider Method", "none")
-p5 <- plotbin(time, 'sm_f', "Decided on Method", "right")
-p6 <- plotbin(time, 'fp_f', "Started to Consider Place")
-p7 <- plotbin(time, 'sp_f', "Decided on Place")
+p4 <- plotbin(time, 'fm_f', "Start to Consider Method", "none")
+p5 <- plotbin(time, 'sm_f', "Decide on Method", "right")
+p6 <- plotbin(time, 'fp_f', "Start to Consider Place")
+p7 <- plotbin(time, 'sp_f', "Decide on Place")
 
 lay <- rbind(c(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3),
              c(4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, NA),
